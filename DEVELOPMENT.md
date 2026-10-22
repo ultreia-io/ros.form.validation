@@ -1,5 +1,7 @@
 # Developing ros.form.validation
 
+`develop` is the integration branch. `main` contains releases. Implementation branches use `feature/`.
+
 Rules live under `inst/rules/<version>/`, separately for each gear:
 
 - `<gear>-validation.yaml`: validation process.
@@ -18,12 +20,14 @@ Generation preserves handwritten business files. Extra business files and callba
 For local development, load sibling packages from the `ros.form.validation` directory:
 
 ```r
-pkgload::load_all("../model.form")
-pkgload::load_all("../model.validation")
+pkgload::load_all("../form.model")
+pkgload::load_all("../form.validation")
 pkgload::load_all("../ros.form.model")
 pkgload::load_all(".")
 roxygen2::roxygenise()
 ```
+
+## Local verification
 
 Install development dependencies first. Run roxygen in sibling packages too.
 
@@ -44,7 +48,7 @@ Publication preparation adds breadcrumbs to copied reports for every ancestor ag
 
 ## Pipeline responsibilities
 
-`model.validation` owns saved plans, execution, resume, result storage, rendering and publication preparation.
+`form.validation` owns saved plans, execution, resume, result storage, rendering and publication preparation.
 
 `ros.form.validation` supplies input discovery, model and reference selection, grouping, IOTC branding and uploading.
 
@@ -63,3 +67,27 @@ Publication preparation checks stage completion, checksums, report counts and li
 `publication.json` lists the prepared artifacts and their SHA-256 checksums.
 
 HTML templates, JavaScript and CSS are separate resources. Shared assets use content-based filenames.
+
+## Release
+
+Release `ros.form.model` before `ros.form.validation`, then pin its release tag in `Remotes`.
+
+1. **Prepare the release on `develop`:**
+
+   1. **Prepare the release files:** update the version in `DESCRIPTION`, finalize `NEWS.md` and documentation.
+   2. **Perform the [local checks](#local-verification).**
+   3. **Commit the changes:** use `[ros.form.validation] Release <version>`.
+   4. **Push the release commit.**
+
+2. **Start the release on GitHub:**
+
+   1. Open **Actions → Start Release**.
+   2. Click **Run workflow**, select `develop`, then click **Run workflow** to confirm.
+   3. Open the release PR created by the workflow.
+
+3. **Merge the release PR:**
+
+   1. **Wait for the checks:** all checks on the release PR must be green.
+   2. **Merge:** click **Merge pull request**, then **Confirm merge**.
+
+**Publish Release** publishes the package, checksum and documentation automatically.
