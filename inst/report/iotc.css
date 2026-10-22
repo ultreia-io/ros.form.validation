@@ -1,0 +1,26 @@
+/* Shared report and website styling from ros-schema-atlas/inst/templates. */
+:root, body { --report-tab-color: #116bac; font-family: Calibri, Arial, sans-serif; font-size: 17px; color: #333; background: white; }
+main { margin: 0 auto; padding: 2rem; max-width: 100%; background: white; border-radius: 0; box-shadow: none; }
+.report-logo, .site-logo { display: block; width: 318px; max-width: 100%; height: auto; margin-bottom: 1.5rem; }
+h1, h2, h3, h4, h5, h6 { font-weight: bold; }
+h1 { font-size: 200%; width: 100%; border-bottom: 1px solid #ccc; padding-bottom: .4rem; }
+h2 { border-color: #ccc; }
+h4 { font-size: 20px; }
+h4, h5, h6 { font-style: italic; }
+.author { font-style: normal; text-align: right; }
+p { text-align: justify; }
+a { color: #116bac; }
+button { color: #116bac; background: #f5f5f5; border-color: #ccc; }
+button[aria-selected=true] { background: #116bac; color: white; }
+th { background: #f5f5f5; }
+th, td { border-color: #ddd; }
+tr:nth-child(even) { background: #fafafa; }
+.error { color: red; font-style: italic; }
+body > .site-logo { margin: 2rem; max-width: calc(100% - 4rem); }
+.site-page { margin: 0; padding: 2rem; }
+.site-page main { max-width: 60rem; margin: 0 auto; padding: 0; }
+.site-page h2 { font-size: 1.25rem; color: #116bac; }
+.site-page li { margin: .6rem 0; }
+.site-page footer { margin-top: 3rem; font-size: .9rem; color: #555; }
+a:focus-visible { outline: 2px solid #116bac; outline-offset: 4px; }
+@media (max-width: 600px) { main, .site-page { padding: 1rem; } }
