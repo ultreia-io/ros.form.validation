@@ -1,0 +1,99 @@
+---
+title: "Understand validation results"
+output: html_document
+---
+
+Use this guide when reviewing an individual report or an aggregate covering several submitted forms.
+
+## Read the status first
+
+| Status     | Meaning                                                     | Next action                                 |
+|------------|-------------------------------------------------------------|---------------------------------------------|
+| Valid      | Validation completed without error findings.                 | Review any warnings.                        |
+| Invalid    | Validation established a problem that prevents acceptance.   | Review errors and correct the form.          |
+| Incomplete | Some checks could not finish. Other findings may also exist. | Resolve unfinished checks and review errors. |
+| Failed     | An execution failure prevented successful validation.        | Investigate the failure before rerunning.    |
+
+Passing structure means the form can proceed to later checks; it does not mean the submitted data is valid.
+
+An incomplete result can contain many errors. Follow up both the findings and the unfinished checks.
+
+## Review a collection
+
+Use the status and finding cards to open the relevant detail tab with its filter already applied.
+
+The Warning findings card shows the META handling recorded when the batch was planned.
+
+The Forms table links to individual reports. Model version identifies which definition was used.
+
+Validation findings are grouped by sheet. Select a sheet tab, then filter by field, severity, value or message.
+
+Occurrences count findings; affected forms count submissions. Several findings can come from one form.
+
+Use **Reset filters** to remove the applied filters before reviewing the full table again.
+
+Use the page-size selector for longer lists and **Export CSV** to download the table view.
+
+## Review one form
+
+Use the sheet tabs to find errors and warnings. Detailed findings give the source row and column where available.
+
+Values preserve visible spacing so differences such as trailing spaces can be spotted.
+
+Use the breadcrumb to return to any ancestor aggregate report.
+
+## Follow up unfinished checks
+
+These describe checks that could not complete, such as unavailable references or unresolved rule mappings.
+
+Use the sheet, field and message to identify the affected check. Some failures apply to the whole form.
+
+Send reference or rule problems to the IOTC validation maintainer, with the report and model version.
+
+Send incorrect submitted values to the form provider. A rule problem is not evidence that a submitted value is wrong.
+
+## Use code-list evidence
+
+Open **Code-list evidence** from an aggregate report's Resources section.
+
+Select a rejected value to find affected forms, sheets, fields and source cells.
+
+The Codes CSV summarises rejected values. The Evidence CSV provides locations for follow-up with providers.
+
+Compare the value with the approved list before deciding whether the submission or reference list needs correction.
+
+A rejected value alone does not justify adding a new code. Missing lists and unresolved mappings appear in unfinished checks.
+
+## Use registry evidence
+
+Open **Registry evidence** from an aggregate report's Resources section.
+
+Review errors and warnings for submitted values with no match or multiple matches in a registry.
+
+Select a value to see affected forms, model versions, sheets, fields and exact cell ranges.
+
+The Values CSV summarises cases. The Evidence CSV lists source locations, severity and the reason for review.
+
+Compare each case with the approved registry before changing a form, a registry entry or the matching rules.
+
+Missing registry snapshots and checks that could not finish remain in unfinished checks.
+
+## Review conversion errors
+
+Open **Conversion errors** from an aggregate report's Resources section.
+
+Review rejected values by model version, sheet, field and expected type. Select a value to inspect its source cells.
+
+The report includes number, integer, boolean and temporal type failures, including META warnings.
+
+Values are preserved exactly as recorded. No trimming or coercion is performed, and validation is not rerun.
+
+Use Values CSV for grouped cases and Evidence CSV for affected forms and cells when comparing later batches.
+
+## Download resources
+
+Individual reports provide Summary CSV and Findings CSV downloads.
+
+Aggregate reports provide Forms, Issues and Execution CSV downloads for their scope.
+
+Keep the HTML report with its CSV files and assets when sharing it; a standalone HTML file cannot load the tables.

@@ -1,0 +1,114 @@
+---
+title: "Validate a collection of forms"
+output: html_document
+---
+
+Use this workflow for a collection needing individual reports, aggregates, code-list evidence and registry evidence.
+
+## Prepare inputs and references
+
+Install the packages using the home page instructions. Run all commands below in the same R session.
+
+Keep inputs under `<year>/<country>/<gear>/v<version>/`, using `LL` or `PS` for gear:
+
+```text
+ros-input-data/
+  2024/
+    EU-SPAIN/
+      PS/
+        v3.3.0/
+          submitted-form.xlsx
+```
+
+The year and country come from directory names. Keep original filenames. Excel lock files are excluded.
+
+Obtain an approved reference snapshot for each selected model version before planning.
+
+## 1. Plan the work
+
+Edit the paths below. The output must be outside the input directory.
+
+```{r, eval=FALSE}
+library(ros.form.validation)
+
+input <- "ros-input-data"
+references <- c(
+  "3.3.0" = "references/3.3.0",
+  "4.0.0" = "references/4.0.0",
+  "4.1.0" = "references/4.1.0"
+)
+stamp <- format(Sys.time(), "%Y-%m-%dT%H%M%SZ", tz = "UTC")
+batch <- file.path("output", paste0("ros-validation-", stamp))
+plan <- plan_ros_validation(
+  input = input,
+  references = references,
+  versions = names(references),
+  output = batch
+)
+plan$jobs
+batch
+```
+
+Planning saves the selected inputs, rules and reference values. It does not validate the forms yet.
+
+Text-cell boundaries are trimmed by readxl. Add `trim_ws = FALSE` to preserve surrounding whitespace.
+
+The reader choice is saved in the plan. Internal whitespace and native cell types are preserved.
+
+META content errors are warnings by default. Add `meta_as_warnings = FALSE` to keep original rule severities.
+
+This choice is saved in the plan and shown in each form report. Create a new plan to change it.
+
+Three versions with both gears produce six jobs. Jobs with no forms remain visible in the plan.
+
+Keep the printed batch path: you will use it to resume the run after closing R.
+
+To limit a run, add `country = "EU-SPAIN"`, `year = "2024"` or `gear = "ps"` to the planning call.
+
+## 2. Validate every planned form
+
+```{r, eval=FALSE}
+validation <- validate_ros_plan(plan)
+validation$jobs
+```
+
+This saves validation results without generating reports. It can resume after an interruption.
+
+Do not change the inputs during the run. Changed forms or reference values require a new plan.
+
+## 3. Generate individual reports
+
+```{r, eval=FALSE}
+reports <- write_ros_reports(plan)
+reports
+```
+
+Reports are written under the batch's `reports/` directory, following the input hierarchy.
+
+This stage reads saved results; it does not reopen the submitted forms.
+
+## 4. Build the folder to share
+
+```{r, eval=FALSE}
+publication <- build_ros_publication(plan, comment = "Text-cell boundaries trimmed before validation.")
+publication
+```
+
+The new folder is `output/aggregated_ros-validation-<timestamp>`, alongside the raw batch.
+
+It contains form reports, ancestor aggregates, code-list evidence and registry evidence. Nothing is uploaded yet.
+
+The optional comment is saved in `publication.json` and shown beside the batch after publication.
+
+## 5. Review and share
+
+```{r, eval=FALSE}
+install.packages("servr") # Once, for local report previews
+servr::httd(dir = publication, browser = TRUE)
+```
+
+Start at the root report and follow its cards, tables and breadcrumbs to the individual forms.
+
+Read [Understand results](understand-results.html) before deciding which submissions need follow-up.
+
+See [Resume and share results](resume-and-share.html) for interrupted runs and handing the folder to your web operator.

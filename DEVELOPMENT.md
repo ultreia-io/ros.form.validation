@@ -1,0 +1,65 @@
+# Developing ros.form.validation
+
+Rules live under `inst/rules/<version>/`, separately for each gear:
+
+- `<gear>-validation.yaml`: validation process.
+- `<gear>-structure-validation.yaml`: sheet order and dimensions.
+- `<gear>-generated-validation.yaml`: generated field checks.
+- `<gear>-business-validation.yaml`: handwritten business checks.
+
+After changing a form in `ros.form.model`, regenerate the rules for that version:
+
+```sh
+Rscript tools/generate-validation.R --version 3.3.0
+```
+
+Generation preserves handwritten business files. Extra business files and callbacks use the `business` and `checks` arguments.
+
+For local development, load sibling packages from the `ros.form.validation` directory:
+
+```r
+pkgload::load_all("../model.form")
+pkgload::load_all("../model.validation")
+pkgload::load_all("../ros.form.model")
+pkgload::load_all(".")
+roxygen2::roxygenise()
+```
+
+Install development dependencies first. Run roxygen in sibling packages too.
+
+Commit changes to `NAMESPACE`; generated `man/` files remain ignored.
+
+```sh
+Rscript tools/check.R
+Rscript tools/build-site.R
+```
+
+The check script installs sibling packages into `build/library`. Archives and checks go under `build/`.
+
+The documentation site goes under `docs/`.
+
+Single reports accept `parent_report = NULL` to omit navigation, or a URL to link to a parent aggregate.
+
+Publication preparation adds breadcrumbs to copied reports for every ancestor aggregate, using the configured report filename.
+
+## Pipeline responsibilities
+
+`model.validation` owns saved plans, execution, resume, result storage, rendering and publication preparation.
+
+`ros.form.validation` supplies input discovery, model and reference selection, grouping, IOTC branding and uploading.
+
+Planning scans inputs once and records hashes, jobs, form definitions, rules and prepared reference values.
+
+Empty jobs retain references without preparing unused lookup indexes. Changed inputs require a new plan.
+
+Validation stores typed results under `validation/results/`. Reporting uses these saved results.
+
+Local `plan.rds` and `resources/` contain private paths and frozen resources; keep them with the raw batch.
+
+Public `plan.json` contains relative inputs and grouping metadata; publication adds statuses and report links.
+
+Publication preparation checks stage completion, checksums, report counts and links before finalizing its tree.
+
+`publication.json` lists the prepared artifacts and their SHA-256 checksums.
+
+HTML templates, JavaScript and CSS are separate resources. Shared assets use content-based filenames.

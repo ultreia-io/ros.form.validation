@@ -1,0 +1,64 @@
+---
+title: "Resume and share results"
+output: html_document
+---
+
+Use the saved batch when execution was interrupted or when reports need to be regenerated.
+
+## Resume validation
+
+Replace the path below with the batch directory created during planning.
+
+```{r, eval=FALSE}
+library(ros.form.validation)
+batch <- "output/ros-validation-2026-10-20T120000Z" # Your existing batch
+plan <- read_ros_validation_plan(batch)
+validate_ros_plan(plan)
+reports <- write_ros_reports(plan)
+publication <- build_ros_publication(plan)
+```
+
+Completed results are reused after checksum verification. Resume does not add new inputs to the plan.
+
+Run only the stages still needed. An existing report or publication directory is not overwritten by default.
+
+A saved failed result is also a completed result. After correcting inputs or references, create a new batch plan.
+
+## Refresh report presentation
+
+Use this after updating report presentation code, when the validation results themselves are unchanged.
+
+```{r, eval=FALSE}
+reports <- write_ros_reports(plan, overwrite = TRUE)
+publication <- build_ros_publication(
+  plan,
+  output = file.path("output", paste0("review_", basename(batch)))
+)
+```
+
+Choose a new publication directory. This keeps your previous prepared copy available for comparison.
+
+Report regeneration does not apply new validation rules. Rule changes require a new validation batch.
+
+For the dedicated `ros.ultreia.io` uploader, keep the default `aggregated_<batch>` name instead of `review_<batch>`.
+
+## Preview locally
+
+```{r, eval=FALSE}
+install.packages("servr") # Once
+servr::httd(dir = publication, browser = TRUE)
+```
+
+Keep R running while browsing. Stop the preview with `servr::daemon_stop()` when finished.
+
+## Share the prepared folder
+
+Give your web operator the entire prepared publication folder, preserving its directories and filenames.
+
+The server must serve HTML, CSV, JSON and shared assets over HTTP, with `index.html` as the directory default page.
+
+Share the resulting root URL with reviewers. They can navigate down to each form and back through the breadcrumbs.
+
+Keep the raw batch locally for future report regeneration. It contains the saved plan, references and validation results.
+
+Uploading to the existing private ROS site is an operator task described in [Command-line operation](operator-workflow.html).

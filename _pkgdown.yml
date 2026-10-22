@@ -1,0 +1,28 @@
+url: https://ultreia-io.github.io/ros.form.validation/
+template:
+  bootstrap: 5
+  light-switch: true
+home:
+  sidebar: false
+news:
+  cran_dates: false
+navbar:
+  structure:
+    left: [articles, reference, news]
+    right: [search, github, lightswitch]
+reference:
+  - title: Public API
+    contents: [ros_validation, validate_ros, write_ros_validation_report]
+  - title: Versioned input pipeline
+    contents: [ros_validation_inputs, read_ros_references, validate_ros_file, validate_ros_inputs]
+  - title: Planned batch workflow
+    contents: [plan_ros_validation, read_ros_validation_plan, validate_ros_plan, write_ros_reports, build_ros_publication, prepare_ros_publication]
+articles:
+  - title: Practical guides
+    navbar: Guides
+    contents:
+      - articles/validate-one-form
+      - articles/validate-collection
+      - articles/understand-results
+      - articles/resume-and-share
+      - articles/operator-workflow

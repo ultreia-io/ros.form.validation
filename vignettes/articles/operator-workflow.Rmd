@@ -1,0 +1,76 @@
+---
+title: "Command-line operation"
+output: html_document
+---
+
+This guide is for operators with a `ros.form.validation` repository checkout and a configured R environment.
+
+The `tools/` scripts are repository tools; they are not included in the installed R package.
+
+Install the development packages listed on the home page. Run these commands from the repository root.
+
+The shell example uses a POSIX shell and `date`. Edit the input and reference paths before running it.
+
+## Prepare reports from the command line
+
+```sh
+batch="output/ros-validation-$(date -u +%Y-%m-%dT%H%M%SZ)"
+
+Rscript tools/validation.R plan \
+  --input /path/to/ros-input-data \
+  --versions 3.3.0,4.0.0,4.1.0 \
+  --reference 3.3.0=/path/to/v3-references \
+  --reference 4.0.0=/path/to/v4.0.0-references \
+  --reference 4.1.0=/path/to/v4.1.0-references \
+  --output "$batch"
+
+Rscript tools/validation.R validate --plan "$batch"
+Rscript tools/validation.R report --plan "$batch" --report-filename index.html
+Rscript tools/validation.R build-publication --plan "$batch" \
+  --comment "Text-cell boundaries trimmed before validation."
+```
+
+Use `--references DIR` only when the same approved snapshot applies to every selected version.
+
+Use `--country`, `--year` and `--gear` on the planning command to restrict inputs.
+
+Text-cell boundaries are trimmed by readxl. Use `plan --trim-ws false` to preserve surrounding whitespace.
+
+This reader choice is saved in the plan; changing it requires a new plan.
+
+META content errors are warnings by default. Use `plan --meta-as-warnings false` to keep original severities.
+
+Structure checks are unchanged. The saved policy appears in each form report; changing it requires a new plan.
+
+To resume, set `batch` to the existing batch directory and start with `validate`; do not create a new plan.
+
+Use `report --overwrite` to regenerate reports from saved results. Build into a new directory with `--output DIR`.
+
+See [Validate a collection](validate-collection.html) for stage outputs and input organisation.
+
+## Upload to ros.ultreia.io
+
+This uploader targets the existing private ROS service. It is not a general-purpose deployment tool.
+
+It requires `jsonlite`, `digest`, rsync and SSH access using the configured `ultreia` alias.
+
+Its remote destination is `/var/www/html/ros/validation`. `--host` changes only the SSH alias, not this path.
+
+The prepared folder must retain the default `aggregated_<batch>` name.
+
+```sh
+publication="$(dirname "$batch")/aggregated_$(basename "$batch")"
+Rscript tools/validation.R publish --directory "$publication"
+```
+
+The uploader verifies the manifest and remote checksums, then updates the batch catalogue and landing page.
+
+Aggregate titles use the publication time in UTC, shared by the manifest and catalogue entry.
+
+The optional `--comment` on `build-publication` supplies the plain-text note displayed beside that batch.
+
+Uploading the same batch replaces that publication. Other timestamped publications remain available.
+
+Apache must already serve `index.html` as the directory default. Uploading does not configure the web server.
+
+Open the printed URL with an authorised account and review the root aggregate and an individual form report.
