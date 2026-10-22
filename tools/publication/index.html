@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>IOTC ROS — Validation</title>
+    <link rel="stylesheet" href="/assets/iotc.css">
+    <style>
+        .batch-comment { margin: .35em 0 1em; white-space: pre-wrap; overflow-wrap: anywhere; }
+    </style>
+</head>
+<body class="site-page">
+<main>
+    <img class="site-logo" src="/assets/IOTC_with_text.png" alt="IOTC logo">
+    <h1>IOTC ROS</h1>
+    <h2>Validation</h2>
+    <p>Private validation reports.</p>
+    <p id="status" role="status">Loading validation runs…</p>
+    <ul id="batches"></ul>
+    <noscript>JavaScript is required to load the list of validation runs.</noscript>
+    <p><a href="../">Back to resources</a></p>
+    <footer>Copyright 2026 <a href="https://ultreia.io">Ultreia.io</a> · <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPLv3</a></footer>
+</main>
+<script>
+(async () => {
+    const status = document.getElementById('status');
+    const list = document.getElementById('batches');
+    try {
+        const response = await fetch('batches.json', {cache: 'no-cache', credentials: 'same-origin'});
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const batches = await response.json();
+        const items = document.createDocumentFragment();
+        for (const batch of batches) {
+            if (!/^ros-validation-\d{4}-\d{2}-\d{2}T\d{6}Z$/.test(batch.directory)) {
+                throw new Error('Invalid batch directory');
+            }
+            const published = new Date(batch.published_at);
+            const timestamp = published.toISOString().slice(0, 16)
+                .replaceAll('-', '/').replace('T', ' ') + ' UTC';
+            const item = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `${batch.directory}/`;
+            link.textContent = `Validation run — ${timestamp}`;
+            item.append(link);
+            if (typeof batch.comment === 'string' && batch.comment.trim()) {
+                const comment = document.createElement('p');
+                comment.className = 'batch-comment';
+                comment.textContent = batch.comment;
+                item.append(comment);
+            }
+            items.append(item);
+        }
+        list.replaceChildren(items);
+        status.textContent = batches.length ? 'Publication times are shown in UTC.' : 'No validation runs published yet.';
+    } catch (error) {
+        status.textContent = 'Unable to load validation runs. Please reload the page.';
+        console.error(error);
+    }
+})();
+</script>
+</body>
+</html>
