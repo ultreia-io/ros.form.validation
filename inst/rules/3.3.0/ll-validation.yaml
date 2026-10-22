@@ -1,0 +1,10 @@
+schema_version: 1.0.0
+rules_version: 1.0.0
+model:
+  id: ll
+  version: 3.3.0
+rulesets:
+  structure: ll-structure-validation.yaml
+  content:
+  - ll-generated-validation.yaml
+  - ll-business-validation.yaml

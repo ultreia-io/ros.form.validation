@@ -1,0 +1,32 @@
+schema_version: 1.0.0
+rules_version: 1.0.0
+model:
+  id: ps
+  version: 3.3.0
+stage: structure
+sheets:
+  META:
+    min_rows: 22
+    columns: 6
+  O-INFO:
+    columns: 25
+  V-INFO:
+    columns: 32
+  V-TRIP:
+    columns: 11
+  V-ATTRIBUTES:
+    columns: 50
+  G-GENERAL:
+    columns: 14
+  E-SET:
+    columns: 29
+  E-SET-CETACEANS:
+    columns: 6
+  E-SET-CATCHES:
+    columns: 14
+  E-SET-CATCHES-SPECIMEN:
+    columns: 29
+  E-SET-CATCHES-SPECIMEN-SSI:
+    columns: 9
+  A-SURFACE:
+    columns: 6

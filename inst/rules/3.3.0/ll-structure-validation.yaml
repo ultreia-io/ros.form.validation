@@ -1,0 +1,44 @@
+schema_version: 1.0.0
+rules_version: 1.0.0
+model:
+  id: ll
+  version: 3.3.0
+stage: structure
+sheets:
+  META:
+    min_rows: 22
+    columns: 6
+  O-INFO:
+    columns: 25
+  V-INFO:
+    columns: 32
+  V-TRIP:
+    columns: 11
+  V-ATTRIBUTES:
+    columns: 50
+  G-GENERAL:
+    columns: 33
+  G-CONFIG-BRANCHLINES:
+    columns: 8
+  E-SET:
+    columns: 24
+  E-SET-LIGHTS:
+    columns: 5
+  E-SET-BRANCHLINES:
+    columns: 4
+  E-SET-HOOKS:
+    columns: 5
+  E-SET-BAITS:
+    columns: 6
+  E-SET-MITIGATION-MEASURES:
+    columns: 14
+  E-SET-HAULING:
+    columns: 20
+  E-SET-HAULING-BITEOFFS:
+    columns: 4
+  E-SET-CATCHES:
+    columns: 12
+  E-SET-CATCHES-SPECIMEN:
+    columns: 32
+  E-SET-CATCHES-SPECIMEN-SSI:
+    columns: 16
