@@ -1,0 +1,41 @@
+name: Build
+on:
+  push:
+    branches: [main, develop, 'feature/**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: r-lib/actions/setup-r@v2.12.1
+        with:
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-pandoc@v2.12.1
+      - uses: r-lib/actions/setup-r-dependencies@v2.12.1
+        with:
+          packages: deps::.
+          extra-packages: |
+            any::rcmdcheck
+            any::roxygen2
+          needs: check
+      - name: Generate package documentation
+        shell: Rscript {0}
+        run: roxygen2::roxygenise()
+
+      - name: Build and check package
+        run: Rscript tools/check.R
+      - uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: check-${{ matrix.os }}
+          path: build/check/
