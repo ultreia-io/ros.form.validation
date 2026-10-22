@@ -17,7 +17,7 @@ install <- function(path) {
   if (status != 0L) stop("Installation failed: ", path)
 }
 # Sibling source checkouts are optional; installed dependencies also work.
-for (dependency in c("model.form", "model.validation", "ros.form.model")) {
+for (dependency in c("form.model", "form.validation", "ros.form.model")) {
   source <- file.path(dirname(root), dependency)
   if (file.exists(file.path(source, "DESCRIPTION"))) install(source)
   else if (!requireNamespace(dependency, quietly = TRUE))

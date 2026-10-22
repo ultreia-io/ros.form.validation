@@ -65,7 +65,7 @@ plan_ros_validation <- function(input, references, versions, output = NULL,
   jobs$plan <- tolower(jobs$gear)
   files$job <- paste(files$model_version, toupper(files$gear), sep = "-", recycle0 = TRUE)
   files$title <- paste("ROS validation report -", toupper(files$gear), "-", files$relative, recycle0 = TRUE)
-  model.validation::validation_batch_plan(files, jobs, resources, output,
+  form.validation::validation_batch_plan(files, jobs, resources, output,
     group_columns = c("year", "country", "gear", "version"), identity_columns = c("gear", "version"),
     model_versions = versions, packages = c("ros.form.validation", "ros.form.model"),
     metadata = list(consumer = "ros.form.validation", input = input,
@@ -81,7 +81,7 @@ plan_ros_validation <- function(input, references, versions, output = NULL,
 #'   Reading a plan does not scan inputs or reopen reference CSV files.
 #' @export
 read_ros_validation_plan <- function(plan) {
-  batch_plan <- model.validation::read_validation_batch_plan(plan)
+  batch_plan <- form.validation::read_validation_batch_plan(plan)
   if (!identical(batch_plan$metadata$consumer, "ros.form.validation")) stop("Expected a ROS batch plan", call. = FALSE)
   batch_plan
 }

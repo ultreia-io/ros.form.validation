@@ -97,7 +97,7 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
   descriptors <- if (length(descriptors)) do.call(rbind, descriptors) else
     data.frame(directory = character(), report = character(), year = character(), country = character(), gear = character(), version = character())
   if (anyDuplicated(descriptors$directory)) stop("Duplicate individual report directory")
-  pages <- model.validation::write_validation_aggregate(descriptors, stage,
+  pages <- form.validation::write_validation_aggregate(descriptors, stage,
     group_columns = c("year", "country", "gear", "version"), identity_columns = c("gear", "version"),
     report_filename = report_filename, title = "ROS validation reports",
     stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),

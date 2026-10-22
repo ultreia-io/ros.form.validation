@@ -9,12 +9,12 @@
 #' @param business Optional character vector of additional business YAML paths.
 #'   Files must bind to the same model and rules version as the installed rules.
 #' @param checks Named list of additional callbacks following
-#'   `model.validation::validation_rule()`. Built-in callbacks cannot be replaced.
+#'   `form.validation::validation_rule()`. Built-in callbacks cannot be replaced.
 #' @param meta_as_warnings Report META content errors as warnings? Defaults to
 #'   `TRUE`. Structure checks and execution statuses are unchanged. Set `FALSE`
 #'   to retain original rule severities. The choice is saved with the result.
-#' @return A `validation_plan` for `model.validation::validate_data()`.
-#' @seealso [model.validation documentation](https://ultreia-io.github.io/model.validation/)
+#' @return A `validation_plan` for `form.validation::validate_data()`.
+#' @seealso [form.validation documentation](https://ultreia-io.github.io/form.validation/)
 #' @examples
 #' plan <- ros_validation(
 #'   name = ros.form.model::ROS_FORM_LL, version = ros.form.model::ROS_FORM_VERSION_4_1_0
@@ -36,7 +36,7 @@ ros_validation <- function(name, version,
   if (!is.null(business) && (!is.character(business) || anyNA(business) || any(!nzchar(business)))) {
     stop("business must contain explicit YAML filenames", call. = FALSE)
   }
-  plan <- model.validation::read_validation_process(path, model, c(builtin, checks),
+  plan <- form.validation::read_validation_process(path, model, c(builtin, checks),
     business = if (is.null(business)) character() else business)
   if (meta_as_warnings) {
     plan$rules <- lapply(plan$rules, function(rule) {
@@ -84,16 +84,16 @@ check_meta_as_warnings <- function(meta_as_warnings) {
 #'   Workbook registries use the exact YAML reference name and `list(values=...)`;
 #'   repeated keys are retained because a registry match must be unique.
 #'   Name rules request normalized matching and aliases explicitly in YAML.
-#'   Snapshots from [read_ros_references()] include reusable registry indexes.
+#'   Snapshots from [`read_ros_references()`][ros.form.validation::read_ros_references] include reusable registry indexes.
 #'   All snapshots are supplied explicitly; no external service is queried.
 #' @param source Input label retained in findings and result exports.
-#' @param config Options for `model.validation::validate_data()`. The default
+#' @param config Options for `form.validation::validate_data()`. The default
 #'   treats empty strings as missing, matching the workbook rules. Whitespace
 #'   and `"-"` remain literal values; any import normalization is caller-owned.
-#' @return The unchanged `validation_result` from model.validation, including
+#' @return The unchanged `validation_result` from form.validation, including
 #'   findings and execution status. Export with
-#'   `model.validation::write_validation_results()` for `summary.csv` and
-#'   `findings.csv` in one directory per input. Use [write_ros_validation_report()]
+#'   `form.validation::write_validation_results()` for `summary.csv` and
+#'   `findings.csv` in one directory per input. Use [`write_ros_validation_report()`][ros.form.validation::write_ros_validation_report]
 #'   to render the same result as a standalone HTML report.
 #' @details All structure checks run first. Structural errors or unfinished
 #'   structure checks skip every generated and business check. After structure
@@ -103,7 +103,7 @@ check_meta_as_warnings <- function(meta_as_warnings) {
 #'   snapshots make execution fail. Unknown keys are validation findings.
 #'   Unresolved source declarations are reported as incomplete execution when
 #'   their affected sheet is supplied.
-#' @seealso [model.validation documentation](https://ultreia-io.github.io/model.validation/)
+#' @seealso [form.validation documentation](https://ultreia-io.github.io/form.validation/)
 #' @examples
 #' result <- validate_ros(
 #'   name = ros.form.model::ROS_FORM_LL, data = list(), source = "empty.xlsx",
@@ -116,5 +116,5 @@ validate_ros <- function(name, data, references = list(), source = "<data>",
                          config = list(blank_strings = TRUE),
                          business = NULL, checks = list(), meta_as_warnings = TRUE) {
   plan <- ros_validation(name, version, business, checks, meta_as_warnings = meta_as_warnings)
-  model.validation::validate_data(plan, data, references, source, config)
+  form.validation::validate_data(plan, data, references, source, config)
 }

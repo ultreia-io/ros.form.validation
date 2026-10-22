@@ -3,7 +3,7 @@
 script <- sub("^--file=", "", grep("^--file=", commandArgs(), value = TRUE)[[1L]])
 root <- dirname(dirname(normalizePath(script, mustWork = TRUE)))
 if (requireNamespace("pkgload", quietly = TRUE)) {
-  for (package in c("model.form", "model.validation", "ros.form.model", "ros.form.validation")) {
+  for (package in c("form.model", "form.validation", "ros.form.model", "ros.form.validation")) {
     path <- file.path(dirname(root), package)
     if (file.exists(file.path(path, "DESCRIPTION"))) pkgload::load_all(path, quiet = TRUE)
   }

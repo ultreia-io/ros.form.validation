@@ -1,13 +1,13 @@
 #' Validate every input in a saved ROS batch plan
 #' @inheritParams read_ros_validation_plan
-#' @inheritParams model.validation::validate_batch
+#' @inheritParams form.validation::validate_batch
 #' @return Validation stage state, invisibly.
 #' @details Delegates execution, checkpointing, timings and resume to
-#'   [model.validation::validate_batch()]. Generates no CSV or HTML reports.
+#'   [form.validation::validate_batch()]. Generates no CSV or HTML reports.
 #' @export
 validate_ros_plan <- function(plan, resume = TRUE) {
   batch_plan <- read_ros_validation_plan(plan)
-  model.validation::validate_batch(batch_plan, resume = resume)
+  form.validation::validate_batch(batch_plan, resume = resume)
 }
 
 #' Generate individual ROS reports from saved results
@@ -20,7 +20,7 @@ validate_ros_plan <- function(plan, resume = TRUE) {
 #' @export
 write_ros_reports <- function(plan, report_filename = "index.html", overwrite = FALSE) {
   batch_plan <- read_ros_validation_plan(plan)
-  model.validation::write_validation_batch_reports(batch_plan,
+  form.validation::write_validation_batch_reports(batch_plan,
     report_filename = report_filename, overwrite = overwrite,
     stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
     logo = system.file("report", "IOTC_with_text.png", package = "ros.form.validation", mustWork = TRUE))
@@ -37,7 +37,7 @@ write_ros_reports <- function(plan, report_filename = "index.html", overwrite = 
 #' @export
 build_ros_publication <- function(plan, output = NULL, report_filename = "index.html", comment = NULL) {
   batch_plan <- read_ros_validation_plan(plan)
-  publication <- model.validation::build_validation_publication(batch_plan,
+  publication <- form.validation::build_validation_publication(batch_plan,
     output = output, report_filename = report_filename, title = "ROS validation reports",
     stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
     logo = system.file("report", "IOTC_with_text.png", package = "ros.form.validation", mustWork = TRUE),

@@ -9,7 +9,7 @@
 #' @return Selected metadata in dry-run mode; otherwise the batch directory, invisibly.
 #' @details Convenience entry point for the staged pipeline. Creates a saved plan,
 #'   completes validation for every selected form, then generates individual reports.
-#'   Use [plan_ros_validation()], [validate_ros_plan()] and [write_ros_reports()]
+#'   Use [`plan_ros_validation()`][ros.form.validation::plan_ros_validation], [`validate_ros_plan()`][ros.form.validation::validate_ros_plan] and [`write_ros_reports()`][ros.form.validation::write_ros_reports]
 #'   to run or resume these stages separately. Aggregate preparation and uploading
 #'   remain separate operations.
 #' @export

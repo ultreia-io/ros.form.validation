@@ -101,7 +101,7 @@ read_ros_references <- function(directory, plans, prepare = TRUE) {
   attr(refs, "provenance") <- provenance
   if (!prepare) return(refs)
   for (plan in plans) {
-    fields <- model.form::form_fields(plan$model)
+    fields <- form.model::form_fields(plan$model)
     for (rule in plan$rules) {
       p <- rule$parameters
       if (!endsWith(rule$id, "/registry_match") || is.null(refs[[p$reference]])) next
@@ -112,7 +112,7 @@ read_ros_references <- function(directory, plans, prepare = TRUE) {
       if (!any(same_policy)) refs[[p$reference]]$indexes <- c(snapshot$indexes, list(index))
     }
   }
-  model.validation::prepare_validation_references(refs, code_ids)
+  form.validation::prepare_validation_references(refs, code_ids)
 }
 
 #' Validate and report one workbook
@@ -157,10 +157,10 @@ validate_ros_file <- function(path, directory, plan, references = list(), source
     on.exit(log(sprintf("TIMING %s %s=%.3fs", source, stage, proc.time()[["elapsed"]] - started)))
     force(expression)
   }
-  report <- timed("report.prepare", model.validation::validation_report_data(result, rules_plan$model))
-  timed("csv", model.validation::write_validation_results(report, directory))
+  report <- timed("report.prepare", form.validation::validation_report_data(result, rules_plan$model))
+  timed("csv", form.validation::write_validation_results(report, directory))
   timed("html", {
-    model.validation::write_validation_report(report, file.path(directory, report_filename),
+    form.validation::write_validation_report(report, file.path(directory, report_filename),
       title = paste("ROS validation report -", toupper(result$model$form$id), "-", source),
       assets_directory = assets_directory,
       stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
@@ -176,7 +176,7 @@ validate_ros_file <- function(path, directory, plan, references = list(), source
 #' @param trim_ws Single logical value forwarded to readxl: trim leading and
 #'   trailing whitespace in text cells, regardless of the declared field type.
 #' @return A function accepting `path` and `timed`, returning the worksheet grids
-#'   produced by [model.validation::read_validation_workbook()].
+#'   produced by [form.validation::read_validation_workbook()].
 #' @details Embeds the logical option as a literal in the callback body. Its
 #'   base environment captures no caller state, keeping serialization stable
 #'   for saved batch-plan integrity checks. Native cell types and internal
@@ -186,7 +186,7 @@ ros_workbook_reader_supplier <- function(trim_ws) {
   if (!is.logical(trim_ws) || length(trim_ws) != 1L || is.na(trim_ws))
     stop("trim_ws must be TRUE or FALSE", call. = FALSE)
   eval(substitute(
-    function(path, timed) model.validation::read_validation_workbook(path, timed, trim_ws = OPTION),
+    function(path, timed) form.validation::read_validation_workbook(path, timed, trim_ws = OPTION),
     list(OPTION = trim_ws)), envir = baseenv())
 }
 
@@ -205,7 +205,7 @@ prepare_ros_validation_data <- function(data, model, reference_fields = characte
     if (!referenced && field$type %in% policy$types)
       c(policy$common, policy$unknown) else policy$common
   }
-  model.validation::prepare_validation_data(data, model,
+  form.validation::prepare_validation_data(data, model,
     na_strings = tokens, na_ignore_case = policy$ignore_case)
 }
 
@@ -214,7 +214,7 @@ prepare_ros_validation_data <- function(data, model, reference_fields = characte
 ros_preparation_supplier <- function(rules_plans) {
   reference_fields <- list()
   for (rules_plan in rules_plans) {
-    form <- model.form::form_metadata(rules_plan$model)$form
+    form <- form.model::form_metadata(rules_plan$model)$form
     key <- paste(form$version, form$id, sep = "/")
     fields <- unlist(lapply(rules_plan$rules, function(rule) {
       if (!is.null(rule$parameters$reference)) rule$parameters$field else NULL
@@ -222,7 +222,7 @@ ros_preparation_supplier <- function(rules_plans) {
     reference_fields[[key]] <- if (is.null(fields)) character() else unique(fields)
   }
   eval(substitute(function(data, model) {
-    form <- model.form::form_metadata(model)$form
+    form <- form.model::form_metadata(model)$form
     prepare_ros_validation_data(data, model,
       reference_fields = FIELDS[[paste(form$version, form$id, sep = "/")]])
   }, list(FIELDS = reference_fields)), envir = asNamespace("ros.form.validation"))
@@ -233,7 +233,7 @@ validate_ros_input <- function(path, rules_plan, references, source, log, trim_w
   reader <- ros_workbook_reader_supplier(trim_ws)
   rules_plan$metadata$options$trim_ws <- trim_ws
   rules_plan$metadata$options$missing_values <- ros_missing_value_policy()
-  model.validation::validate_workbook(path, rules_plan, references, source,
+  form.validation::validate_workbook(path, rules_plan, references, source,
     config = list(blank_strings = TRUE), reader = reader,
     prepare_data = ros_preparation_supplier(list(rules_plan)), log = log)
 }
