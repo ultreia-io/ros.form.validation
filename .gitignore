@@ -7,6 +7,3 @@
 **/*.Rcheck/
 .idea/**/*
 /output/
-
-/man/*
-!/man/.gitkeep

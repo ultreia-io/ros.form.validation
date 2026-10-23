@@ -5,6 +5,40 @@ model:
   version: 3.3.0
 stage: fields
 rules:
+  sheet/O-INFO/row_count: {value: true, severity: info}
+  sheet/O-INFO/empty_rows: {value: true, severity: warning}
+  sheet/V-INFO/row_count: {value: true, severity: info}
+  sheet/V-INFO/empty_rows: {value: true, severity: warning}
+  sheet/V-TRIP/row_count: {value: true, severity: info}
+  sheet/V-TRIP/empty_rows: {value: true, severity: warning}
+  sheet/V-ATTRIBUTES/row_count: {value: true, severity: info}
+  sheet/V-ATTRIBUTES/empty_rows: {value: true, severity: warning}
+  sheet/G-GENERAL/row_count: {value: true, severity: info}
+  sheet/G-GENERAL/empty_rows: {value: true, severity: warning}
+  sheet/G-CONFIG-BRANCHLINES/row_count: {value: true, severity: info}
+  sheet/G-CONFIG-BRANCHLINES/empty_rows: {value: true, severity: warning}
+  sheet/E-SET/row_count: {value: true, severity: info}
+  sheet/E-SET/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-LIGHTS/row_count: {value: true, severity: info}
+  sheet/E-SET-LIGHTS/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-BRANCHLINES/row_count: {value: true, severity: info}
+  sheet/E-SET-BRANCHLINES/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-HOOKS/row_count: {value: true, severity: info}
+  sheet/E-SET-HOOKS/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-BAITS/row_count: {value: true, severity: info}
+  sheet/E-SET-BAITS/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-MITIGATION-MEASURES/row_count: {value: true, severity: info}
+  sheet/E-SET-MITIGATION-MEASURES/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-HAULING/row_count: {value: true, severity: info}
+  sheet/E-SET-HAULING/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-HAULING-BITEOFFS/row_count: {value: true, severity: info}
+  sheet/E-SET-HAULING-BITEOFFS/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-CATCHES/row_count: {value: true, severity: info}
+  sheet/E-SET-CATCHES/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-CATCHES-SPECIMEN/row_count: {value: true, severity: info}
+  sheet/E-SET-CATCHES-SPECIMEN/empty_rows: {value: true, severity: warning}
+  sheet/E-SET-CATCHES-SPECIMEN-SSI/row_count: {value: true, severity: info}
+  sheet/E-SET-CATCHES-SPECIMEN-SSI/empty_rows: {value: true, severity: warning}
   field/META.form_version/mandatory: true
   field/META.form_version/type: "string"
   field/META.form_version/enum: ["1.0.0"]

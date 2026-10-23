@@ -157,7 +157,9 @@ validate_ros_file <- function(path, directory, plan, references = list(), source
     on.exit(log(sprintf("TIMING %s %s=%.3fs", source, stage, proc.time()[["elapsed"]] - started)))
     force(expression)
   }
-  report <- timed("report.prepare", form.validation::validation_report_data(result, rules_plan$model))
+  report <- timed("report.prepare", form.validation::validation_report_data(result, rules_plan$model,
+    reference_provenance = attr(references, "provenance"),
+    context = list(gear = toupper(result$model$form$id))))
   timed("csv", form.validation::write_validation_results(report, directory))
   timed("html", {
     form.validation::write_validation_report(report, file.path(directory, report_filename),

@@ -1,9 +1,5 @@
-# Run from ros.form.validation; always prefer current sibling sources.
-for (package in c("form.model", "form.validation", "ros.form.model")) {
-  source <- file.path("..", package)
-  if (dir.exists(source)) pkgload::load_all(source, quiet = TRUE)
-  else if (!requireNamespace(package, quietly = TRUE)) stop("Missing package: ", package)
-}
+# Run from ros.form.validation with its declared dependencies installed.
+pkgload::load_all(".", quiet = TRUE)
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) != 2L || args[[1L]] != "--version")
   stop("Usage: Rscript tools/generate-validation.R --version 3.3.0|4.0.0|4.1.0", call. = FALSE)

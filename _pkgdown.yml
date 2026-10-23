@@ -26,3 +26,12 @@ articles:
       - articles/understand-results
       - articles/resume-and-share
       - articles/operator-workflow
+
+footer:
+  structure:
+    left: [company, copyright, license]
+    right: built_with
+  components:
+    company: "[ultreia.io](https://ultreia.io/)"
+    copyright: "· © 2026"
+    license: "· [License: GPL-3](https://github.com/ultreia-io/ros.form.validation/blob/main/LICENSE)"

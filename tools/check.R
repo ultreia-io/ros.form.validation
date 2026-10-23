@@ -16,12 +16,19 @@ install <- function(path) {
                         paste0("--library=", shQuote(lib)), shQuote(path)))
   if (status != 0L) stop("Installation failed: ", path)
 }
-# Sibling source checkouts are optional; installed dependencies also work.
+# Use sibling sources only when their version matches the declared dependency.
+imports <- trimws(strsplit(metadata[[1L, "Imports"]], ",", fixed = TRUE)[[1L]])
 for (dependency in c("form.model", "form.validation", "ros.form.model")) {
+  declaration <- imports[startsWith(imports, paste0(dependency, " (== "))]
+  expected <- sub(".*\\(== ([^)]+)\\).*", "\\1", declaration)
   source <- file.path(dirname(root), dependency)
-  if (file.exists(file.path(source, "DESCRIPTION"))) install(source)
-  else if (!requireNamespace(dependency, quietly = TRUE))
-    stop("Install the dependency first: ", dependency)
+  description <- file.path(source, "DESCRIPTION")
+  matching <- file.exists(description) &&
+    identical(unname(read.dcf(description)[1L, "Version"]), expected)
+  if (matching) install(source)
+  else if (!requireNamespace(dependency, quietly = TRUE) ||
+           as.character(utils::packageVersion(dependency)) != expected)
+    stop("Install ", dependency, " ", expected, " before checking this package", call. = FALSE)
 }
 setwd(build)
 status <- system2(r, c("CMD", "build", "--no-manual", shQuote(root)))

@@ -208,7 +208,7 @@ finish_ros_publication_navigation <- function(directory, published_at = NULL) {
     changed <- c(changed, relative, sub("^./", "", html_relative))
   }
   evidence <- c("code-list-evidence", "registry-evidence", "conversion-evidence")
-  for (relative in paths[dirname(paths) %in% evidence & basename(paths) == manifest$report_filename]) {
+  for (relative in paths[basename(dirname(paths)) %in% evidence & basename(paths) == manifest$report_filename]) {
     path <- file.path(directory, relative)
     html <- paste(readLines(path, warn = FALSE), collapse = "\n")
     current <- regmatches(html, regexpr("<h1>[^<]*</h1>", html))

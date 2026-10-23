@@ -1,5 +1,10 @@
 # ros.form.validation
 
+[![Build](https://github.com/ultreia-io/ros.form.validation/actions/workflows/Build.yaml/badge.svg?branch=develop)](https://github.com/ultreia-io/ros.form.validation/actions/workflows/Build.yaml?query=branch%3Adevelop)
+[![Website](https://img.shields.io/badge/website-documentation-blue)](https://ultreia-io.github.io/ros.form.validation/)
+[![Latest release](https://img.shields.io/github/v/release/ultreia-io/ros.form.validation?display_name=tag&sort=semver)](https://github.com/ultreia-io/ros.form.validation/releases/latest)
+[![License](https://img.shields.io/github/license/ultreia-io/ros.form.validation)](https://github.com/ultreia-io/ros.form.validation/blob/develop/LICENSE)
+
 Validate submitted IOTC Regional Observer Scheme forms and review the results in interactive reports.
 
 Start with one form, or process a collection organised by year, country, gear and model version.
@@ -55,4 +60,11 @@ Reports need a local or hosted web server to load their data; opening the HTML f
 
 Operators using a repository checkout can follow [Command-line operation](https://ultreia-io.github.io/ros.form.validation/articles/operator-workflow.html).
 
-Package contributors can use the [development instructions](https://github.com/ultreia-io/ros.form.validation/blob/develop/DEVELOPMENT.md).
+## Further information
+
+- [Function reference](https://ultreia-io.github.io/ros.form.validation/reference/index.html).
+- [Contributing](https://ultreia-io.github.io/ros.form.validation/CONTRIBUTING.html) and [maintenance](https://ultreia-io.github.io/ros.form.validation/DEVELOPMENT.html).
+
+## License
+
+GPL-3. See [LICENSE](https://github.com/ultreia-io/ros.form.validation/blob/main/LICENSE).

@@ -1,7 +1,6 @@
 ^\.git.*$
 ^\.Rproj\.user$
 ^.*\.Rproj$
-^README\.Rmd$
 ^LICENSE$
 ^_pkgdown\.yml$
 ^docs$
@@ -16,7 +15,7 @@
 ^lib$
 ^README\.html$
 ^\.idea$
-^build$
+^build/(?!vignette\.rds$).*
 ^vignettes/articles$
 
 ^output$
