@@ -3,7 +3,7 @@ Title: Validate Regional Observer Scheme Submissions
 Version: 0.1.0
 Authors@R:
     person("Tony", "Chemit", role = c("aut", "cre"),
-           email = "tchemit@users.noreply.github.com")
+           email = "dev@tchemit.fr")
 Description: Validates supplied Indian Ocean Tuna Commission Regional Observer
     Scheme data with versioned generated and business rules. Uses the
     form.validation engine and explicit reference snapshots, returning

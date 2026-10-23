@@ -31,7 +31,7 @@ roxygen2::roxygenise()
 
 Install development dependencies first. Run roxygen in sibling packages too.
 
-Commit changes to `NAMESPACE`; generated `man/` files remain ignored.
+Commit generated `man/*.Rd` files and `NAMESPACE` alongside their roxygen source changes.
 
 ```sh
 Rscript tools/check.R
