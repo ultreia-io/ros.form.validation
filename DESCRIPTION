@@ -15,12 +15,12 @@ URL: https://ultreia-io.github.io/ros.form.validation/,
 BugReports: https://github.com/ultreia-io/ros.form.validation/issues
 Encoding: UTF-8
 Depends: R (>= 4.1.0)
-Imports: ros.form.model (== 0.1.0), form.model (== 0.3.0),
-    form.validation (== 0.2.1)
+Imports: ros.form.model (== 0.1.1), form.model (== 0.3.1),
+    form.validation (== 0.3.0)
 Suggests: yaml, cellranger, digest, jsonlite, readxl
 Roxygen: list(markdown = TRUE)
 Config/Needs/website: pkgdown, htmltools
 Config/roxygen2/version: 8.1.1
-Remotes: form.model=url::https://github.com/ultreia-io/form.model/releases/download/v0.3.0/form.model_0.3.0.tar.gz,
-    form.validation=url::https://github.com/ultreia-io/form.validation/releases/download/v0.2.1/form.validation_0.2.1.tar.gz,
-    ros.form.model=url::https://github.com/ultreia-io/ros.form.model/releases/download/v0.1.0/ros.form.model_0.1.0.tar.gz
+Remotes: ultreia-io/form.model@v0.3.1,
+    ultreia-io/form.validation@v0.3.0,
+    ultreia-io/ros.form.model@v0.1.1

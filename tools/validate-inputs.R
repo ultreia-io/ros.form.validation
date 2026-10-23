@@ -1,13 +1,9 @@
 #!/usr/bin/env Rscript
-# Prefer current sibling sources when run from the source checkout.
+# Run from the source checkout with its declared dependencies installed.
 script <- sub("^--file=", "", grep("^--file=", commandArgs(), value = TRUE)[[1L]])
 root <- dirname(dirname(normalizePath(script, mustWork = TRUE)))
-if (requireNamespace("pkgload", quietly = TRUE)) {
-  for (package in c("form.model", "form.validation", "ros.form.model", "ros.form.validation")) {
-    path <- file.path(dirname(root), package)
-    if (file.exists(file.path(path, "DESCRIPTION"))) pkgload::load_all(path, quiet = TRUE)
-  }
-}
+# Use installed dependency versions from DESCRIPTION and load this checkout only.
+if (requireNamespace("pkgload", quietly = TRUE)) pkgload::load_all(root, quiet = TRUE)
 args <- commandArgs(TRUE)
 if (!length(args) || "--help" %in% args) {
   cat("Usage: Rscript tools/validate-inputs.R --input DIR --references DIR [--output DIR]\n",
