@@ -17,19 +17,16 @@ Rscript tools/generate-validation.R --version 3.3.0
 
 Generation preserves handwritten business files. Extra business files and callbacks use the `business` and `checks` arguments.
 
-For local development, load sibling packages from the `ros.form.validation` directory:
+Install the dependency versions declared in `DESCRIPTION`, then load this package:
 
 ```r
-pkgload::load_all("../form.model")
-pkgload::load_all("../form.validation")
-pkgload::load_all("../ros.form.model")
 pkgload::load_all(".")
 roxygen2::roxygenise()
 ```
 
 ## Local verification
 
-Install development dependencies first. Run roxygen in sibling packages too.
+Install development dependencies first. Regenerate documentation for any sibling packages you modify.
 
 Commit generated `man/*.Rd` files and `NAMESPACE` alongside their roxygen source changes.
 
@@ -38,7 +35,7 @@ Rscript tools/check.R
 Rscript tools/build-site.R
 ```
 
-The check script installs sibling packages into `build/library`. Archives and checks go under `build/`.
+The check script uses matching sibling versions or installed dependencies. Archives and checks go under `build/`.
 
 The documentation site goes under `docs/`.
 
