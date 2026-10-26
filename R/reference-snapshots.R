@@ -20,7 +20,7 @@ prepare_ros_reference_snapshots <- function(directory, code_lists, registries) {
   code_paths <- character()
   registry_paths <- character()
   for (version in ros.form.model::ROS_FORM_VERSIONS) {
-    for (gear in c("ll", "ps")) {
+    for (gear in ros.form.model::ROS_FORMS) {
       model <- ros.form.model::ros_form(gear, version)
       code_paths <- c(code_paths, form.references::get_form_code_lists(model, code_lists)$paths)
       registry_paths <- c(registry_paths,

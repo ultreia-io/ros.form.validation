@@ -4,7 +4,8 @@
 #' @param gear `"all"`, `ros.form.model::ROS_FORM_LL`, `ros.form.model::ROS_FORM_PS`, or both gear constants.
 #' @param version Required exact form version; selects only its matching `v<version>` directory.
 #' @return A data frame with path, relative path, gear, year, and country.
-#' @details Filters intersect. Countries and gears are case-insensitive.
+#' @details Filters intersect. Country filters are case-insensitive; gear filters
+#'   use the lowercase form identifiers. Input directory names retain their case.
 #'   Classification selects candidates; structure is checked against the chosen version.
 #'   Filenames are preserved; Excel lock files and other version directories are excluded.
 #' @export
@@ -16,7 +17,9 @@ ros_validation_inputs <- function(directory, country = NULL, year = NULL, gear =
     stop("Unsupported ROS data-model version; available versions: ",
          paste(ros.form.model::ROS_FORM_VERSIONS, collapse = ", "), ".", call. = FALSE)
   }
-  scan_ros_inputs(directory, version, country, year, gear)[c("path", "relative", "gear", "year", "country")]
+  files <- scan_ros_inputs(directory, version, country, year, gear)
+  files$gear <- tolower(files$gear)
+  files[c("path", "relative", "gear", "year", "country")]
 }
 
 # One discovery pass for all requested versions; later stages consume its saved rows.
@@ -25,7 +28,7 @@ scan_ros_inputs <- function(directory, versions, country = NULL, year = NULL, ge
   gear <- ros_batch_gears(gear)
   paths <- sort(list.files(directory, pattern = "\\.xlsx$", recursive = TRUE, ignore.case = TRUE))
   parts <- strsplit(paths, "/", fixed = TRUE)
-  keep <- vapply(parts, function(x) length(x) == 5L && toupper(x[[3]]) %in% gear &&
+  keep <- vapply(parts, function(x) length(x) == 5L && tolower(x[[3]]) %in% gear &&
     grepl("^[0-9]{4}$", x[[1]]) && x[[4]] %in% paste0("v", versions) && !startsWith(x[[5]], "~$") &&
     (is.null(country) || toupper(x[[2]]) %in% toupper(country)) &&
     (is.null(year) || x[[1]] %in% as.character(year)), logical(1))
@@ -38,11 +41,12 @@ scan_ros_inputs <- function(directory, versions, country = NULL, year = NULL, ge
 }
 
 ros_batch_gears <- function(gear) {
-  gear <- unique(toupper(gear))
-  if (identical(gear, "ALL")) gear <- c("LL", "PS")
-  if (!length(gear) || anyNA(gear) || any(!gear %in% c("LL", "PS")))
-    stop("gear must be all, ll or ps", call. = FALSE)
-  gear
+  forms <- ros.form.model::ROS_FORMS
+  if (identical(gear, "all")) return(forms)
+  if (!is.character(gear) || !length(gear) || anyNA(gear) ||
+      any(!gear %in% forms))
+    stop("gear must be all or one or more of: ", paste(forms, collapse = ", "), call. = FALSE)
+  unique(gear)
 }
 
 #' Load explicit local CSV reference snapshots
@@ -180,11 +184,11 @@ validate_ros_file <- function(path, directory, plan, references = list(), source
   }
   report <- timed("report.prepare", form.validation::validation_report_data(result, rules_plan$model,
     reference_provenance = attr(references, "provenance"),
-    context = list(gear = toupper(result$model$form$id))))
+    context = list(gear = result$model$form$id)))
   timed("csv", form.validation::write_validation_results(report, directory))
   timed("html", {
     form.validation::write_validation_report(report, file.path(directory, report_filename),
-      title = paste("ROS validation report -", toupper(result$model$form$id), "-", source),
+      title = paste("ROS validation report -", result$model$form$id, "-", source),
       assets_directory = assets_directory,
       stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
       logo = system.file("report", "IOTC_with_text.png", package = "ros.form.validation", mustWork = TRUE))

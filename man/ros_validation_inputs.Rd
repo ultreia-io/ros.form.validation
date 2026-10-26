@@ -28,7 +28,8 @@ A data frame with path, relative path, gear, year, and country.
 Find classified ROS input workbooks
 }
 \details{
-Filters intersect. Countries and gears are case-insensitive.
+Filters intersect. Country filters are case-insensitive; gear filters
+use the lowercase form identifiers. Input directory names retain their case.
 Classification selects candidates; structure is checked against the chosen version.
 Filenames are preserved; Excel lock files and other version directories are excluded.
 }

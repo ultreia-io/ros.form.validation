@@ -21,9 +21,9 @@ write_ros_validation_report <- function(result, path, overwrite = FALSE, parent_
   name <- result$model$form$id
   model <- ros.form.model::ros_form(name, result$model$form$version)
   report <- form.validation::validation_report_data(result, model,
-    context = list(gear = toupper(name)))
+    context = list(gear = name))
   form.validation::write_validation_report(report, path,
-    title = paste("ROS validation report \u2014", toupper(name)),
+    title = paste("ROS validation report \u2014", name),
     overwrite = overwrite, parent_report = parent_report,
     stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
     logo = system.file("report", "IOTC_with_text.png", package = "ros.form.validation", mustWork = TRUE))

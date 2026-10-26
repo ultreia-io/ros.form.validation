@@ -47,8 +47,8 @@ plan_ros_validation <- function(input, references, versions, output = NULL,
   if (startsWith(paste0(output, "/"), paste0(input, "/")))
     stop("Batch output must be outside the input tree", call. = FALSE)
   resources <- stats::setNames(lapply(versions, function(version) {
-    rules_plans <- stats::setNames(lapply(tolower(gears), ros_validation, version = version,
-      meta_as_warnings = meta_as_warnings), tolower(gears))
+    rules_plans <- stats::setNames(lapply(gears, ros_validation, version = version,
+      meta_as_warnings = meta_as_warnings), gears)
     rules_plans <- lapply(rules_plans, function(rules_plan) {
       rules_plan$metadata$options$trim_ws <- trim_ws
       rules_plan$metadata$options$missing_values <- ros_missing_value_policy()
@@ -62,9 +62,9 @@ plan_ros_validation <- function(input, references, versions, output = NULL,
   jobs <- expand.grid(model_version = versions, gear = gears, stringsAsFactors = FALSE)
   jobs$id <- paste(jobs$model_version, jobs$gear, sep = "-")
   jobs$resource <- jobs$model_version
-  jobs$plan <- tolower(jobs$gear)
-  files$job <- paste(files$model_version, toupper(files$gear), sep = "-", recycle0 = TRUE)
-  files$title <- paste("ROS validation report -", toupper(files$gear), "-", files$relative, recycle0 = TRUE)
+  jobs$plan <- jobs$gear
+  files$job <- paste(files$model_version, tolower(files$gear), sep = "-", recycle0 = TRUE)
+  files$title <- paste("ROS validation report -", tolower(files$gear), "-", files$relative, recycle0 = TRUE)
   form.validation::validation_batch_plan(files, jobs, resources, output,
     group_columns = c("year", "country", "gear", "version"), identity_columns = c("gear", "version"),
     model_versions = versions, packages = c("ros.form.validation", "ros.form.model"),
