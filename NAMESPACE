@@ -3,6 +3,7 @@
 export(build_ros_publication)
 export(plan_ros_validation)
 export(prepare_ros_publication)
+export(prepare_ros_reference_snapshots)
 export(read_ros_references)
 export(read_ros_validation_plan)
 export(ros_validation)
