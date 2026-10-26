@@ -1,3 +1,12 @@
+# ros.form.validation 0.3.0
+
+- Check model-declared code lists, registries and primary keys in ROS forms 3.3.0, 4.0.0 and 4.1.0.
+- Load verified code-list and registry snapshots with `form.references`, using shared ROS aliases.
+- Show missing and duplicate primary-key values in individual and aggregate evidence reports.
+- Run batch validation and report generation with configurable parallel workers.
+- Use lowercase `ll` and `ps` form identifiers throughout the workflow.
+- Use `form.model` 0.4.0, `form.validation` 0.4.0, `form.references` 0.1.0 and `ros.form.model` 0.2.0.
+
 # ros.form.validation 0.2.0
 
 - Add contextual evidence reports to forms and aggregates, with publication timestamps and ancestor navigation.
