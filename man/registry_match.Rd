@@ -13,7 +13,7 @@ engine's prepared field accessor.}
 \item{references}{Explicit snapshots keyed by the rule's reference identifier.}
 
 \item{config}{Callback options containing \code{field_values} and \code{rule} parameters:
-\code{field}, \code{reference}, and optional \code{matching} and \code{aliases}.}
+\code{field}, \code{reference}, and optional \code{matching}.}
 }
 \value{
 Finding rows for unknown or ambiguous values, or \code{NULL} when none occur.

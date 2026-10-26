@@ -57,13 +57,17 @@ ros_batch_gears <- function(gear) {
 #' @return References for the engine, with a `provenance` attribute recording
 #'   CSV paths, SHA-256 digests, and missing declarations.
 #' @details Code lists read `code` and optional `code_orig` aliases. Original
-#'   codes are trimmed like the legacy reader; blank originals are excluded.
+#'   codes are trimmed like the legacy reader; blank and unusable originals are excluded.
+#'   Bundled ROS aliases are checked against the supplied canonical codes and
+#'   apply to every model version using the corresponding code list.
 #'   Registry declarations identify a table; each field binding selects a column.
+#'   Bundled registry aliases apply to the relevant table and column, with
+#'   targets checked against the supplied registry values.
 #'   Codes stay character; duplicate
 #'   registry values are retained. Empty keys are excluded. No database is used.
 #'   Missing files or columns remain missing snapshots, never empty valid ones.
 #'   Registry indexes are prepared once using each model field's matching
-#'   strategy and explicit aliases. Code-list keys and aliases are also prepared
+#'   strategy and the shared aliases. Code-list keys and aliases are also prepared
 #'   once for the batch. Reload after changing snapshots or rules.
 #' @export
 read_ros_references <- function(directory, plans, prepare = TRUE) {
@@ -78,6 +82,8 @@ read_ros_references <- function(directory, plans, prepare = TRUE) {
       registry_reference_id(r$value) else
       r$parameters$reference)), use.names = FALSE))
   ids <- unique(c(code_ids, registry_ids))
+  bundled_aliases <- ros_code_list_aliases()
+  registry_aliases <- ros_registry_aliases()
   tables <- new.env(parent = emptyenv())
   refs <- list(); provenance <- list()
   for (id in ids) {
@@ -101,9 +107,15 @@ read_ros_references <- function(directory, plans, prepare = TRUE) {
       refs[[id]] <- list(values = values[!is.na(values) & nzchar(values)], version = snapshot$sha256)
       if (!registry && "code_orig" %in% names(snapshot$data)) {
         original <- trimws(snapshot$data$code_orig)
-        keep <- !is.na(original) & nzchar(original)
+        keep <- !is.na(original) & nzchar(original) & original != "???" &
+          !is.na(values) & original != values
         refs[[id]]$aliases <- stats::setNames(values[keep], original[keep])
       }
+      if (!registry) refs[[id]]$aliases <- merge_ros_code_list_aliases(
+        refs[[id]]$aliases, bundled_aliases[bundled_aliases$id == id, , drop = FALSE],
+        refs[[id]]$values, id)
+      if (registry) refs[[id]]$aliases <- registry_snapshot_aliases(
+        registry_aliases, table, column, refs[[id]]$values)
     }
   }
   attr(refs, "provenance") <- provenance

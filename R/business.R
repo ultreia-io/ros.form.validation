@@ -1,13 +1,14 @@
 #' Reuse a registry index matching the explicit rule policy
-#' @param snapshot Registry snapshot with `values` and optional prepared `indexes`.
-#' @param rule Rule parameters with optional `matching` and `aliases`.
+#' @param snapshot Registry snapshot with `values`, optional `aliases`, and
+#'   optional prepared `indexes`.
+#' @param rule Rule parameters with optional `matching`.
 #' @param type Declared field type.
 #' @return A matching `validation_registry` index, or a newly prepared index.
 #'   The supplied snapshot is not modified.
 #' @keywords internal
 registry_lookup <- function(snapshot, rule, type) {
   matching <- if (is.null(rule$matching)) "exact" else rule$matching
-  aliases <- if (is.null(rule$aliases)) character() else unlist(rule$aliases, use.names = TRUE)
+  aliases <- if (is.null(snapshot$aliases)) character() else snapshot$aliases
   for (index in snapshot$indexes) {
     if (identical(index$type, type) && identical(index$matching, matching) &&
         identical(index$aliases, aliases)) return(index)
@@ -20,7 +21,7 @@ registry_lookup <- function(snapshot, rule, type) {
 #'   engine's prepared field accessor.
 #' @param references Explicit snapshots keyed by the rule's reference identifier.
 #' @param config Callback options containing `field_values` and `rule` parameters:
-#'   `field`, `reference`, and optional `matching` and `aliases`.
+#'   `field`, `reference`, and optional `matching`.
 #' @return Finding rows for unknown or ambiguous values, or `NULL` when none occur.
 #'   Missing snapshots signal incomplete execution when eligible values exist;
 #'   malformed snapshots raise errors. No external data is read.

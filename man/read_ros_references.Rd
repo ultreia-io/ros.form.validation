@@ -23,12 +23,16 @@ Load explicit local CSV reference snapshots
 }
 \details{
 Code lists read \code{code} and optional \code{code_orig} aliases. Original
-codes are trimmed like the legacy reader; blank originals are excluded.
+codes are trimmed like the legacy reader; blank and unusable originals are excluded.
+Bundled ROS aliases are checked against the supplied canonical codes and
+apply to every model version using the corresponding code list.
 Registry declarations identify a table; each field binding selects a column.
+Bundled registry aliases apply to the relevant table and column, with
+targets checked against the supplied registry values.
 Codes stay character; duplicate
 registry values are retained. Empty keys are excluded. No database is used.
 Missing files or columns remain missing snapshots, never empty valid ones.
 Registry indexes are prepared once using each model field's matching
-strategy and explicit aliases. Code-list keys and aliases are also prepared
+strategy and the shared aliases. Code-list keys and aliases are also prepared
 once for the batch. Reload after changing snapshots or rules.
 }

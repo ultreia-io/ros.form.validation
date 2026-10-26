@@ -83,7 +83,8 @@ check_meta_as_warnings <- function(meta_as_warnings) {
 #'   with optional `aliases` mapping original codes to canonical values.
 #'   Workbook registries use the exact YAML reference name and `list(values=...)`;
 #'   repeated keys are retained because a registry match must be unique.
-#'   Name rules request normalized matching and aliases explicitly in YAML.
+#'   Name rules request normalized matching in YAML; local registry snapshots
+#'   can supply shared aliases independently of the models.
 #'   Snapshots from [`read_ros_references()`][ros.form.validation::read_ros_references] include reusable registry indexes.
 #'   All snapshots are supplied explicitly; no external service is queried.
 #' @param source Input label retained in findings and result exports.

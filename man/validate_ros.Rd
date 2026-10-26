@@ -28,7 +28,8 @@ Nothing is coerced or loaded.}
 with optional \code{aliases} mapping original codes to canonical values.
 Workbook registries use the exact YAML reference name and \code{list(values=...)};
 repeated keys are retained because a registry match must be unique.
-Name rules request normalized matching and aliases explicitly in YAML.
+Name rules request normalized matching in YAML; local registry snapshots
+can supply shared aliases independently of the models.
 Snapshots from \code{\link[=read_ros_references]{read_ros_references()}} include reusable registry indexes.
 All snapshots are supplied explicitly; no external service is queried.}
 
