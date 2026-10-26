@@ -84,6 +84,9 @@ validation$jobs
 
 This saves validation results without generating reports. It can resume after an interruption.
 
+Use `validate_ros_plan(plan, workers = 4L)` to validate up to four forms at once.
+Each form keeps its own saved result, so the same plan can still resume after an interruption.
+
 Do not change the inputs during the run. Changed forms or reference values require a new plan.
 
 ## 3. Generate individual reports
@@ -97,6 +100,8 @@ Reports are written under the batch's `reports/` directory, following the input 
 
 This stage reads saved results; it does not reopen the submitted forms.
 
+Use `write_ros_reports(plan, workers = 4L)` to render up to four reports at once.
+
 ## 4. Build the folder to share
 
 ```{r, eval=FALSE}
@@ -109,6 +114,8 @@ The new folder is `output/aggregated_ros-validation-<timestamp>`, alongside the 
 It contains form reports, ancestor aggregates, code-list evidence and registry evidence. Nothing is uploaded yet.
 
 The optional comment is saved in `publication.json` and shown beside the batch after publication.
+
+Use `build_ros_publication(plan, workers = 4L)` to build separate top-level report directories in parallel.
 
 ## 5. Review and share
 

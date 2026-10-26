@@ -4,12 +4,14 @@
 \alias{validate_ros_plan}
 \title{Validate every input in a saved ROS batch plan}
 \usage{
-validate_ros_plan(plan, resume = TRUE)
+validate_ros_plan(plan, resume = TRUE, workers = 1L)
 }
 \arguments{
 \item{plan}{A \code{validation_batch_plan}, its batch directory, or its local \code{plan.rds} file.}
 
 \item{resume}{Reuse completed, checksum-verified results after an interruption.}
+
+\item{workers}{Maximum forms to validate concurrently; defaults to one.}
 }
 \value{
 Validation stage state, invisibly.

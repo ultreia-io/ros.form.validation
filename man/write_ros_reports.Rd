@@ -4,7 +4,12 @@
 \alias{write_ros_reports}
 \title{Generate individual ROS reports from saved results}
 \usage{
-write_ros_reports(plan, report_filename = "index.html", overwrite = FALSE)
+write_ros_reports(
+  plan,
+  report_filename = "index.html",
+  overwrite = FALSE,
+  workers = 1L
+)
 }
 \arguments{
 \item{plan}{A \code{validation_batch_plan}, its batch directory, or its local \code{plan.rds} file.}
@@ -12,6 +17,8 @@ write_ros_reports(plan, report_filename = "index.html", overwrite = FALSE)
 \item{report_filename}{HTML report basename, ending in \code{.html}; defaults to \code{index.html}.}
 
 \item{overwrite}{Rebuild the complete reports directory from saved results.}
+
+\item{workers}{Maximum forms to render concurrently; defaults to one.}
 }
 \value{
 The reports directory, invisibly.

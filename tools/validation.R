@@ -14,9 +14,9 @@ if (!length(args) || "--help" %in% args) {
     "       [--meta-as-warnings true|false] (default: true; fixed when planning)",
     "       [--trim-ws true|false] (default: true; fixed when planning)",
     "       Use --references DIR when all selected versions use the same reference directory.",
-    "  validate --plan BATCH_OR_PLAN_RDS [--no-resume]",
-    "  report --plan BATCH_OR_PLAN_RDS [--report-filename index.html] [--overwrite]",
-    "  build-publication --plan BATCH_OR_PLAN_RDS [--output DIR] [--report-filename index.html] [--comment TEXT]",
+    "  validate --plan BATCH_OR_PLAN_RDS [--workers N] [--no-resume]",
+    "  report --plan BATCH_OR_PLAN_RDS [--workers N] [--report-filename index.html] [--overwrite]",
+    "  build-publication --plan BATCH_OR_PLAN_RDS [--workers N] [--output DIR] [--report-filename index.html] [--comment TEXT]",
     "  publish --directory output/aggregated_ros-validation-<timestamp> [--host ultreia]",
     sep = "\n"), "\n")
   quit(status = 0)
@@ -24,9 +24,9 @@ if (!length(args) || "--help" %in% args) {
 stage <- args[[1L]]
 allowed <- switch(stage,
   plan = c("input", "versions", "references", "reference", "output", "country", "year", "gear", "meta-as-warnings", "trim-ws"),
-  validate = c("plan", "no-resume"),
-  report = c("plan", "report-filename", "overwrite"),
-  `build-publication` = c("plan", "output", "report-filename", "comment"),
+  validate = c("plan", "workers", "no-resume"),
+  report = c("plan", "workers", "report-filename", "overwrite"),
+  `build-publication` = c("plan", "workers", "output", "report-filename", "comment"),
   publish = c("directory", "host"),
   stop("Unknown stage: ", stage, call. = FALSE))
 options <- list()
@@ -86,6 +86,12 @@ if (stage == "plan") {
   if (!is.null(options[["report-filename"]])) {
     options$report_filename <- options[["report-filename"]]
     options[["report-filename"]] <- NULL
+  }
+  if (stage %in% c("validate", "report", "build-publication") && !is.null(options$workers)) {
+    if (!grepl("^[1-9][0-9]*$", options$workers) ||
+        is.na(suppressWarnings(as.integer(options$workers))))
+      stop("--workers must be a positive whole number", call. = FALSE)
+    options$workers <- as.integer(options$workers)
   }
   if (stage == "validate") {
     options$resume <- !isTRUE(options[["no-resume"]])
