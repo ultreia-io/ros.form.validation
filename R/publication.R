@@ -107,8 +107,9 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
   reference_reports <- length(attr(pages, "reference_report"))
   registry_reports <- length(attr(pages, "registry_report"))
   conversion_reports <- length(attr(pages, "conversion_report"))
+  primary_key_reports <- length(attr(pages, "primary_key_report"))
   html <- list.files(stage, pattern = "\\.html$", recursive = TRUE, full.names = TRUE)
-  if (length(html) != expected + length(pages) + reference_reports + registry_reports + conversion_reports) stop("Unexpected HTML report count")
+  if (length(html) != expected + length(pages) + reference_reports + registry_reports + conversion_reports + primary_key_reports) stop("Unexpected HTML report count")
   for (path in html) {
     text <- paste(readLines(path, warn = FALSE), collapse = "\n")
     links <- regmatches(text, gregexpr('(?:href|src)="[^"]+"', text, perl = TRUE))[[1]]
@@ -139,7 +140,7 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
   files <- sort(list.files(stage, recursive = TRUE, full.names = FALSE, all.files = TRUE, no.. = TRUE))
   manifest <- list(batch = basename(batch), report_filename = report_filename,
     individual_reports = nrow(descriptors), aggregate_reports = length(pages),
-    reference_reports = reference_reports, registry_reports = registry_reports, conversion_reports = conversion_reports, no_inputs = as.list(empty),
+    reference_reports = reference_reports, registry_reports = registry_reports, conversion_reports = conversion_reports, primary_key_reports = primary_key_reports, no_inputs = as.list(empty),
     files = lapply(files, function(path) list(path = path, sha256 = digest::digest(file = file.path(stage, path), algo = "sha256"))))
   if (!is.null(comment) && nzchar(comment)) manifest$comment <- comment
   jsonlite::write_json(manifest, file.path(stage, "publication.json"), auto_unbox = TRUE, pretty = TRUE)
@@ -207,7 +208,7 @@ finish_ros_publication_navigation <- function(directory, published_at = NULL) {
     jsonlite::write_json(metadata, metadata_path, auto_unbox = TRUE, pretty = TRUE)
     changed <- c(changed, relative, sub("^./", "", html_relative))
   }
-  evidence <- c("code-list-evidence", "registry-evidence", "conversion-evidence")
+  evidence <- c("code-list-evidence", "registry-evidence", "conversion-evidence", "primary-key-evidence")
   for (relative in paths[basename(dirname(paths)) %in% evidence & basename(paths) == manifest$report_filename]) {
     path <- file.path(directory, relative)
     html <- paste(readLines(path, warn = FALSE), collapse = "\n")

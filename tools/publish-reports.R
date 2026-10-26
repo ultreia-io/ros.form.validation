@@ -88,6 +88,8 @@ main <- function(args) {
     cat(sprintf("Included %s code-list evidence report.\n", manifest$reference_reports))
   if (!is.null(manifest$registry_reports) && manifest$registry_reports > 0L)
     cat(sprintf("Included %s registry evidence report.\n", manifest$registry_reports))
+  if (!is.null(manifest$primary_key_reports) && manifest$primary_key_reports > 0L)
+    cat(sprintf("Included %s primary-key evidence reports.\n", manifest$primary_key_reports))
   if (!is.null(manifest$conversion_reports) && manifest$conversion_reports > 0L)
     cat(sprintf("Included %s conversion evidence report.\n", manifest$conversion_reports))
   cat(format(now, "Publication — %d %B %Y — %H:%M (Europe/Paris)\n", tz = "Europe/Paris"))
