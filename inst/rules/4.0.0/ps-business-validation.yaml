@@ -3,28 +3,12 @@ rules_version: 1.0.0
 model: {id: ps, version: 4.0.0}
 stage: business
 rules:
-  business/META.liaison_officer_full_name/registry_match: {reference: ros_meta.focal_point.full_name, matching: name}
-  business/META.liaison_officer_email/registry_match: {reference: ros_meta.focal_point.email}
-  business/O-INFO.observer_identification_iotc_id/registry_match: {reference: ros_meta.observer.iotc_observer_identifier}
-  business/O-INFO.observer_identification_full_name/registry_match: {reference: ros_meta.observer.full_name, matching: name, severity: warning}
-  business/V-INFO.identification_iotc_number/registry_match: {reference: ros_meta.vessel.iotc_vessel_identifier}
-  business/V-INFO.registration_registration_number/registry_match: {reference: ros_meta.vessel.registration_identifier}
-  business/V-INFO.personnel_fishing_master_full_name/registry_match: {reference: ros_meta.contact.full_name, matching: name}
-  business/V-INFO.personnel_skipper_captain_full_name/registry_match: {reference: ros_meta.contact.full_name, matching: name}
-  business/V-INFO.identification_name/registry_match: {reference: ros_meta.vessel.vessel_name, matching: name, severity: warning}
-  business/V-INFO.identification_imo_number/registry_match: {reference: ros_meta.vessel.imo_identifier, severity: warning}
-  business/V-INFO.identification_ircs/registry_match: {reference: ros_meta.vessel.ircs_identifier, severity: warning}
   source-issue-1/source_issue: {sheet: META, field: reporting_country_code, message: 'Countries versus Fleets reference remains unresolved.'}
   source-issue-2/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_searching, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
   source-issue-3/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_actively_fishing, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
   source-issue-4/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_in_fishing_area, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
   source-issue-5/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_transiting, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
   source-issue-6/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_lost, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
-  source-issue-7/source_issue: {sheet: E-SET-CATCHES, field: weight_estimation_method, message: 'Reference weightEstimationMethods needs an agreed destination.'}
-  source-issue-8/source_issue: {sheet: E-SET-CATCH-SPECIMENS, field: length_1_is_straight, message: 'The field has no complete type/code definition; text is provisional.'}
-  source-issue-9/source_issue: {sheet: E-SET-CATCH-SPECIMENS, field: length_2_is_straight, message: 'The field has no complete type/code definition; text is provisional.'}
-  source-issue-10/source_issue: {sheet: E-SET-CATCH-SPECIMENS, field: sample_collected_type, message: 'Reference samplingMethodsForSamplingCollection needs an agreed destination.'}
-  source-issue-11/source_issue: {sheet: E-SET-CATCH-SPECIMENS, field: sample_collected_preservation_method, message: 'Reference fishStorageTypes needs an agreed destination.'}
   source-issue-12/source_issue: {sheet: E-SET-CATCH-SPECIMENS, message: Second-length measuring-tool dependency has not been agreed.}
   source-issue-13/source_issue: {sheet: O-INFO, message: Observation versus embarkation periods and EM identification remain unresolved.}
   source-issue-14/source_issue: {sheet: V-TRIP, message: At-sea port encoding remains unresolved.}

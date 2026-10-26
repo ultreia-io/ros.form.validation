@@ -4,7 +4,8 @@
 #' @param gear `"all"`, `ros.form.model::ROS_FORM_LL`, `ros.form.model::ROS_FORM_PS`, or both gear constants.
 #' @param version Required exact form version; selects only its matching `v<version>` directory.
 #' @return A data frame with path, relative path, gear, year, and country.
-#' @details Filters intersect. Countries and gears are case-insensitive.
+#' @details Filters intersect. Country filters are case-insensitive; gear filters
+#'   use the lowercase form identifiers. Input directory names retain their case.
 #'   Classification selects candidates; structure is checked against the chosen version.
 #'   Filenames are preserved; Excel lock files and other version directories are excluded.
 #' @export
@@ -16,7 +17,9 @@ ros_validation_inputs <- function(directory, country = NULL, year = NULL, gear =
     stop("Unsupported ROS data-model version; available versions: ",
          paste(ros.form.model::ROS_FORM_VERSIONS, collapse = ", "), ".", call. = FALSE)
   }
-  scan_ros_inputs(directory, version, country, year, gear)[c("path", "relative", "gear", "year", "country")]
+  files <- scan_ros_inputs(directory, version, country, year, gear)
+  files$gear <- tolower(files$gear)
+  files[c("path", "relative", "gear", "year", "country")]
 }
 
 # One discovery pass for all requested versions; later stages consume its saved rows.
@@ -25,7 +28,7 @@ scan_ros_inputs <- function(directory, versions, country = NULL, year = NULL, ge
   gear <- ros_batch_gears(gear)
   paths <- sort(list.files(directory, pattern = "\\.xlsx$", recursive = TRUE, ignore.case = TRUE))
   parts <- strsplit(paths, "/", fixed = TRUE)
-  keep <- vapply(parts, function(x) length(x) == 5L && toupper(x[[3]]) %in% gear &&
+  keep <- vapply(parts, function(x) length(x) == 5L && tolower(x[[3]]) %in% gear &&
     grepl("^[0-9]{4}$", x[[1]]) && x[[4]] %in% paste0("v", versions) && !startsWith(x[[5]], "~$") &&
     (is.null(country) || toupper(x[[2]]) %in% toupper(country)) &&
     (is.null(year) || x[[1]] %in% as.character(year)), logical(1))
@@ -38,11 +41,12 @@ scan_ros_inputs <- function(directory, versions, country = NULL, year = NULL, ge
 }
 
 ros_batch_gears <- function(gear) {
-  gear <- unique(toupper(gear))
-  if (identical(gear, "ALL")) gear <- c("LL", "PS")
-  if (!length(gear) || anyNA(gear) || any(!gear %in% c("LL", "PS")))
-    stop("gear must be all, ll or ps", call. = FALSE)
-  gear
+  forms <- ros.form.model::ROS_FORMS
+  if (identical(gear, "all")) return(forms)
+  if (!is.character(gear) || !length(gear) || anyNA(gear) ||
+      any(!gear %in% forms))
+    stop("gear must be all or one or more of: ", paste(forms, collapse = ", "), call. = FALSE)
+  unique(gear)
 }
 
 #' Load explicit local CSV reference snapshots
@@ -53,13 +57,17 @@ ros_batch_gears <- function(gear) {
 #' @return References for the engine, with a `provenance` attribute recording
 #'   CSV paths, SHA-256 digests, and missing declarations.
 #' @details Code lists read `code` and optional `code_orig` aliases. Original
-#'   codes are trimmed like the legacy reader; blank originals are excluded.
-#'   Registry references identify a
-#'   table and column separated by an arrow. Codes stay character; duplicate
+#'   codes are trimmed like the legacy reader; blank and unusable originals are excluded.
+#'   Bundled ROS aliases are checked against the supplied canonical codes and
+#'   apply to every model version using the corresponding code list.
+#'   Registry declarations identify a table; each field binding selects a column.
+#'   Bundled registry aliases apply to the relevant table and column, with
+#'   targets checked against the supplied registry values.
+#'   Codes stay character; duplicate
 #'   registry values are retained. Empty keys are excluded. No database is used.
 #'   Missing files or columns remain missing snapshots, never empty valid ones.
-#'   Registry indexes are prepared once using each business rule's matching
-#'   strategy and explicit aliases. Code-list keys and aliases are also prepared
+#'   Registry indexes are prepared once using each model field's matching
+#'   strategy and the shared aliases. Code-list keys and aliases are also prepared
 #'   once for the batch. Reload after changing snapshots or rules.
 #' @export
 read_ros_references <- function(directory, plans, prepare = TRUE) {
@@ -67,14 +75,20 @@ read_ros_references <- function(directory, plans, prepare = TRUE) {
     stop("prepare must be TRUE or FALSE", call. = FALSE)
   directory <- normalizePath(directory, mustWork = TRUE)
   code_ids <- unique(unlist(lapply(plans, function(plan)
-    vapply(Filter(function(r) r$kind == "reference", plan$rules), `[[`, character(1), "value")), use.names = FALSE))
-  ids <- unique(c(code_ids, unlist(lapply(plans, function(plan)
-    lapply(plan$rules, function(r) r$parameters$reference)), use.names = FALSE)))
+    vapply(Filter(function(r) r$kind %in% c("reference", "code_list"), plan$rules),
+      `[[`, character(1), "value")), use.names = FALSE))
+  registry_ids <- unique(unlist(lapply(plans, function(plan)
+    lapply(plan$rules, function(r) if (r$kind == "registry")
+      registry_reference_id(r$value) else
+      r$parameters$reference)), use.names = FALSE))
+  ids <- unique(c(code_ids, registry_ids))
+  bundled_aliases <- ros_code_list_aliases()
+  registry_aliases <- ros_registry_aliases()
   tables <- new.env(parent = emptyenv())
   refs <- list(); provenance <- list()
   for (id in ids) {
     parts <- strsplit(id, ".", fixed = TRUE)[[1]]
-    registry <- length(parts) == 3L
+    registry <- id %in% registry_ids
     table <- paste(parts[1:2], collapse = ".")
     column <- if (registry) parts[[3]] else "code"
     path <- file.path(directory, if (registry) "registries" else "code_lists", paste0(table, ".csv"))
@@ -93,9 +107,15 @@ read_ros_references <- function(directory, plans, prepare = TRUE) {
       refs[[id]] <- list(values = values[!is.na(values) & nzchar(values)], version = snapshot$sha256)
       if (!registry && "code_orig" %in% names(snapshot$data)) {
         original <- trimws(snapshot$data$code_orig)
-        keep <- !is.na(original) & nzchar(original)
+        keep <- !is.na(original) & nzchar(original) & original != "???" &
+          !is.na(values) & original != values
         refs[[id]]$aliases <- stats::setNames(values[keep], original[keep])
       }
+      if (!registry) refs[[id]]$aliases <- merge_ros_code_list_aliases(
+        refs[[id]]$aliases, bundled_aliases[bundled_aliases$id == id, , drop = FALSE],
+        refs[[id]]$values, id)
+      if (registry) refs[[id]]$aliases <- registry_snapshot_aliases(
+        registry_aliases, table, column, refs[[id]]$values)
     }
   }
   attr(refs, "provenance") <- provenance
@@ -103,16 +123,33 @@ read_ros_references <- function(directory, plans, prepare = TRUE) {
   for (plan in plans) {
     fields <- form.model::form_fields(plan$model)
     for (rule in plan$rules) {
-      p <- rule$parameters
-      if (!endsWith(rule$id, "/registry_match") || is.null(refs[[p$reference]])) next
-      snapshot <- refs[[p$reference]]
-      index <- registry_lookup(snapshot, p, fields[[p$field]]$type)
+      if (rule$kind == "registry") {
+        p <- rule$value
+        reference <- registry_reference_id(p)
+        field <- rule$field
+      } else {
+        p <- rule$parameters
+        reference <- p$reference
+        field <- p$field
+        if (!endsWith(rule$id, "/registry_match")) next
+      }
+      if (is.null(refs[[reference]])) next
+      snapshot <- refs[[reference]]
+      index <- registry_lookup(snapshot, p, fields[[field]]$type)
       same_policy <- vapply(snapshot$indexes, function(x) identical(
         x[c("type", "matching", "aliases")], index[c("type", "matching", "aliases")]), logical(1))
-      if (!any(same_policy)) refs[[p$reference]]$indexes <- c(snapshot$indexes, list(index))
+      if (!any(same_policy)) refs[[reference]]$indexes <- c(snapshot$indexes, list(index))
     }
   }
   form.validation::prepare_validation_references(refs, code_ids)
+}
+
+#' Resolve a registry rule to its snapshot key
+#' @param binding Registry rule value containing a table ID and optional column.
+#' @return The registry snapshot key.
+#' @keywords internal
+registry_reference_id <- function(binding) {
+  if (is.null(binding$column)) binding$id else paste(binding$id, binding$column, sep = ".")
 }
 
 #' Validate and report one workbook
@@ -159,11 +196,11 @@ validate_ros_file <- function(path, directory, plan, references = list(), source
   }
   report <- timed("report.prepare", form.validation::validation_report_data(result, rules_plan$model,
     reference_provenance = attr(references, "provenance"),
-    context = list(gear = toupper(result$model$form$id))))
+    context = list(gear = result$model$form$id)))
   timed("csv", form.validation::write_validation_results(report, directory))
   timed("html", {
     form.validation::write_validation_report(report, file.path(directory, report_filename),
-      title = paste("ROS validation report -", toupper(result$model$form$id), "-", source),
+      title = paste("ROS validation report -", result$model$form$id, "-", source),
       assets_directory = assets_directory,
       stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
       logo = system.file("report", "IOTC_with_text.png", package = "ros.form.validation", mustWork = TRUE))
@@ -203,7 +240,8 @@ ros_missing_value_policy <- function() {
 prepare_ros_validation_data <- function(data, model, reference_fields = character()) {
   policy <- ros_missing_value_policy()
   tokens <- function(field) {
-    referenced <- !is.null(field$reference) || field$id %in% reference_fields
+    referenced <- !is.null(field$reference) || !is.null(field$code_list) ||
+      !is.null(field$registry) || field$id %in% reference_fields
     if (!referenced && field$type %in% policy$types)
       c(policy$common, policy$unknown) else policy$common
   }

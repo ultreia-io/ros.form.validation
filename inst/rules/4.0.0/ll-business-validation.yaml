@@ -3,17 +3,6 @@ rules_version: 1.0.0
 model: {id: ll, version: 4.0.0}
 stage: business
 rules:
-  business/META.liaison_officer_full_name/registry_match: {reference: ros_meta.focal_point.full_name, matching: name, aliases: {Chia-Chun WU: WU JIA CHUN, Chia Chun WU: WU JIA CHUN}}
-  business/META.liaison_officer_email/registry_match: {reference: ros_meta.focal_point.email}
-  business/O-INFO.observer_identification_iotc_id/registry_match: {reference: ros_meta.observer.iotc_observer_identifier}
-  business/O-INFO.observer_identification_full_name/registry_match: {reference: ros_meta.observer.full_name, matching: name, severity: warning}
-  business/V-INFO.identification_iotc_number/registry_match: {reference: ros_meta.vessel.iotc_vessel_identifier}
-  business/V-INFO.registration_registration_number/registry_match: {reference: ros_meta.vessel.registration_identifier}
-  business/V-INFO.personnel_fishing_master_full_name/registry_match: {reference: ros_meta.contact.full_name, matching: name}
-  business/V-INFO.personnel_skipper_captain_full_name/registry_match: {reference: ros_meta.contact.full_name, matching: name}
-  business/V-INFO.identification_name/registry_match: {reference: ros_meta.vessel.vessel_name, matching: name, severity: warning, aliases: {CLIPPERTON: LE CLIPPERTON, MARIUS 3: LE MARIUS 3}}
-  business/V-INFO.identification_imo_number/registry_match: {reference: ros_meta.vessel.imo_identifier, severity: warning}
-  business/V-INFO.identification_ircs/registry_match: {reference: ros_meta.vessel.ircs_identifier, severity: warning}
   source-issue-1/source_issue: {sheet: META, field: reporting_country_code, message: 'Countries versus Fleets reference remains unresolved.'}
   source-issue-2/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_searching, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
   source-issue-3/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_actively_fishing, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
@@ -21,16 +10,9 @@ rules:
   source-issue-5/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_transiting, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
   source-issue-6/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_lost, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
   source-issue-7/source_issue: {sheet: G-CONFIG-MITIGATION-DEVICES, field: tori_line_details_towed_objects_type, message: 'The field has no complete type/code definition; text is provisional.'}
-  source-issue-8/source_issue: {sheet: E-SET-CATCH-SPECIMENS, field: weight_estimation_method, message: 'Reference weightEstimationMethods needs an agreed destination.'}
-  source-issue-9/source_issue: {sheet: E-SET-CATCH-SPECIMENS, field: depredation_details_observed_predator, message: 'Reference predators needs an agreed destination.'}
   source-issue-10/source_issue: {sheet: E-SET-CATCH-SPECIMENS, message: Second-length measuring-tool dependency has not been agreed.}
   source-issue-11/source_issue: {sheet: E-SET-CATCH-SPECIMENS-SSI, field: gear_interaction, message: 'Accept agreed UNK; reference-list integration remains unresolved.'}
-  source-issue-12/source_issue: {sheet: E-SET-CATCH-SPECIMENS-SSI, field: hook_type, message: 'Reference hookTypes needs an agreed destination.'}
   source-issue-13/source_issue: {sheet: E-SET-CATCH-SPECIMENS-SSI, field: leader_material, message: 'Accept agreed UNK; reference-list integration remains unresolved.'}
-  source-issue-14/source_issue: {sheet: E-SET-CATCH-SPECIMENS-SSI, field: light_attached, message: 'The field has no complete type/code definition; text is provisional.'}
-  source-issue-15/source_issue: {sheet: E-SET-CATCH-SPECIMENS-SSI, field: depredation_details_depredation_source, message: 'The field has no complete type/code definition; text is provisional.'}
-  source-issue-16/source_issue: {sheet: E-SET-CATCH-SPECIMENS-SSI, field: depredation_details_observed_predator, message: 'The field has no complete type/code definition; text is provisional.'}
-  source-issue-17/source_issue: {sheet: E-SET-CATCH-SPECIMENS-SSI, field: depredation_details_observed_predator, message: 'Reference predators needs an agreed destination.'}
   source-issue-18/source_issue: {sheet: O-INFO, message: Observation versus embarkation periods and EM identification remain unresolved.}
   source-issue-19/source_issue: {sheet: V-TRIP, message: At-sea port encoding remains unresolved.}
   source-issue-20/source_issue: {sheet: E-SET, message: 'Agreed floatline length, branchline distance and radio/dhan buoy fields are absent.'}
@@ -39,7 +21,3 @@ rules:
   source-issue-23/source_issue: {sheet: E-SET-CATCH-SPECIMENS, message: Catch-level depredation mapping and NA/UNK reference handling remain unresolved.}
   trip-composition/source_issue: {sheet: O-INFO, message: Trip-ID separators and composition enforcement need an agreed encoding.}
   uniform-branchlines/source_issue: {sheet: E-SET, message: Uniform branchline length cannot be inferred from minimum/maximum values alone.}
-  straight-length-j2/source_issue: {sheet: E-SET-CATCH-SPECIMENS, field: length_1_is_straight, message: 'IS_STRAIGHT has no agreed type or accepted values; text is provisional.'}
-  straight-length-n2/source_issue: {sheet: E-SET-CATCH-SPECIMENS, field: length_2_is_straight, message: 'IS_STRAIGHT has no agreed type or accepted values; text is provisional.'}
-  sample-type/source_issue: {sheet: E-SET-CATCH-SPECIMENS, field: sample_collected_type, message: 'SampleTypes has no resolved catalogue destination; no substitute list is enforced.'}
-  hook-type/source_issue: {sheet: E-SET-HOOKS, field: hooks_type, message: 'HookTypes has no resolved catalogue destination; the later Hook and Terminal Devices list is not substituted.'}

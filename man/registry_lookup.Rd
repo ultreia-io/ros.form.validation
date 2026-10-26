@@ -7,9 +7,10 @@
 registry_lookup(snapshot, rule, type)
 }
 \arguments{
-\item{snapshot}{Registry snapshot with \code{values} and optional prepared \code{indexes}.}
+\item{snapshot}{Registry snapshot with \code{values}, optional \code{aliases}, and
+optional prepared \code{indexes}.}
 
-\item{rule}{Rule parameters with optional \code{matching} and \code{aliases}.}
+\item{rule}{Rule parameters with optional \code{matching}.}
 
 \item{type}{Declared field type.}
 }

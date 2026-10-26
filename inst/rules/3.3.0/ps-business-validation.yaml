@@ -5,16 +5,5 @@ model:
   version: 3.3.0
 stage: business
 rules:
-  business/META.liaison_officer_full_name/registry_match: {reference: ros_meta.focal_point.full_name, matching: name}
-  business/META.liaison_officer_email/registry_match: {reference: ros_meta.focal_point.email}
-  business/O-INFO.observer_identification_observer_iotc_number/registry_match: {reference: ros_meta.observer.iotc_observer_identifier}
-  business/O-INFO.observer_identification_full_name/registry_match: {reference: ros_meta.observer.full_name, matching: name, severity: warning}
-  business/V-INFO.vessel_information_identification_iotc_number/registry_match: {reference: ros_meta.vessel.iotc_vessel_identifier}
-  business/V-INFO.vessel_information_identification_registration_number/registry_match: {reference: ros_meta.vessel.registration_identifier}
-  business/V-INFO.vessel_information_owner_and_personnel_fishing_master_full_name/registry_match: {reference: ros_meta.contact.full_name, matching: name}
-  business/V-INFO.vessel_information_owner_and_personnel_skipper_captain_full_name/registry_match: {reference: ros_meta.contact.full_name, matching: name}
-  business/V-INFO.vessel_information_identification_name/registry_match: {reference: ros_meta.vessel.vessel_name, matching: name, severity: warning}
-  business/V-INFO.vessel_information_identification_imo_number/registry_match: {reference: ros_meta.vessel.imo_identifier, severity: warning}
-  business/V-INFO.vessel_information_identification_ircs/registry_match: {reference: ros_meta.vessel.ircs_identifier, severity: warning}
   source-issue-1/source_issue: {sheet: E-SET-CATCHES-SPECIMEN, field: specimen_details_all_species_sampling_period_code, message: 'Legacy check_column_exists_in_code_list references a field absent from the input mapping.'}
   source-issue-2/source_issue: {sheet: E-SET, field: school_type, message: 'Upstream comment states the field is missing; no declaration or coordinate is supplied.'}

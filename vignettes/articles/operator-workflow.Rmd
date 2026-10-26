@@ -9,19 +9,28 @@ The `tools/` scripts are repository tools; they are not included in the installe
 
 Install the development packages listed on the home page. Run these commands from the repository root.
 
-The shell example uses a POSIX shell and `date`. Edit the input and reference paths before running it.
+The shell example uses a POSIX shell and `date`. Edit the input path before running it.
+
+Set `ROS_REGISTRY_AUTHORIZATION` to the HTTP Authorization header for the separate
+`ros-registries` account. For Basic Auth, its value is `Basic ` followed by the
+base64 encoding of `ros-registries:<password>`. Keep the value out of source files
+and shell history.
 
 ## Prepare reports from the command line
 
 ```sh
+references="output/references-$(date -u +%Y-%m-%dT%H%M%SZ)"
+Rscript tools/prepare-reference-snapshots.R \
+  --code-lists https://ros.ultreia.io/references/code_lists/ \
+  --registries https://ros.ultreia.io/references/registries/ \
+  --output "$references"
+
 batch="output/ros-validation-$(date -u +%Y-%m-%dT%H%M%SZ)"
 
 Rscript tools/validation.R plan \
   --input /path/to/ros-input-data \
   --versions 3.3.0,4.0.0,4.1.0 \
-  --reference 3.3.0=/path/to/v3-references \
-  --reference 4.0.0=/path/to/v4.0.0-references \
-  --reference 4.1.0=/path/to/v4.1.0-references \
+  --references "$references" \
   --output "$batch"
 
 Rscript tools/validation.R validate --plan "$batch"
@@ -30,7 +39,8 @@ Rscript tools/validation.R build-publication --plan "$batch" \
   --comment "Text-cell boundaries trimmed before validation."
 ```
 
-Use `--references DIR` only when the same approved snapshot applies to every selected version.
+The preparation step verifies catalogue and CSV checksums, then copies only the
+tables declared by the ROS models. The resulting snapshot covers all three versions.
 
 Use `--country`, `--year` and `--gear` on the planning command to restrict inputs.
 

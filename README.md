@@ -28,7 +28,8 @@ pak::pak("ultreia-io/ros.form.validation@develop")
 
 ## Validate one form
 
-Obtain the reference snapshot approved for your form version from the person maintaining your IOTC references.
+Prepare a verified reference snapshot using the
+[collection guide](https://ultreia-io.github.io/ros.form.validation/articles/validate-collection.html).
 
 ```r
 library(ros.form.validation)

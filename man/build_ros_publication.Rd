@@ -8,7 +8,8 @@ build_ros_publication(
   plan,
   output = NULL,
   report_filename = "index.html",
-  comment = NULL
+  comment = NULL,
+  workers = 1L
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ beside the raw batch directory.}
 \item{report_filename}{Filename for aggregate HTML pages.}
 
 \item{comment}{Optional plain-text publication note shown in the batch catalog.}
+
+\item{workers}{Maximum top-level aggregate directories to build concurrently; defaults to one.}
 }
 \value{
 The prepared publication directory, invisibly.

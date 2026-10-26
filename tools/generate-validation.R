@@ -5,7 +5,7 @@ if (length(args) != 2L || args[[1L]] != "--version")
   stop("Usage: Rscript tools/generate-validation.R --version 3.3.0|4.0.0|4.1.0", call. = FALSE)
 version <- args[[2L]]
 output <- file.path("inst", "rules", version)
-for (name in c("ll", "ps")) {
+for (name in ros.form.model::ROS_FORMS) {
   model <- ros.form.model::ros_form(name, version)
   paths <- file.path(output, paste0(name, c("-structure-validation.yaml", "-generated-validation.yaml")))
   form.validation::write_validation_rules(model, paths[[1L]], paths[[2L]],

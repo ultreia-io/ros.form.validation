@@ -22,7 +22,9 @@ ros-input-data/
 
 The year and country come from directory names. Keep original filenames. Excel lock files are excluded.
 
-Obtain an approved reference snapshot for each selected model version before planning.
+Configure the public code-list source and the private registry source before planning.
+Set `ROS_REGISTRY_AUTHORIZATION` to the Basic Auth header for the separate
+`ros-registries` account; keep the credential out of source files.
 
 ## 1. Plan the work
 
@@ -32,24 +34,32 @@ Edit the paths below. The output must be outside the input directory.
 library(ros.form.validation)
 
 input <- "ros-input-data"
-references <- c(
-  "3.3.0" = "references/3.3.0",
-  "4.0.0" = "references/4.0.0",
-  "4.1.0" = "references/4.1.0"
+cache <- "output/reference-cache"
+code_lists <- form.references::reference_source(
+  "https://ros.ultreia.io/references/code_lists/", cache
+)
+registries <- form.references::reference_source(
+  "https://ros.ultreia.io/references/registries/", cache,
+  catalogue = "registries",
+  headers = function() c(Authorization = Sys.getenv("ROS_REGISTRY_AUTHORIZATION"))
 )
 stamp <- format(Sys.time(), "%Y-%m-%dT%H%M%SZ", tz = "UTC")
+references <- prepare_ros_reference_snapshots(
+  file.path("output", paste0("ros-references-", stamp)), code_lists, registries
+)
 batch <- file.path("output", paste0("ros-validation-", stamp))
 plan <- plan_ros_validation(
   input = input,
   references = references,
-  versions = names(references),
+  versions = c("3.3.0", "4.0.0", "4.1.0"),
   output = batch
 )
 plan$jobs
 batch
 ```
 
-Planning saves the selected inputs, rules and reference values. It does not validate the forms yet.
+Reference preparation verifies catalogue and CSV checksums and caches downloads.
+Planning then saves the selected inputs, rules and reference values without validating forms.
 
 Text-cell boundaries are trimmed by readxl. Add `trim_ws = FALSE` to preserve surrounding whitespace.
 
@@ -74,6 +84,9 @@ validation$jobs
 
 This saves validation results without generating reports. It can resume after an interruption.
 
+Use `validate_ros_plan(plan, workers = 4L)` to validate up to four forms at once.
+Each form keeps its own saved result, so the same plan can still resume after an interruption.
+
 Do not change the inputs during the run. Changed forms or reference values require a new plan.
 
 ## 3. Generate individual reports
@@ -87,6 +100,8 @@ Reports are written under the batch's `reports/` directory, following the input 
 
 This stage reads saved results; it does not reopen the submitted forms.
 
+Use `write_ros_reports(plan, workers = 4L)` to render up to four reports at once.
+
 ## 4. Build the folder to share
 
 ```{r, eval=FALSE}
@@ -99,6 +114,8 @@ The new folder is `output/aggregated_ros-validation-<timestamp>`, alongside the 
 It contains form reports, ancestor aggregates, code-list evidence and registry evidence. Nothing is uploaded yet.
 
 The optional comment is saved in `publication.json` and shown beside the batch after publication.
+
+Use `build_ros_publication(plan, workers = 4L)` to build separate top-level report directories in parallel.
 
 ## 5. Review and share
 
