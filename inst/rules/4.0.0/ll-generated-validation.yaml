@@ -49,8 +49,10 @@ rules:
   field/META.form_revision/enum: [1]
   field/META.liaison_officer_full_name/mandatory: true
   field/META.liaison_officer_full_name/type: "string"
+  field/META.liaison_officer_full_name/registry: {value: {"id": "ros_meta.focal_point", "column": "full_name", "matching": "name"}}
   field/META.liaison_officer_email/mandatory: true
   field/META.liaison_officer_email/type: "email"
+  field/META.liaison_officer_email/registry: {value: {"id": "ros_meta.focal_point", "column": "email", "matching": "exact"}}
   field/META.organisation_name/mandatory: true
   field/META.organisation_name/type: "string"
   field/META.organisation_email/type: "email"
@@ -64,28 +66,30 @@ rules:
   field/META.reporting_year/maximum: 9999
   field/META.reporting_entity/mandatory: true
   field/META.reporting_entity/type: "string"
-  field/META.reporting_entity/reference: "refs_admin.entities"
+  field/META.reporting_entity/code_list: "refs_admin.entities"
   field/META.reporting_country_code/mandatory: true
   field/META.reporting_country_code/type: "string"
   field/META.data_source/mandatory: true
   field/META.data_source/type: "string"
-  field/META.data_source/reference: "refs_data.sources_ro"
+  field/META.data_source/code_list: "refs_data.data_sources_ro"
   field/O-INFO.observed_trip_id/mandatory: true
   field/O-INFO.observed_trip_id/type: "string"
   field/O-INFO.observer_identification_iotc_id/mandatory: true
   field/O-INFO.observer_identification_iotc_id/type: "string"
+  field/O-INFO.observer_identification_iotc_id/registry: {value: {"id": "ros_meta.observer", "column": "iotc_observer_identifier", "matching": "exact"}}
   field/O-INFO.observer_identification_full_name/type: "string"
+  field/O-INFO.observer_identification_full_name/registry: {value: {"id": "ros_meta.observer", "column": "full_name", "matching": "name"}, severity: warning}
   field/O-INFO.observer_trip_details_embarkation_in_port_country/type: "string"
-  field/O-INFO.observer_trip_details_embarkation_in_port_country/reference: "refs_admin.countries"
+  field/O-INFO.observer_trip_details_embarkation_in_port_country/code_list: "refs_admin.countries"
   field/O-INFO.observer_trip_details_embarkation_in_port_port/type: "string"
-  field/O-INFO.observer_trip_details_embarkation_in_port_port/reference: "refs_admin.ports"
+  field/O-INFO.observer_trip_details_embarkation_in_port_port/code_list: "refs_admin.ports"
   field/O-INFO.observer_trip_details_embarkation_at_sea_latitude/type: "latitude"
   field/O-INFO.observer_trip_details_embarkation_at_sea_longitude/type: "longitude"
   field/O-INFO.observer_trip_details_embarkation_date_time/type: "datetime"
   field/O-INFO.observer_trip_details_disembarkation_in_port_country/type: "string"
-  field/O-INFO.observer_trip_details_disembarkation_in_port_country/reference: "refs_admin.countries"
+  field/O-INFO.observer_trip_details_disembarkation_in_port_country/code_list: "refs_admin.countries"
   field/O-INFO.observer_trip_details_disembarkation_in_port_port/type: "string"
-  field/O-INFO.observer_trip_details_disembarkation_in_port_port/reference: "refs_admin.ports"
+  field/O-INFO.observer_trip_details_disembarkation_in_port_port/code_list: "refs_admin.ports"
   field/O-INFO.observer_trip_details_disembarkation_at_sea_latitude/type: "latitude"
   field/O-INFO.observer_trip_details_disembarkation_at_sea_longitude/type: "longitude"
   field/O-INFO.observer_trip_details_disembarkation_date_time/type: "datetime"
@@ -99,67 +103,80 @@ rules:
   field/O-INFO.observed_trip_summary_number_of_days_transiting/type: "number"
   field/O-INFO.observed_trip_summary_number_of_days_lost/type: "number"
   field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_1/type: "string"
-  field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_1/reference: "refs_fishery.reasons_days_lost"
+  field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_1/code_list: "refs_fishery.reasons_days_lost"
   field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_2/type: "string"
-  field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_2/reference: "refs_fishery.reasons_days_lost"
+  field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_2/code_list: "refs_fishery.reasons_days_lost"
   field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_3/type: "string"
-  field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_3/reference: "refs_fishery.reasons_days_lost"
+  field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_3/code_list: "refs_fishery.reasons_days_lost"
   field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_4/type: "string"
-  field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_4/reference: "refs_fishery.reasons_days_lost"
+  field/O-INFO.observed_trip_summary_reasons_for_days_lost_reason_4/code_list: "refs_fishery.reasons_days_lost"
+  sheet/O-INFO/primary_key_present: ["observed_trip_id"]
+  sheet/O-INFO/primary_key_unique: ["observed_trip_id"]
   field/V-INFO.observed_trip_id/mandatory: true
   field/V-INFO.observed_trip_id/type: "string"
   field/V-INFO.identification_name/mandatory: true
   field/V-INFO.identification_name/type: "string"
+  field/V-INFO.identification_name/registry: {value: {"id": "ros_meta.vessel", "column": "vessel_name", "matching": "name"}, severity: warning}
   field/V-INFO.identification_flag_or_chartering_state/mandatory: true
   field/V-INFO.identification_flag_or_chartering_state/type: "string"
-  field/V-INFO.identification_flag_or_chartering_state/reference: "refs_admin.countries"
+  field/V-INFO.identification_flag_or_chartering_state/code_list: "refs_admin.countries"
   field/V-INFO.identification_iotc_number/mandatory: true
   field/V-INFO.identification_iotc_number/type: "string"
+  field/V-INFO.identification_iotc_number/registry: {value: {"id": "ros_meta.vessel", "column": "iotc_vessel_identifier", "matching": "exact"}}
   field/V-INFO.identification_imo_number/type: "string"
+  field/V-INFO.identification_imo_number/registry: {value: {"id": "ros_meta.vessel", "column": "imo_identifier", "matching": "exact"}, severity: warning}
   field/V-INFO.identification_ircs/type: "string"
+  field/V-INFO.identification_ircs/registry: {value: {"id": "ros_meta.vessel", "column": "ircs_identifier", "matching": "exact"}, severity: warning}
   field/V-INFO.registration_country/type: "string"
-  field/V-INFO.registration_country/reference: "refs_admin.countries"
+  field/V-INFO.registration_country/code_list: "refs_admin.countries"
   field/V-INFO.registration_port/type: "string"
-  field/V-INFO.registration_port/reference: "refs_admin.ports"
+  field/V-INFO.registration_port/code_list: "refs_admin.ports"
   field/V-INFO.registration_registration_number/type: "string"
+  field/V-INFO.registration_registration_number/registry: {value: {"id": "ros_meta.vessel", "column": "registration_identifier", "matching": "exact"}}
   field/V-INFO.licensed_target_species/type: "string"
-  field/V-INFO.licensed_target_species/reference: "refs_fishery.target_species"
+  field/V-INFO.licensed_target_species/code_list: "refs_fishery_config.target_species"
   field/V-INFO.gear_main_fishing_gear/mandatory: true
   field/V-INFO.gear_main_fishing_gear/type: "string"
-  field/V-INFO.gear_main_fishing_gear/reference: "refs_fishery_config.gears"
+  field/V-INFO.gear_main_fishing_gear/code_list: "refs_fishery_config.gears"
   field/V-INFO.personnel_fishing_master_full_name/mandatory: true
   field/V-INFO.personnel_fishing_master_full_name/type: "string"
+  field/V-INFO.personnel_fishing_master_full_name/registry: {value: {"id": "ros_meta.contact", "column": "full_name", "matching": "name"}}
   field/V-INFO.personnel_fishing_master_nationality/mandatory: true
   field/V-INFO.personnel_fishing_master_nationality/type: "string"
-  field/V-INFO.personnel_fishing_master_nationality/reference: "refs_admin.countries"
+  field/V-INFO.personnel_fishing_master_nationality/code_list: "refs_admin.countries"
   field/V-INFO.personnel_skipper_captain_full_name/mandatory: true
   field/V-INFO.personnel_skipper_captain_full_name/type: "string"
+  field/V-INFO.personnel_skipper_captain_full_name/registry: {value: {"id": "ros_meta.contact", "column": "full_name", "matching": "name"}}
   field/V-INFO.personnel_skipper_captain_nationality/mandatory: true
   field/V-INFO.personnel_skipper_captain_nationality/type: "string"
-  field/V-INFO.personnel_skipper_captain_nationality/reference: "refs_admin.countries"
+  field/V-INFO.personnel_skipper_captain_nationality/code_list: "refs_admin.countries"
   field/V-INFO.personnel_crew_number/type: "integer"
+  sheet/V-INFO/primary_key_present: ["observed_trip_id"]
+  sheet/V-INFO/primary_key_unique: ["observed_trip_id"]
   field/V-TRIP.observed_trip_id/mandatory: true
   field/V-TRIP.observed_trip_id/type: "string"
   field/V-TRIP.vessel_departure_port_country/type: "string"
-  field/V-TRIP.vessel_departure_port_country/reference: "refs_admin.countries"
+  field/V-TRIP.vessel_departure_port_country/code_list: "refs_admin.countries"
   field/V-TRIP.vessel_departure_port_port/type: "string"
-  field/V-TRIP.vessel_departure_port_port/reference: "refs_admin.ports"
+  field/V-TRIP.vessel_departure_port_port/code_list: "refs_admin.ports"
   field/V-TRIP.vessel_departure_port_latitude/type: "latitude"
   field/V-TRIP.vessel_departure_port_longitude/type: "longitude"
   field/V-TRIP.vessel_departure_date_time/type: "datetime"
   field/V-TRIP.vessel_return_port_country/type: "string"
-  field/V-TRIP.vessel_return_port_country/reference: "refs_admin.countries"
+  field/V-TRIP.vessel_return_port_country/code_list: "refs_admin.countries"
   field/V-TRIP.vessel_return_port_port/type: "string"
-  field/V-TRIP.vessel_return_port_port/reference: "refs_admin.ports"
+  field/V-TRIP.vessel_return_port_port/code_list: "refs_admin.ports"
   field/V-TRIP.vessel_return_port_latitude/type: "latitude"
   field/V-TRIP.vessel_return_port_longitude/type: "longitude"
   field/V-TRIP.vessel_return_date_time/type: "datetime"
+  sheet/V-TRIP/primary_key_present: ["observed_trip_id"]
+  sheet/V-TRIP/primary_key_unique: ["observed_trip_id"]
   field/V-ATTRIBUTES.observed_trip_id/mandatory: true
   field/V-ATTRIBUTES.observed_trip_id/type: "string"
   field/V-ATTRIBUTES.vessel_attributes_gross_tonnage/type: "integer"
   field/V-ATTRIBUTES.vessel_attributes_loa_m/type: "number"
   field/V-ATTRIBUTES.vessel_attributes_hull_material/type: "string"
-  field/V-ATTRIBUTES.vessel_attributes_hull_material/reference: "refs_fishery.hull_material_types"
+  field/V-ATTRIBUTES.vessel_attributes_hull_material/code_list: "refs_fishery.hull_material_types"
   field/V-ATTRIBUTES.vessel_attributes_main_engine_1_make/type: "string"
   field/V-ATTRIBUTES.vessel_attributes_main_engine_1_power_value/type: "integer"
   field/V-ATTRIBUTES.vessel_attributes_main_engine_1_power_unit/required_field: "vessel_attributes_main_engine_1_power_value"
@@ -172,101 +189,107 @@ rules:
   field/V-ATTRIBUTES.vessel_attributes_main_engine_2_power_unit/enum: ["kW", "hp", "bhp"]
   field/V-ATTRIBUTES.vessel_attributes_fish_storage_capacity_m3/type: "number"
   field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_1/type: "string"
-  field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_1/reference: "refs_fishery.fish_preservation_methods"
+  field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_1/code_list: "refs_fishery.fish_preservation_methods"
   field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_2/type: "string"
-  field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_2/reference: "refs_fishery.fish_preservation_methods"
+  field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_2/code_list: "refs_fishery.fish_preservation_methods"
   field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_3/type: "string"
-  field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_3/reference: "refs_fishery.fish_preservation_methods"
+  field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_3/code_list: "refs_fishery.fish_preservation_methods"
   field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_4/type: "string"
-  field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_4/reference: "refs_fishery.fish_preservation_methods"
+  field/V-ATTRIBUTES.vessel_attributes_fish_preservation_methods_method_4/code_list: "refs_fishery.fish_preservation_methods"
   field/V-ATTRIBUTES.vessel_attributes_fish_storage_types_type_1/type: "string"
-  field/V-ATTRIBUTES.vessel_attributes_fish_storage_types_type_1/reference: "refs_fishery.fish_storage_types"
+  field/V-ATTRIBUTES.vessel_attributes_fish_storage_types_type_1/code_list: "refs_fishery.fish_storage_types"
   field/V-ATTRIBUTES.vessel_attributes_fish_storage_types_type_2/type: "string"
-  field/V-ATTRIBUTES.vessel_attributes_fish_storage_types_type_2/reference: "refs_fishery.fish_storage_types"
+  field/V-ATTRIBUTES.vessel_attributes_fish_storage_types_type_2/code_list: "refs_fishery.fish_storage_types"
   field/V-ATTRIBUTES.vessel_attributes_fish_storage_types_type_3/type: "string"
-  field/V-ATTRIBUTES.vessel_attributes_fish_storage_types_type_3/reference: "refs_fishery.fish_storage_types"
+  field/V-ATTRIBUTES.vessel_attributes_fish_storage_types_type_3/code_list: "refs_fishery.fish_storage_types"
   field/V-ATTRIBUTES.vessel_attributes_autonomy_range_value/type: "number"
   field/V-ATTRIBUTES.vessel_attributes_autonomy_range_unit/required_field: "vessel_attributes_autonomy_range_value"
   field/V-ATTRIBUTES.vessel_attributes_autonomy_range_unit/type: "string"
   field/V-ATTRIBUTES.vessel_attributes_autonomy_range_unit/enum: ["days", "nm"]
   field/V-ATTRIBUTES.vessel_electronics_gnss/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_gnss/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_gnss/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_vms/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_vms/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_vms/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_ais/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_ais/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_ais/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_radars/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_radars/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_radars/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_track_plotter/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_track_plotter/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_track_plotter/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_depth_sounder/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_depth_sounder/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_depth_sounder/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_sonar/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_sonar/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_sonar/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_doppler_current_meter/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_doppler_current_meter/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_doppler_current_meter/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_xbt/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_xbt/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_xbt/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_vhf_radios/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_vhf_radios/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_vhf_radios/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_hf_radios/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_hf_radios/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_hf_radios/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_satcom/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_satcom/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_satcom/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.vessel_electronics_fis/type: "string"
-  field/V-ATTRIBUTES.vessel_electronics_fis/reference: "refs_biology.logical_responses"
+  field/V-ATTRIBUTES.vessel_electronics_fis/code_list: "refs_data.logical_responses"
   field/V-ATTRIBUTES.waste_management_details_1_category_1/type: "string"
-  field/V-ATTRIBUTES.waste_management_details_1_category_1/reference: "refs_fishery.waste_categories"
+  field/V-ATTRIBUTES.waste_management_details_1_category_1/code_list: "refs_fishery.waste_categories"
   field/V-ATTRIBUTES.waste_management_details_1_storage_disposal_method_1/type: "string"
-  field/V-ATTRIBUTES.waste_management_details_1_storage_disposal_method_1/reference: "refs_fishery.waste_disposal_methods"
+  field/V-ATTRIBUTES.waste_management_details_1_storage_disposal_method_1/code_list: "refs_fishery.waste_disposal_methods"
   field/V-ATTRIBUTES.waste_management_details_2_category_2/type: "string"
-  field/V-ATTRIBUTES.waste_management_details_2_category_2/reference: "refs_fishery.waste_categories"
+  field/V-ATTRIBUTES.waste_management_details_2_category_2/code_list: "refs_fishery.waste_categories"
   field/V-ATTRIBUTES.waste_management_details_2_storage_disposal_method_2/type: "string"
-  field/V-ATTRIBUTES.waste_management_details_2_storage_disposal_method_2/reference: "refs_fishery.waste_disposal_methods"
+  field/V-ATTRIBUTES.waste_management_details_2_storage_disposal_method_2/code_list: "refs_fishery.waste_disposal_methods"
   field/V-ATTRIBUTES.waste_management_details_3_category_3/type: "string"
-  field/V-ATTRIBUTES.waste_management_details_3_category_3/reference: "refs_fishery.waste_categories"
+  field/V-ATTRIBUTES.waste_management_details_3_category_3/code_list: "refs_fishery.waste_categories"
   field/V-ATTRIBUTES.waste_management_details_3_storage_disposal_method_3/type: "string"
-  field/V-ATTRIBUTES.waste_management_details_3_storage_disposal_method_3/reference: "refs_fishery.waste_disposal_methods"
+  field/V-ATTRIBUTES.waste_management_details_3_storage_disposal_method_3/code_list: "refs_fishery.waste_disposal_methods"
   field/V-ATTRIBUTES.waste_management_details_4_category_4/type: "string"
-  field/V-ATTRIBUTES.waste_management_details_4_category_4/reference: "refs_fishery.waste_categories"
+  field/V-ATTRIBUTES.waste_management_details_4_category_4/code_list: "refs_fishery.waste_categories"
   field/V-ATTRIBUTES.waste_management_details_4_storage_disposal_method_4/type: "string"
-  field/V-ATTRIBUTES.waste_management_details_4_storage_disposal_method_4/reference: "refs_fishery.waste_disposal_methods"
+  field/V-ATTRIBUTES.waste_management_details_4_storage_disposal_method_4/code_list: "refs_fishery.waste_disposal_methods"
+  sheet/V-ATTRIBUTES/primary_key_present: ["observed_trip_id"]
+  sheet/V-ATTRIBUTES/primary_key_unique: ["observed_trip_id"]
   field/G-GENERAL.observed_trip_id/mandatory: true
   field/G-GENERAL.observed_trip_id/type: "string"
   field/G-GENERAL.special_equipment_or_machinery_line_setter_shooter/mandatory: true
   field/G-GENERAL.special_equipment_or_machinery_line_setter_shooter/type: "string"
-  field/G-GENERAL.special_equipment_or_machinery_line_setter_shooter/reference: "refs_biology.logical_responses"
+  field/G-GENERAL.special_equipment_or_machinery_line_setter_shooter/code_list: "refs_data.logical_responses"
   field/G-GENERAL.special_equipment_or_machinery_line_hauler/mandatory: true
   field/G-GENERAL.special_equipment_or_machinery_line_hauler/type: "string"
-  field/G-GENERAL.special_equipment_or_machinery_line_hauler/reference: "refs_biology.logical_responses"
+  field/G-GENERAL.special_equipment_or_machinery_line_hauler/code_list: "refs_data.logical_responses"
   field/G-GENERAL.special_equipment_or_machinery_bait_casting_machine/mandatory: true
   field/G-GENERAL.special_equipment_or_machinery_bait_casting_machine/type: "string"
-  field/G-GENERAL.special_equipment_or_machinery_bait_casting_machine/reference: "refs_biology.logical_responses"
+  field/G-GENERAL.special_equipment_or_machinery_bait_casting_machine/code_list: "refs_data.logical_responses"
+  sheet/G-GENERAL/primary_key_present: ["observed_trip_id"]
+  sheet/G-GENERAL/primary_key_unique: ["observed_trip_id"]
   field/G-CONFIG-BRANCHLINES.observed_trip_id/mandatory: true
   field/G-CONFIG-BRANCHLINES.observed_trip_id/type: "string"
   field/G-CONFIG-BRANCHLINES.branchline_configurations_configuration_id/type: "string"
   field/G-CONFIG-BRANCHLINES.branchline_configurations_section_id/type: "string"
   field/G-CONFIG-BRANCHLINES.branchline_configurations_material_type/type: "string"
-  field/G-CONFIG-BRANCHLINES.branchline_configurations_material_type/reference: "refs_fishery.line_material_types"
+  field/G-CONFIG-BRANCHLINES.branchline_configurations_material_type/code_list: "refs_fishery.line_material_types"
   field/G-CONFIG-BRANCHLINES.branchline_configurations_length_m/type: "number"
   field/G-CONFIG-BRANCHLINES.branchline_configurations_diameter_cm/type: "number"
   field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_1/type: "string"
-  field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_1/reference: "refs_fishery.branchline_storages"
+  field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_1/code_list: "refs_fishery.branchline_storages"
   field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_2/type: "string"
-  field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_2/reference: "refs_fishery.branchline_storages"
+  field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_2/code_list: "refs_fishery.branchline_storages"
   field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_3/type: "string"
-  field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_3/reference: "refs_fishery.branchline_storages"
+  field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_3/code_list: "refs_fishery.branchline_storages"
   field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_4/type: "string"
-  field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_4/reference: "refs_fishery.branchline_storages"
+  field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_4/code_list: "refs_fishery.branchline_storages"
+  sheet/G-CONFIG-BRANCHLINES/primary_key_present: ["observed_trip_id", "branchline_configurations_configuration_id", "branchline_configurations_section_id"]
+  sheet/G-CONFIG-BRANCHLINES/primary_key_unique: ["observed_trip_id", "branchline_configurations_configuration_id", "branchline_configurations_section_id"]
   field/G-CONFIG-MITIGATION-DEVICES.observed_trip_id/mandatory: true
   field/G-CONFIG-MITIGATION-DEVICES.observed_trip_id/type: "string"
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_tori_line_length/mandatory: true
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_tori_line_length/type: "number"
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_type/mandatory: true
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_type/type: "string"
-  field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_type/reference: "refs_fishery.streamer_types"
+  field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_type/code_list: "refs_fishery.streamer_types"
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_reach_surface/type: "string"
-  field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_reach_surface/reference: "refs_biology.logical_responses"
+  field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_reach_surface/code_list: "refs_data.logical_responses"
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_line_length_max_m/mandatory: true
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_line_length_max_m/type: "number"
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_streamer_line_length_min_m/type: "number"
@@ -278,15 +301,17 @@ rules:
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_towed_objects_type/type: "string"
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_towed_objects_number/type: "integer"
   field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_1/type: "string"
-  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_1/reference: "refs_fishery.mitigation_devices"
+  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_1/code_list: "refs_fishery.mitigation_devices"
   field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_2/type: "string"
-  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_2/reference: "refs_fishery.mitigation_devices"
+  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_2/code_list: "refs_fishery.mitigation_devices"
   field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_3/type: "string"
-  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_3/reference: "refs_fishery.mitigation_devices"
+  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_3/code_list: "refs_fishery.mitigation_devices"
   field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_4/type: "string"
-  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_4/reference: "refs_fishery.mitigation_devices"
+  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_4/code_list: "refs_fishery.mitigation_devices"
   field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_5/type: "string"
-  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_5/reference: "refs_fishery.mitigation_devices"
+  field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_5/code_list: "refs_fishery.mitigation_devices"
+  sheet/G-CONFIG-MITIGATION-DEVICES/primary_key_present: ["observed_trip_id"]
+  sheet/G-CONFIG-MITIGATION-DEVICES/primary_key_unique: ["observed_trip_id"]
   field/E-SET.observed_trip_id/mandatory: true
   field/E-SET.observed_trip_id/type: "string"
   field/E-SET.set_id/mandatory: true
@@ -308,7 +333,7 @@ rules:
   field/E-SET.line_setter_speed_ms/mandatory: true
   field/E-SET.line_setter_speed_ms/type: "number"
   field/E-SET.mainline_material/type: "string"
-  field/E-SET.mainline_material/reference: "refs_fishery.line_material_types"
+  field/E-SET.mainline_material/code_list: "refs_fishery.line_material_types"
   field/E-SET.mainline_length_value/type: "number"
   field/E-SET.mainline_length_unit/required_field: "mainline_length_value"
   field/E-SET.mainline_length_unit/type: "string"
@@ -322,11 +347,11 @@ rules:
   field/E-SET.number_hooks_between_floats/type: "integer"
   field/E-SET.shark_lines_set/mandatory: true
   field/E-SET.shark_lines_set/type: "string"
-  field/E-SET.shark_lines_set/reference: "refs_biology.logical_responses"
+  field/E-SET.shark_lines_set/code_list: "refs_data.logical_responses"
   field/E-SET.shark_lines_number/type: "integer"
   field/E-SET.leader_material_type/mandatory: true
   field/E-SET.leader_material_type/type: "string"
-  field/E-SET.leader_material_type/reference: "refs_fishery.line_material_types"
+  field/E-SET.leader_material_type/code_list: "refs_fishery.line_material_types"
   field/E-SET.leader_material_percentage/mandatory: true
   field/E-SET.leader_material_percentage/type: "number"
   field/E-SET.branchline_length_minimum_value/mandatory: true
@@ -343,25 +368,29 @@ rules:
   field/E-SET.branchline_length_maximum_unit/enum: ["m"]
   field/E-SET.target_species_species_1/mandatory: true
   field/E-SET.target_species_species_1/type: "string"
-  field/E-SET.target_species_species_1/reference: "refs_fishery.target_species"
+  field/E-SET.target_species_species_1/code_list: "refs_fishery_config.target_species"
   field/E-SET.target_species_species_2/type: "string"
-  field/E-SET.target_species_species_2/reference: "refs_fishery.target_species"
+  field/E-SET.target_species_species_2/code_list: "refs_fishery_config.target_species"
   field/E-SET.target_species_species_3/type: "string"
-  field/E-SET.target_species_species_3/reference: "refs_fishery.target_species"
+  field/E-SET.target_species_species_3/code_list: "refs_fishery_config.target_species"
   field/E-SET.target_species_species_4/type: "string"
-  field/E-SET.target_species_species_4/reference: "refs_fishery.target_species"
+  field/E-SET.target_species_species_4/code_list: "refs_fishery_config.target_species"
+  sheet/E-SET/primary_key_present: ["observed_trip_id", "set_id"]
+  sheet/E-SET/primary_key_unique: ["observed_trip_id", "set_id"]
   field/E-SET-LIGHTS.observed_trip_id/mandatory: true
   field/E-SET-LIGHTS.observed_trip_id/type: "string"
   field/E-SET-LIGHTS.set_id/mandatory: true
   field/E-SET-LIGHTS.set_id/type: "string"
   field/E-SET-LIGHTS.type/mandatory: true
   field/E-SET-LIGHTS.type/type: "string"
-  field/E-SET-LIGHTS.type/reference: "refs_fishery.light_types"
+  field/E-SET-LIGHTS.type/code_list: "refs_fishery.light_types"
   field/E-SET-LIGHTS.colour/mandatory: true
   field/E-SET-LIGHTS.colour/type: "string"
-  field/E-SET-LIGHTS.colour/reference: "refs_fishery.light_colours"
+  field/E-SET-LIGHTS.colour/code_list: "refs_fishery.light_colours"
   field/E-SET-LIGHTS.number_of_lights/mandatory: true
   field/E-SET-LIGHTS.number_of_lights/type: "integer"
+  sheet/E-SET-LIGHTS/primary_key_present: ["observed_trip_id", "set_id", "type", "colour"]
+  sheet/E-SET-LIGHTS/primary_key_unique: ["observed_trip_id", "set_id", "type", "colour"]
   field/E-SET-MITIGATION-MEASURES.observed_trip_id/mandatory: true
   field/E-SET-MITIGATION-MEASURES.observed_trip_id/type: "string"
   field/E-SET-MITIGATION-MEASURES.set_id/mandatory: true
@@ -370,9 +399,9 @@ rules:
   field/E-SET-MITIGATION-MEASURES.number_tori_lines_deployed/type: "integer"
   field/E-SET-MITIGATION-MEASURES.minimum_deck_lighting_used/mandatory: true
   field/E-SET-MITIGATION-MEASURES.minimum_deck_lighting_used/type: "string"
-  field/E-SET-MITIGATION-MEASURES.minimum_deck_lighting_used/reference: "refs_biology.logical_responses"
+  field/E-SET-MITIGATION-MEASURES.minimum_deck_lighting_used/code_list: "refs_data.logical_responses"
   field/E-SET-MITIGATION-MEASURES.branchline_weighted/type: "string"
-  field/E-SET-MITIGATION-MEASURES.branchline_weighted/reference: "refs_biology.logical_responses"
+  field/E-SET-MITIGATION-MEASURES.branchline_weighted/code_list: "refs_data.logical_responses"
   field/E-SET-MITIGATION-MEASURES.average_sinker_weight_g/mandatory: true
   field/E-SET-MITIGATION-MEASURES.average_sinker_weight_g/type: "number"
   field/E-SET-MITIGATION-MEASURES.percent_branchline_weighted/mandatory: true
@@ -381,42 +410,49 @@ rules:
   field/E-SET-MITIGATION-MEASURES.hook_sinker_distance_cm/type: "number"
   field/E-SET-MITIGATION-MEASURES.hook_pods/mandatory: true
   field/E-SET-MITIGATION-MEASURES.hook_pods/type: "string"
-  field/E-SET-MITIGATION-MEASURES.hook_pods/reference: "refs_biology.logical_responses"
+  field/E-SET-MITIGATION-MEASURES.hook_pods/code_list: "refs_data.logical_responses"
   field/E-SET-MITIGATION-MEASURES.branchline_details_configuration_number/type: "string"
   field/E-SET-MITIGATION-MEASURES.branchline_details_num_branchlines_set/type: "integer"
   field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_1/mandatory: true
   field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_1/type: "string"
-  field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_1/reference: "refs_fishery.mitigation_devices"
+  field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_1/code_list: "refs_fishery.mitigation_devices"
   field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_2/mandatory: true
   field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_2/type: "string"
-  field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_2/reference: "refs_fishery.mitigation_devices"
+  field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_2/code_list: "refs_fishery.mitigation_devices"
   field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_3/mandatory: true
   field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_3/type: "string"
-  field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_3/reference: "refs_fishery.mitigation_devices"
+  field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_3/code_list: "refs_fishery.mitigation_devices"
   field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_4/mandatory: true
   field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_4/type: "string"
-  field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_4/reference: "refs_fishery.mitigation_devices"
+  field/E-SET-MITIGATION-MEASURES.other_mitigation_measures_used_measure_4/code_list: "refs_fishery.mitigation_devices"
+  sheet/E-SET-MITIGATION-MEASURES/primary_key_present: ["observed_trip_id", "set_id"]
+  sheet/E-SET-MITIGATION-MEASURES/primary_key_unique: ["observed_trip_id", "set_id"]
   field/E-SET-HOOKS.observed_trip_id/mandatory: true
   field/E-SET-HOOKS.observed_trip_id/type: "string"
   field/E-SET-HOOKS.set_id/mandatory: true
   field/E-SET-HOOKS.set_id/type: "string"
   field/E-SET-HOOKS.hooks_type/mandatory: true
   field/E-SET-HOOKS.hooks_type/type: "string"
+  field/E-SET-HOOKS.hooks_type/code_list: "refs_fishery.hook_types"
   field/E-SET-HOOKS.hooks_percentage/type: "number"
   field/E-SET-HOOKS.hooks_variations/type: "string"
+  sheet/E-SET-HOOKS/primary_key_present: ["observed_trip_id", "set_id", "hooks_type"]
+  sheet/E-SET-HOOKS/primary_key_unique: ["observed_trip_id", "set_id", "hooks_type"]
   field/E-SET-BAITS.observed_trip_id/mandatory: true
   field/E-SET-BAITS.observed_trip_id/type: "string"
   field/E-SET-BAITS.set_id/mandatory: true
   field/E-SET-BAITS.set_id/type: "string"
   field/E-SET-BAITS.bait_condition/mandatory: true
   field/E-SET-BAITS.bait_condition/type: "string"
-  field/E-SET-BAITS.bait_condition/reference: "refs_biology.bait_conditions"
+  field/E-SET-BAITS.bait_condition/code_list: "refs_biology.bait_conditions"
   field/E-SET-BAITS.bait_species/mandatory: true
   field/E-SET-BAITS.bait_species/type: "string"
-  field/E-SET-BAITS.bait_species/reference: "refs_biology.species_baits"
+  field/E-SET-BAITS.bait_species/code_list: "refs_biology.species_baits"
   field/E-SET-BAITS.bait_percentage/mandatory: true
   field/E-SET-BAITS.bait_percentage/type: "number"
   field/E-SET-BAITS.bait_dye_colour/type: "string"
+  sheet/E-SET-BAITS/primary_key_present: ["observed_trip_id", "set_id", "bait_species", "bait_condition"]
+  sheet/E-SET-BAITS/primary_key_unique: ["observed_trip_id", "set_id", "bait_species", "bait_condition"]
   field/E-SET-HAULING.observed_trip_id/mandatory: true
   field/E-SET-HAULING.observed_trip_id/type: "string"
   field/E-SET-HAULING.set_id/mandatory: true
@@ -434,31 +470,35 @@ rules:
   field/E-SET-HAULING.end_hauling_position_longitude/mandatory: true
   field/E-SET-HAULING.end_hauling_position_longitude/type: "longitude"
   field/E-SET-HAULING.offal_management/type: "string"
-  field/E-SET-HAULING.offal_management/reference: "refs_biology.offal_management_types"
+  field/E-SET-HAULING.offal_management/code_list: "refs_fishery.offal_management_types"
   field/E-SET-HAULING.positions_of_offal_disposal_position_1/type: "string"
-  field/E-SET-HAULING.positions_of_offal_disposal_position_1/reference: "refs_biology.vessel_sections"
+  field/E-SET-HAULING.positions_of_offal_disposal_position_1/code_list: "refs_fishery.vessel_sections"
   field/E-SET-HAULING.positions_of_offal_disposal_position_2/type: "string"
-  field/E-SET-HAULING.positions_of_offal_disposal_position_2/reference: "refs_biology.vessel_sections"
+  field/E-SET-HAULING.positions_of_offal_disposal_position_2/code_list: "refs_fishery.vessel_sections"
   field/E-SET-HAULING.positions_of_offal_disposal_position_3/type: "string"
-  field/E-SET-HAULING.positions_of_offal_disposal_position_3/reference: "refs_biology.vessel_sections"
+  field/E-SET-HAULING.positions_of_offal_disposal_position_3/code_list: "refs_fishery.vessel_sections"
   field/E-SET-HAULING.positions_of_offal_disposal_position_4/type: "string"
-  field/E-SET-HAULING.positions_of_offal_disposal_position_4/reference: "refs_biology.vessel_sections"
+  field/E-SET-HAULING.positions_of_offal_disposal_position_4/code_list: "refs_fishery.vessel_sections"
   field/E-SET-HAULING.bird_scaring_device_at_hauler/mandatory: true
   field/E-SET-HAULING.bird_scaring_device_at_hauler/type: "string"
-  field/E-SET-HAULING.bird_scaring_device_at_hauler/reference: "refs_biology.logical_responses"
+  field/E-SET-HAULING.bird_scaring_device_at_hauler/code_list: "refs_data.logical_responses"
   field/E-SET-HAULING.number_branchline_haulings_observed/mandatory: true
   field/E-SET-HAULING.number_branchline_haulings_observed/type: "integer"
   field/E-SET-HAULING.number_of_hooks_retrieved_during_observation/mandatory: true
   field/E-SET-HAULING.number_of_hooks_retrieved_during_observation/type: "integer"
   field/E-SET-HAULING.sampling_protocol/mandatory: true
   field/E-SET-HAULING.sampling_protocol/type: "string"
-  field/E-SET-HAULING.sampling_protocol/reference: "refs_biology.sampling_protocols"
+  field/E-SET-HAULING.sampling_protocol/code_list: "refs_biology.sampling_protocols"
+  sheet/E-SET-HAULING/primary_key_present: ["observed_trip_id", "set_id"]
+  sheet/E-SET-HAULING/primary_key_unique: ["observed_trip_id", "set_id"]
   field/E-SET-HAULING-BITEOFFS.observed_trip_id/mandatory: true
   field/E-SET-HAULING-BITEOFFS.observed_trip_id/type: "string"
   field/E-SET-HAULING-BITEOFFS.set_id/mandatory: true
   field/E-SET-HAULING-BITEOFFS.set_id/type: "string"
   field/E-SET-HAULING-BITEOFFS.branchline_configuration_id/type: "string"
   field/E-SET-HAULING-BITEOFFS.branchline_number_of_biteoffs/type: "integer"
+  sheet/E-SET-HAULING-BITEOFFS/primary_key_present: ["observed_trip_id", "set_id", "branchline_configuration_id"]
+  sheet/E-SET-HAULING-BITEOFFS/primary_key_unique: ["observed_trip_id", "set_id", "branchline_configuration_id"]
   field/E-SET-CATCHES.observed_trip_id/mandatory: true
   field/E-SET-CATCHES.observed_trip_id/type: "string"
   field/E-SET-CATCHES.set_id/mandatory: true
@@ -467,23 +507,25 @@ rules:
   field/E-SET-CATCHES.catch_id/type: "string"
   field/E-SET-CATCHES.species/mandatory: true
   field/E-SET-CATCHES.species/type: "string"
-  field/E-SET-CATCHES.species/reference: "refs_biology.species"
+  field/E-SET-CATCHES.species/code_list: "refs_biology.species"
   field/E-SET-CATCHES.fate_type/mandatory: true
   field/E-SET-CATCHES.fate_type/type: "string"
-  field/E-SET-CATCHES.fate_type/reference: "refs_biology.types_of_fate"
+  field/E-SET-CATCHES.fate_type/code_list: "refs_biology.types_of_fate"
   field/E-SET-CATCHES.fate_code/mandatory: true
   field/E-SET-CATCHES.fate_code/type: "string"
-  field/E-SET-CATCHES.fate_code/reference: "refs_biology.fates"
+  field/E-SET-CATCHES.fate_code/code_list: "refs_biology.fates"
   field/E-SET-CATCHES.sampling_method/mandatory: true
   field/E-SET-CATCHES.sampling_method/type: "string"
-  field/E-SET-CATCHES.sampling_method/reference: "refs_biology.sampling_methods_for_catch_estimation"
+  field/E-SET-CATCHES.sampling_method/code_list: "refs_biology.sampling_methods_for_catch_estimation"
   field/E-SET-CATCHES.number_of_fish/mandatory: true
   field/E-SET-CATCHES.number_of_fish/type: "integer"
   field/E-SET-CATCHES.weight_processing_type/type: "string"
-  field/E-SET-CATCHES.weight_processing_type/reference: "refs_biology.weight_measurements"
+  field/E-SET-CATCHES.weight_processing_type/code_list: "refs_biology.weight_measurements"
   field/E-SET-CATCHES.weight_value_kg/type: "number"
   field/E-SET-CATCHES.weight_estimation_method/type: "string"
-  field/E-SET-CATCHES.weight_estimation_method/reference: "refs_biology.weight_measurement_tools"
+  field/E-SET-CATCHES.weight_estimation_method/code_list: "refs_biology.weight_measurement_tools"
+  sheet/E-SET-CATCHES/primary_key_present: ["observed_trip_id", "set_id", "catch_id"]
+  sheet/E-SET-CATCHES/primary_key_unique: ["observed_trip_id", "set_id", "catch_id"]
   field/E-SET-CATCH-SPECIMENS.observed_trip_id/mandatory: true
   field/E-SET-CATCH-SPECIMENS.observed_trip_id/type: "string"
   field/E-SET-CATCH-SPECIMENS.set_id/mandatory: true
@@ -494,44 +536,51 @@ rules:
   field/E-SET-CATCH-SPECIMENS.specimen_id/type: "string"
   field/E-SET-CATCH-SPECIMENS.sampling_period/mandatory: true
   field/E-SET-CATCH-SPECIMENS.sampling_period/type: "string"
-  field/E-SET-CATCH-SPECIMENS.sampling_period/reference: "refs_biology.sampling_periods"
+  field/E-SET-CATCH-SPECIMENS.sampling_period/code_list: "refs_biology.sampling_periods"
   field/E-SET-CATCH-SPECIMENS.sampling_method/mandatory: true
   field/E-SET-CATCH-SPECIMENS.sampling_method/type: "string"
-  field/E-SET-CATCH-SPECIMENS.sampling_method/reference: "refs_biology.sampling_methods_for_sampling_collection"
+  field/E-SET-CATCH-SPECIMENS.sampling_method/code_list: "refs_biology.sampling_methods_for_sampling_collections"
   field/E-SET-CATCH-SPECIMENS.length_1_type/mandatory: true
   field/E-SET-CATCH-SPECIMENS.length_1_type/type: "string"
-  field/E-SET-CATCH-SPECIMENS.length_1_type/reference: "refs_biology.measurements"
+  field/E-SET-CATCH-SPECIMENS.length_1_type/code_list: "refs_biology.measurements"
   field/E-SET-CATCH-SPECIMENS.length_1_value_cm/mandatory: true
   field/E-SET-CATCH-SPECIMENS.length_1_value_cm/type: "number"
   field/E-SET-CATCH-SPECIMENS.length_1_measuring_tool/mandatory: true
   field/E-SET-CATCH-SPECIMENS.length_1_measuring_tool/type: "string"
-  field/E-SET-CATCH-SPECIMENS.length_1_measuring_tool/reference: "refs_biology.measurement_tools"
+  field/E-SET-CATCH-SPECIMENS.length_1_measuring_tool/code_list: "refs_biology.measurement_tools"
   field/E-SET-CATCH-SPECIMENS.length_1_is_straight/mandatory: true
   field/E-SET-CATCH-SPECIMENS.length_1_is_straight/type: "string"
+  field/E-SET-CATCH-SPECIMENS.length_1_is_straight/code_list: "refs_data.logical_responses"
   field/E-SET-CATCH-SPECIMENS.length_2_type/required_field: "length_2_value_cm"
   field/E-SET-CATCH-SPECIMENS.length_2_type/type: "string"
-  field/E-SET-CATCH-SPECIMENS.length_2_type/reference: "refs_biology.measurements"
+  field/E-SET-CATCH-SPECIMENS.length_2_type/code_list: "refs_biology.measurements"
   field/E-SET-CATCH-SPECIMENS.length_2_value_cm/required_field: "length_2_type"
   field/E-SET-CATCH-SPECIMENS.length_2_value_cm/type: "number"
   field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/type: "string"
-  field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/reference: "refs_biology.measurement_tools"
+  field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/code_list: "refs_biology.measurement_tools"
   field/E-SET-CATCH-SPECIMENS.length_2_is_straight/type: "string"
+  field/E-SET-CATCH-SPECIMENS.length_2_is_straight/code_list: "refs_data.logical_responses"
   field/E-SET-CATCH-SPECIMENS.weight_processing_type/type: "string"
-  field/E-SET-CATCH-SPECIMENS.weight_processing_type/reference: "refs_biology.fish_processing_types"
+  field/E-SET-CATCH-SPECIMENS.weight_processing_type/code_list: "refs_fishery.fish_processing_types"
   field/E-SET-CATCH-SPECIMENS.weight_value_kg/type: "number"
   field/E-SET-CATCH-SPECIMENS.weight_estimation_method/type: "string"
+  field/E-SET-CATCH-SPECIMENS.weight_estimation_method/code_list: "refs_biology.weight_measurement_tools"
   field/E-SET-CATCH-SPECIMENS.sex/type: "string"
-  field/E-SET-CATCH-SPECIMENS.sex/reference: "refs_biology.sex"
+  field/E-SET-CATCH-SPECIMENS.sex/code_list: "refs_biology.sex"
   field/E-SET-CATCH-SPECIMENS.maturity_scale/type: "string"
   field/E-SET-CATCH-SPECIMENS.maturity_stage/type: "string"
-  field/E-SET-CATCH-SPECIMENS.maturity_stage/reference: "refs_biology.maturity_stages"
+  field/E-SET-CATCH-SPECIMENS.maturity_stage/code_list: "refs_biology.maturity_stages"
   field/E-SET-CATCH-SPECIMENS.sample_collected_type/type: "string"
+  field/E-SET-CATCH-SPECIMENS.sample_collected_type/code_list: "refs_biology.biological_materials"
   field/E-SET-CATCH-SPECIMENS.sample_collected_preservation_method/type: "string"
-  field/E-SET-CATCH-SPECIMENS.sample_collected_preservation_method/reference: "refs_biology.sample_preservation_methods"
+  field/E-SET-CATCH-SPECIMENS.sample_collected_preservation_method/code_list: "refs_biology.sample_preservation_methods"
   field/E-SET-CATCH-SPECIMENS.sample_collected_destination/type: "string"
   field/E-SET-CATCH-SPECIMENS.depredation_details_depredation_source/type: "string"
-  field/E-SET-CATCH-SPECIMENS.depredation_details_depredation_source/reference: "refs_biology.depredation_sources"
+  field/E-SET-CATCH-SPECIMENS.depredation_details_depredation_source/code_list: "refs_biology.depredation_sources"
   field/E-SET-CATCH-SPECIMENS.depredation_details_observed_predator/type: "string"
+  field/E-SET-CATCH-SPECIMENS.depredation_details_observed_predator/code_list: "refs_biology.species_predators"
+  sheet/E-SET-CATCH-SPECIMENS/primary_key_present: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
+  sheet/E-SET-CATCH-SPECIMENS/primary_key_unique: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
   field/E-SET-CATCH-SPECIMENS-SSI.observed_trip_id/mandatory: true
   field/E-SET-CATCH-SPECIMENS-SSI.observed_trip_id/type: "string"
   field/E-SET-CATCH-SPECIMENS-SSI.set_id/mandatory: true
@@ -542,33 +591,38 @@ rules:
   field/E-SET-CATCH-SPECIMENS-SSI.specimen_id/type: "string"
   field/E-SET-CATCH-SPECIMENS-SSI.condition_at_capture/mandatory: true
   field/E-SET-CATCH-SPECIMENS-SSI.condition_at_capture/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.condition_at_capture/reference: "refs_biology.individual_conditions"
+  field/E-SET-CATCH-SPECIMENS-SSI.condition_at_capture/code_list: "refs_biology.individual_conditions"
   field/E-SET-CATCH-SPECIMENS-SSI.condition_at_release/mandatory: true
   field/E-SET-CATCH-SPECIMENS-SSI.condition_at_release/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.condition_at_release/reference: "refs_biology.individual_conditions"
+  field/E-SET-CATCH-SPECIMENS-SSI.condition_at_release/code_list: "refs_biology.individual_conditions"
   field/E-SET-CATCH-SPECIMENS-SSI.gear_interaction/mandatory: true
   field/E-SET-CATCH-SPECIMENS-SSI.gear_interaction/type: "string"
   field/E-SET-CATCH-SPECIMENS-SSI.hook_type/type: "string"
+  field/E-SET-CATCH-SPECIMENS-SSI.hook_type/code_list: "refs_fishery.hook_types"
   field/E-SET-CATCH-SPECIMENS-SSI.bait_condition/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.bait_condition/reference: "refs_biology.bait_conditions"
+  field/E-SET-CATCH-SPECIMENS-SSI.bait_condition/code_list: "refs_biology.bait_conditions"
   field/E-SET-CATCH-SPECIMENS-SSI.bait_type/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.bait_type/reference: "refs_biology.bait_types"
+  field/E-SET-CATCH-SPECIMENS-SSI.bait_type/code_list: "refs_biology.bait_types"
   field/E-SET-CATCH-SPECIMENS-SSI.leader_material/mandatory: true
   field/E-SET-CATCH-SPECIMENS-SSI.leader_material/type: "string"
   field/E-SET-CATCH-SPECIMENS-SSI.leader_diameter_mm/type: "number"
   field/E-SET-CATCH-SPECIMENS-SSI.dehooker_device/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.dehooker_device/reference: "refs_fishery.dehooker_types"
+  field/E-SET-CATCH-SPECIMENS-SSI.dehooker_device/code_list: "refs_fishery.dehooker_types"
   field/E-SET-CATCH-SPECIMENS-SSI.light_attached/type: "string"
+  field/E-SET-CATCH-SPECIMENS-SSI.light_attached/code_list: "refs_data.logical_responses"
   field/E-SET-CATCH-SPECIMENS-SSI.brought_onboard/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.brought_onboard/reference: "refs_biology.logical_responses"
+  field/E-SET-CATCH-SPECIMENS-SSI.brought_onboard/code_list: "refs_data.logical_responses"
   field/E-SET-CATCH-SPECIMENS-SSI.handling_method/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.handling_method/reference: "refs_biology.handling_methods"
+  field/E-SET-CATCH-SPECIMENS-SSI.handling_method/code_list: "refs_biology.handling_methods"
   field/E-SET-CATCH-SPECIMENS-SSI.revival/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.revival/reference: "refs_biology.logical_responses"
+  field/E-SET-CATCH-SPECIMENS-SSI.revival/code_list: "refs_data.logical_responses"
   field/E-SET-CATCH-SPECIMENS-SSI.photo_id/type: "string"
   field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_depredation_source/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_depredation_source/reference: "refs_biology.depredation_sources"
+  field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_depredation_source/code_list: "refs_biology.depredation_sources"
   field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_observed_predator/type: "string"
+  field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_observed_predator/code_list: "refs_biology.species_predators"
+  sheet/E-SET-CATCH-SPECIMENS-SSI/primary_key_present: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
+  sheet/E-SET-CATCH-SPECIMENS-SSI/primary_key_unique: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
   field/E-SET-TAG-DETAILS.observed_trip_id/mandatory: true
   field/E-SET-TAG-DETAILS.observed_trip_id/type: "string"
   field/E-SET-TAG-DETAILS.set_id/mandatory: true
@@ -578,12 +632,14 @@ rules:
   field/E-SET-TAG-DETAILS.specimen_id/mandatory: true
   field/E-SET-TAG-DETAILS.specimen_id/type: "string"
   field/E-SET-TAG-DETAILS.release/type: "string"
-  field/E-SET-TAG-DETAILS.release/reference: "refs_biology.logical_responses"
+  field/E-SET-TAG-DETAILS.release/code_list: "refs_data.logical_responses"
   field/E-SET-TAG-DETAILS.recovery/type: "string"
-  field/E-SET-TAG-DETAILS.recovery/reference: "refs_biology.logical_responses"
+  field/E-SET-TAG-DETAILS.recovery/code_list: "refs_data.logical_responses"
   field/E-SET-TAG-DETAILS.type/type: "string"
-  field/E-SET-TAG-DETAILS.type/reference: "refs_biology.tag_types"
+  field/E-SET-TAG-DETAILS.type/code_list: "refs_biology.tag_types"
   field/E-SET-TAG-DETAILS.tag_id_1/type: "string"
   field/E-SET-TAG-DETAILS.tag_id_2/type: "string"
   field/E-SET-TAG-DETAILS.finder_name/type: "string"
   field/E-SET-TAG-DETAILS.finder_contact_details/type: "string"
+  sheet/E-SET-TAG-DETAILS/primary_key_present: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
+  sheet/E-SET-TAG-DETAILS/primary_key_unique: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
