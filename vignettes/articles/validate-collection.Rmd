@@ -22,7 +22,9 @@ ros-input-data/
 
 The year and country come from directory names. Keep original filenames. Excel lock files are excluded.
 
-Obtain an approved reference snapshot for each selected model version before planning.
+Configure the public code-list source and the private registry source before planning.
+Set `ROS_REGISTRY_AUTHORIZATION` to the Basic Auth header for the separate
+`ros-registries` account; keep the credential out of source files.
 
 ## 1. Plan the work
 
@@ -32,24 +34,32 @@ Edit the paths below. The output must be outside the input directory.
 library(ros.form.validation)
 
 input <- "ros-input-data"
-references <- c(
-  "3.3.0" = "references/3.3.0",
-  "4.0.0" = "references/4.0.0",
-  "4.1.0" = "references/4.1.0"
+cache <- "output/reference-cache"
+code_lists <- form.references::reference_source(
+  "https://ros.ultreia.io/references/code_lists/", cache
+)
+registries <- form.references::reference_source(
+  "https://ros.ultreia.io/references/registries/", cache,
+  catalogue = "registries",
+  headers = function() c(Authorization = Sys.getenv("ROS_REGISTRY_AUTHORIZATION"))
 )
 stamp <- format(Sys.time(), "%Y-%m-%dT%H%M%SZ", tz = "UTC")
+references <- prepare_ros_reference_snapshots(
+  file.path("output", paste0("ros-references-", stamp)), code_lists, registries
+)
 batch <- file.path("output", paste0("ros-validation-", stamp))
 plan <- plan_ros_validation(
   input = input,
   references = references,
-  versions = names(references),
+  versions = c("3.3.0", "4.0.0", "4.1.0"),
   output = batch
 )
 plan$jobs
 batch
 ```
 
-Planning saves the selected inputs, rules and reference values. It does not validate the forms yet.
+Reference preparation verifies catalogue and CSV checksums and caches downloads.
+Planning then saves the selected inputs, rules and reference values without validating forms.
 
 Text-cell boundaries are trimmed by readxl. Add `trim_ws = FALSE` to preserve surrounding whitespace.
 

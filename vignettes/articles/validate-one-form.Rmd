@@ -7,9 +7,9 @@ Use this guide for one submitted Excel form whose gear and model version are kno
 
 ## Before you start
 
-Install the packages using the home page instructions. Keep the original form and its approved reference snapshot.
+Install the packages using the home page instructions. Keep the original form and a verified reference snapshot.
 
-Ask your IOTC reference maintainer which snapshot to use for the selected version; the package does not download one.
+Use the catalogue setup in [Validate a collection](validate-collection.html) to prepare a verified snapshot.
 
 A snapshot contains `code_lists/` and `registries/` CSV directories. Keep their supplied names and structure.
 
@@ -21,7 +21,7 @@ This example checks a longline form using model 3.3.0. Change the gear and versi
 library(ros.form.validation)
 
 input <- "submitted-form.xlsx"
-reference_directory <- "references/3.3.0"
+reference_directory <- "output/ros-references-<timestamp>"
 output <- file.path("output", paste0("single-form-", format(Sys.time(), "%Y%m%dT%H%M%SZ", tz = "UTC")))
 
 rules <- ros_validation(
