@@ -152,6 +152,7 @@ rules:
   field/V-INFO.personnel_crew_number/type: "integer"
   sheet/V-INFO/primary_key_present: ["observed_trip_id"]
   sheet/V-INFO/primary_key_unique: ["observed_trip_id"]
+  sheet/V-INFO/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_id"]}}
   field/V-TRIP.observed_trip_id/mandatory: true
   field/V-TRIP.observed_trip_id/type: "string"
   field/V-TRIP.vessel_departure_in_port_country/type: "string"
@@ -176,6 +177,7 @@ rules:
   field/V-TRIP.vessel_return_date_time/type: "datetime"
   sheet/V-TRIP/primary_key_present: ["observed_trip_id"]
   sheet/V-TRIP/primary_key_unique: ["observed_trip_id"]
+  sheet/V-TRIP/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_id"]}}
   field/V-ATTRIBUTES.observed_trip_id/mandatory: true
   field/V-ATTRIBUTES.observed_trip_id/type: "string"
   field/V-ATTRIBUTES.vessel_atributes_gross_tonnage/type: "integer"
@@ -255,6 +257,7 @@ rules:
   field/V-ATTRIBUTES.waste_management_detail_4_storage_disposal_method_4/code_list: "refs_fishery.waste_disposal_methods"
   sheet/V-ATTRIBUTES/primary_key_present: ["observed_trip_id"]
   sheet/V-ATTRIBUTES/primary_key_unique: ["observed_trip_id"]
+  sheet/V-ATTRIBUTES/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_id"]}}
   field/G-GENERAL.observed_trip_id/mandatory: true
   field/G-GENERAL.observed_trip_id/type: "string"
   field/G-GENERAL.special_equipment_or_machinery_power_block/type: "string"
@@ -280,6 +283,7 @@ rules:
   field/G-GENERAL.general_gear_attributes_maximum_brail_capacity_value_t/type: "number"
   sheet/G-GENERAL/primary_key_present: ["observed_trip_id"]
   sheet/G-GENERAL/primary_key_unique: ["observed_trip_id"]
+  sheet/G-GENERAL/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_id"]}}
   field/E-SET.observed_trip_id/mandatory: true
   field/E-SET.observed_trip_id/type: "string"
   field/E-SET.set_id/mandatory: true
@@ -321,6 +325,7 @@ rules:
   field/E-SET.object_details_fad_design_tail_design/code_list: "refs_fishery.fad_tail_designs"
   sheet/E-SET/primary_key_present: ["observed_trip_id", "set_id"]
   sheet/E-SET/primary_key_unique: ["observed_trip_id", "set_id"]
+  sheet/E-SET/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_id"]}}
   field/E-SET-CETACEANS.observed_trip_id/mandatory: true
   field/E-SET-CETACEANS.observed_trip_id/type: "string"
   field/E-SET-CETACEANS.set_id/mandatory: true
@@ -338,6 +343,7 @@ rules:
   field/E-SET-CETACEANS.caught_inside_net/code_list: "refs_data.logical_responses"
   sheet/E-SET-CETACEANS/primary_key_present: ["observed_trip_id", "set_id"]
   sheet/E-SET-CETACEANS/primary_key_unique: ["observed_trip_id", "set_id"]
+  sheet/E-SET-CETACEANS/parent_key: {value: {"sheet": "E-SET", "fields": ["observed_trip_id", "set_id"]}}
   field/E-SET-CATCHES.observed_trip_id/mandatory: true
   field/E-SET-CATCHES.observed_trip_id/type: "string"
   field/E-SET-CATCHES.set_id/mandatory: true
@@ -372,6 +378,7 @@ rules:
   field/E-SET-CATCHES.weight_estimation_method/code_list: "refs_biology.weight_measurement_tools"
   sheet/E-SET-CATCHES/primary_key_present: ["observed_trip_id", "set_id", "catch_id"]
   sheet/E-SET-CATCHES/primary_key_unique: ["observed_trip_id", "set_id", "catch_id"]
+  sheet/E-SET-CATCHES/parent_key: {value: {"sheet": "E-SET", "fields": ["observed_trip_id", "set_id"]}}
   field/E-SET-CATCH-SPECIMENS.observed_trip_id/mandatory: true
   field/E-SET-CATCH-SPECIMENS.observed_trip_id/type: "string"
   field/E-SET-CATCH-SPECIMENS.set_id/mandatory: true
@@ -421,6 +428,7 @@ rules:
   field/E-SET-CATCH-SPECIMENS.sample_collected_destination/type: "string"
   sheet/E-SET-CATCH-SPECIMENS/primary_key_present: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
   sheet/E-SET-CATCH-SPECIMENS/primary_key_unique: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
+  sheet/E-SET-CATCH-SPECIMENS/parent_key: {value: {"sheet": "E-SET-CATCHES", "fields": ["observed_trip_id", "set_id", "catch_id"]}}
   field/E-SET-CATCH-SPECIMENS-SSI.observed_trip_id/mandatory: true
   field/E-SET-CATCH-SPECIMENS-SSI.observed_trip_id/type: "string"
   field/E-SET-CATCH-SPECIMENS-SSI.set_id/mandatory: true
@@ -444,6 +452,7 @@ rules:
   field/E-SET-CATCH-SPECIMENS-SSI.photo_id/type: "string"
   sheet/E-SET-CATCH-SPECIMENS-SSI/primary_key_present: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
   sheet/E-SET-CATCH-SPECIMENS-SSI/primary_key_unique: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
+  sheet/E-SET-CATCH-SPECIMENS-SSI/parent_key: {value: {"sheet": "E-SET-CATCH-SPECIMENS", "fields": ["observed_trip_id", "set_id", "catch_id", "specimen_id"]}}
   field/E-SET-TAG-DETAILS.observed_trip_id/mandatory: true
   field/E-SET-TAG-DETAILS.observed_trip_id/type: "string"
   field/E-SET-TAG-DETAILS.set_id/mandatory: true
@@ -465,6 +474,7 @@ rules:
   field/E-SET-TAG-DETAILS.well/type: "string"
   sheet/E-SET-TAG-DETAILS/primary_key_present: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
   sheet/E-SET-TAG-DETAILS/primary_key_unique: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
+  sheet/E-SET-TAG-DETAILS/parent_key: {value: {"sheet": "E-SET-CATCH-SPECIMENS", "fields": ["observed_trip_id", "set_id", "catch_id", "specimen_id"]}}
   field/D-ACTIVITIES.observed_trip_id/mandatory: true
   field/D-ACTIVITIES.observed_trip_id/type: "string"
   field/D-ACTIVITIES.date_time/type: "datetime"
@@ -475,3 +485,4 @@ rules:
   field/D-ACTIVITIES.comments/type: "string"
   sheet/D-ACTIVITIES/primary_key_present: ["observed_trip_id", "date_time"]
   sheet/D-ACTIVITIES/primary_key_unique: ["observed_trip_id", "date_time"]
+  sheet/D-ACTIVITIES/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_id"]}}
