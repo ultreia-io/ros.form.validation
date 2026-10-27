@@ -557,6 +557,7 @@ rules:
   field/E-SET-CATCH-SPECIMENS.length_2_type/code_list: "refs_biology.measurements"
   field/E-SET-CATCH-SPECIMENS.length_2_value_cm/required_field: "length_2_type"
   field/E-SET-CATCH-SPECIMENS.length_2_value_cm/type: "number"
+  field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/required_field: "length_2_value_cm"
   field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/type: "string"
   field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/code_list: "refs_biology.measurement_tools"
   field/E-SET-CATCH-SPECIMENS.length_2_is_straight/type: "string"
