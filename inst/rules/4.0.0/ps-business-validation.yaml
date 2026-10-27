@@ -3,7 +3,6 @@ rules_version: 1.0.0
 model: {id: ps, version: 4.0.0}
 stage: business
 rules:
-  source-issue-1/source_issue: {sheet: META, field: reporting_country_code, message: 'Countries versus Fleets reference remains unresolved.'}
   source-issue-2/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_searching, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
   source-issue-3/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_actively_fishing, message: 'Duration units/fractional precision need clarification; numeric values retained.'}
   source-issue-4/source_issue: {sheet: O-INFO, field: observed_trip_summary_number_of_days_in_fishing_area, message: 'Duration units/fractional precision need clarification; numeric values retained.'}

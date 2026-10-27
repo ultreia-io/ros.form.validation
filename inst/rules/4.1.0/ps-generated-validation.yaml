@@ -57,6 +57,7 @@ rules:
   field/META.reporting_entity/code_list: "refs_admin.entities"
   field/META.reporting_country_code/mandatory: true
   field/META.reporting_country_code/type: "string"
+  field/META.reporting_country_code/code_list: "refs_admin.countries"
   field/META.data_source/mandatory: true
   field/META.data_source/type: "string"
   field/META.data_source/code_list: "refs_data.data_sources_ro"
