@@ -3,6 +3,5 @@ rules_version: 1.0.0
 model: {id: ps, version: 4.0.0}
 stage: business
 rules:
-  trip-composition/source_issue: {sheet: O-INFO, message: Trip-ID separators and composition enforcement need an agreed encoding.}
   buoy-composition/source_issue: {sheet: E-SET, message: Buoy model/number composition cannot be parsed until its encoding is specified.}
   catch-weight-unit/source_issue: {sheet: E-SET-CATCHES, field: weight_unit, message: 'Accepted weight units are unspecified; no fixed kilograms assumption or unit conversion is applied.'}
