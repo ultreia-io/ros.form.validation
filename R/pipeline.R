@@ -24,6 +24,7 @@ write_ros_reports <- function(plan, report_filename = "index.html", overwrite = 
   batch_plan <- read_ros_validation_plan(plan)
   form.validation::write_validation_batch_reports(batch_plan,
     report_filename = report_filename, overwrite = overwrite, workers = workers,
+    reference_context_columns = setdiff(unique(c(batch_plan$group_columns, batch_plan$identity_columns)), "version"),
     stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
     logo = system.file("report", "IOTC_with_text.png", package = "ros.form.validation", mustWork = TRUE))
 }
