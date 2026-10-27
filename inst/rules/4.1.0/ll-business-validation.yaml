@@ -3,6 +3,6 @@ rules_version: 1.0.0
 model: {id: ll, version: 4.1.0}
 stage: business
 rules:
-  source-issue-23/source_issue: {sheet: E-SET-CATCH-SPECIMENS, message: Catch-level depredation mapping and NA/UNK reference handling remain unresolved.}
+  source-issue-23/source_issue: {sheet: E-SET-CATCH-SPECIMENS, message: NA/UNK depredation reference codes remain unresolved.}
   trip-composition/source_issue: {sheet: O-INFO, message: 'Trip-ID separators and composition enforcement need an agreed encoding.'}
   uniform-branchlines/source_issue: {sheet: E-SET, message: 'Uniform branchline length cannot be inferred from minimum/maximum values alone.'}
