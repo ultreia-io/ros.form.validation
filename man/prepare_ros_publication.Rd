@@ -15,8 +15,8 @@ prepare_ros_publication(
 \item{batch}{Batch directory containing a saved plan and completed reports,
 or completed version run directories.}
 
-\item{output}{New publication directory. Defaults to \verb{aggregated_<batch>}
-beside the raw batch directory.}
+\item{output}{New publication directory. Defaults to \code{publication}
+inside the batch directory.}
 
 \item{report_filename}{Filename for aggregate HTML pages.}
 
@@ -32,13 +32,13 @@ Prepare a clean publication tree from completed ROS batches
 Copies only individual HTML/CSV reports, report assets and run logs.
 Raw outputs remain untouched. Metadata supplies leaf HTML filenames, with
 report.html as fallback. Aggregates use year/country/gear/version groups.
-publication.json records counts, empty versions, an optional publication
+The adjacent publication manifest records counts, empty versions, an optional publication
 comment and SHA-256 file checksums.
 Each copied report links to all ancestor aggregates using report_filename.
 Code-list and registry evidence reports group rejected values by snapshot,
 retaining severity, reason and exact source cells where applicable.
 Reference CSVs are checked against recorded batch hashes.
-Planned batches use explicit report manifests and retain a public \code{plan.json}.
+Planned batches keep their portable publication plan outside the served directory.
 Preparation rejects unfinished runs, missing reports and broken local links.
 A sibling temporary directory is renamed only after successful verification.
 }

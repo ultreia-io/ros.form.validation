@@ -15,8 +15,8 @@ build_ros_publication(
 \arguments{
 \item{plan}{A \code{validation_batch_plan}, its batch directory, or its local \code{plan.rds} file.}
 
-\item{output}{New publication directory. Defaults to \verb{aggregated_<batch>}
-beside the raw batch directory.}
+\item{output}{New publication directory. Defaults to \code{publication}
+inside the batch directory.}
 
 \item{report_filename}{Filename for aggregate HTML pages.}
 
@@ -32,7 +32,7 @@ Build aggregate reports and a clean ROS publication
 }
 \details{
 Delegates artifact copying, aggregates, navigation, evidence and
-verification to the neutral engine. Retains a portable \code{plan.json} for future
-navigation. Raw results and local paths are excluded. No upload is performed.
+verification to the neutral engine. Keeps the publication manifest and portable
+plan beside the served directory. Raw results and local paths are excluded. No upload is performed.
 The Warning findings card explains the META option saved in the batch plan.
 }

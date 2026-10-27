@@ -34,8 +34,8 @@ write_ros_reports <- function(plan, report_filename = "index.html", overwrite = 
 #' @param workers Maximum top-level aggregate directories to build concurrently; defaults to one.
 #' @return The prepared publication directory, invisibly.
 #' @details Delegates artifact copying, aggregates, navigation, evidence and
-#'   verification to the neutral engine. Retains a portable `plan.json` for future
-#'   navigation. Raw results and local paths are excluded. No upload is performed.
+#'   verification to the neutral engine. Keeps the publication manifest and portable
+#'   plan beside the served directory. Raw results and local paths are excluded. No upload is performed.
 #'   The Warning findings card explains the META option saved in the batch plan.
 #' @export
 build_ros_publication <- function(plan, output = NULL, report_filename = "index.html", comment = NULL, workers = 1L) {

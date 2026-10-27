@@ -17,7 +17,7 @@ if (!length(args) || "--help" %in% args) {
     "  validate --plan BATCH_OR_PLAN_RDS [--workers N] [--no-resume]",
     "  report --plan BATCH_OR_PLAN_RDS [--workers N] [--report-filename index.html] [--overwrite]",
     "  build-publication --plan BATCH_OR_PLAN_RDS [--workers N] [--output DIR] [--report-filename index.html] [--comment TEXT]",
-    "  publish --directory output/aggregated_ros-validation-<timestamp> [--host ultreia]",
+    "  publish --directory output/ros-validation-<timestamp>/publication [--host ultreia]",
     sep = "\n"), "\n")
   quit(status = 0)
 }

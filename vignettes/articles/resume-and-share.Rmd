@@ -32,7 +32,7 @@ Use this after updating report presentation code, when the validation results th
 reports <- write_ros_reports(plan, overwrite = TRUE)
 publication <- build_ros_publication(
   plan,
-  output = file.path("output", paste0("review_", basename(batch)))
+  output = file.path(batch, "publication-review")
 )
 ```
 
@@ -40,7 +40,7 @@ Choose a new publication directory. This keeps your previous prepared copy avail
 
 Report regeneration does not apply new validation rules. Rule changes require a new validation batch.
 
-For the dedicated `ros.ultreia.io` uploader, keep the default `aggregated_<batch>` name instead of `review_<batch>`.
+For the dedicated `ros.ultreia.io` uploader, place the reviewed copy at `<batch>/publication` before uploading.
 
 ## Preview locally
 
@@ -55,7 +55,7 @@ Keep R running while browsing. Stop the preview with `servr::daemon_stop()` when
 
 Give your web operator the entire prepared publication folder, preserving its directories and filenames.
 
-The server must serve HTML, CSV, JSON and shared assets over HTTP, with `index.html` as the directory default page.
+The server must serve HTML, CSV and shared assets over HTTP, with `index.html` as the directory default page.
 
 Share the resulting root URL with reviewers. They can navigate down to each form and back through the breadcrumbs.
 
