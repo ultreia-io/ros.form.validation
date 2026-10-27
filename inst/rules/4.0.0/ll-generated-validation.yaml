@@ -552,6 +552,7 @@ rules:
   field/E-SET-CATCH-SPECIMENS.catch_id/type: "string"
   field/E-SET-CATCH-SPECIMENS.specimen_id/mandatory: true
   field/E-SET-CATCH-SPECIMENS.specimen_id/type: "string"
+  field/E-SET-CATCH-SPECIMENS.specimen_id/pattern: "^[0-9]{4}$"
   field/E-SET-CATCH-SPECIMENS.sampling_period/mandatory: true
   field/E-SET-CATCH-SPECIMENS.sampling_period/type: "string"
   field/E-SET-CATCH-SPECIMENS.sampling_period/code_list: "refs_biology.sampling_periods"
