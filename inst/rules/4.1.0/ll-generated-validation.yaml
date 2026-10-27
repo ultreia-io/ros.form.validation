@@ -535,6 +535,7 @@ rules:
   field/E-SET-CATCHES.sampling_method/code_list: "refs_biology.sampling_methods_for_catch_estimation"
   field/E-SET-CATCHES.number_of_fish/mandatory: true
   field/E-SET-CATCHES.number_of_fish/type: "integer"
+  field/E-SET-CATCHES.number_of_fish/minimum: 1
   field/E-SET-CATCHES.weight_processing_type/type: "string"
   field/E-SET-CATCHES.weight_processing_type/code_list: "refs_biology.weight_measurements"
   field/E-SET-CATCHES.weight_value_kg/type: "number"
