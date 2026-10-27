@@ -2,5 +2,4 @@ schema_version: 1.0.0
 rules_version: 1.0.0
 model: {id: ll, version: 4.0.0}
 stage: business
-rules:
-  uniform-branchlines/source_issue: {sheet: E-SET, message: Uniform branchline length cannot be inferred from minimum/maximum values alone.}
+rules: {}
