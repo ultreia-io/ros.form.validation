@@ -69,11 +69,13 @@ rules:
   field/META.reporting_entity/code_list: "refs_admin.entities"
   field/META.reporting_country_code/mandatory: true
   field/META.reporting_country_code/type: "string"
+  field/META.reporting_country_code/code_list: "refs_admin.countries"
   field/META.data_source/mandatory: true
   field/META.data_source/type: "string"
   field/META.data_source/code_list: "refs_data.data_sources_ro"
   field/O-INFO.observed_trip_id/mandatory: true
   field/O-INFO.observed_trip_id/type: "string"
+  field/O-INFO.observed_trip_id/pattern: "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/[^/[:space:]]+/[^/[:space:]]+/LL$"
   field/O-INFO.observer_identification_iotc_id/mandatory: true
   field/O-INFO.observer_identification_iotc_id/type: "string"
   field/O-INFO.observer_identification_iotc_id/registry: {value: {"id": "ros_meta.observer", "column": "iotc_observer_identifier", "matching": "exact"}}
@@ -356,6 +358,7 @@ rules:
   field/E-SET.leader_material_percentage/type: "number"
   field/E-SET.branchline_length_minimum_value/mandatory: true
   field/E-SET.branchline_length_minimum_value/type: "number"
+  field/E-SET.branchline_length_minimum_value/maximum_field: "branchline_length_maximum_value"
   field/E-SET.branchline_length_minimum_unit/mandatory: true
   field/E-SET.branchline_length_minimum_unit/required_field: "branchline_length_minimum_value"
   field/E-SET.branchline_length_minimum_unit/type: "string"
@@ -556,6 +559,7 @@ rules:
   field/E-SET-CATCH-SPECIMENS.length_2_type/code_list: "refs_biology.measurements"
   field/E-SET-CATCH-SPECIMENS.length_2_value_cm/required_field: "length_2_type"
   field/E-SET-CATCH-SPECIMENS.length_2_value_cm/type: "number"
+  field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/required_field: "length_2_value_cm"
   field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/type: "string"
   field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/code_list: "refs_biology.measurement_tools"
   field/E-SET-CATCH-SPECIMENS.length_2_is_straight/type: "string"
