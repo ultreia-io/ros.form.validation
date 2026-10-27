@@ -366,6 +366,7 @@ rules:
   field/E-SET-CATCHES.weight_unit/mandatory: true
   field/E-SET-CATCHES.weight_unit/required_field: "weight_value"
   field/E-SET-CATCHES.weight_unit/type: "string"
+  field/E-SET-CATCHES.weight_unit/enum: ["KG", "T"]
   field/E-SET-CATCHES.weight_estimation_method/mandatory: true
   field/E-SET-CATCHES.weight_estimation_method/type: "string"
   field/E-SET-CATCHES.weight_estimation_method/code_list: "refs_biology.weight_measurement_tools"
