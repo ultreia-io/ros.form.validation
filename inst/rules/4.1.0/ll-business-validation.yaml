@@ -3,7 +3,6 @@ rules_version: 1.0.0
 model: {id: ll, version: 4.1.0}
 stage: business
 rules:
-  source-issue-7/source_issue: {sheet: G-CONFIG-MITIGATION-DEVICES, field: tori_line_details_towed_objects_type, message: 'The field has no complete type/code definition; text is provisional.'}
   source-issue-10/source_issue: {sheet: E-SET-CATCH-SPECIMENS, message: Second-length measuring-tool dependency has not been agreed.}
   source-issue-11/source_issue: {sheet: E-SET-CATCH-SPECIMENS-SSI, field: gear_interaction, message: 'Accept agreed UNK; reference-list integration remains unresolved.'}
   source-issue-13/source_issue: {sheet: E-SET-CATCH-SPECIMENS-SSI, field: leader_material, message: 'Accept agreed UNK; reference-list integration remains unresolved.'}
