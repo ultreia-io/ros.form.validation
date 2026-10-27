@@ -3,6 +3,5 @@ rules_version: 1.0.0
 model: {id: ps, version: 4.1.0}
 stage: business
 rules:
-  source-issue-14/source_issue: {sheet: V-TRIP, message: At-sea port encoding remains unresolved.}
   trip-composition/source_issue: {sheet: O-INFO, message: 'Trip-ID separators and composition enforcement need an agreed encoding.'}
   buoy-composition/source_issue: {sheet: E-SET, message: 'Buoy model/number composition cannot be parsed until its encoding is specified.'}
