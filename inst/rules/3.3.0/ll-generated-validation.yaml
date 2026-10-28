@@ -413,7 +413,7 @@ rules:
   field/E-SET-HOOKS.set_number/type: "string"
   field/E-SET-HOOKS.setting_operations_hooks_details_type_code/mandatory: true
   field/E-SET-HOOKS.setting_operations_hooks_details_type_code/type: "string"
-  field/E-SET-HOOKS.setting_operations_hooks_details_type_code/code_list: "refs_fishery.hook_types"
+  field/E-SET-HOOKS.setting_operations_hooks_details_type_code/code_list: "refs_fishery.hook_and_terminal_devices"
   field/E-SET-HOOKS.setting_operations_hooks_details_percentage/type: "number"
   field/E-SET-HOOKS.setting_operations_hooks_details_variations/type: "string"
   sheet/E-SET-HOOKS/primary_key_present: ["observed_trip_number", "set_number", "setting_operations_hooks_details_type_code"]
@@ -611,7 +611,7 @@ rules:
   field/E-SET-CATCHES-SPECIMEN-SSI.specimen_details_additional_catch_details_ssi_gear_interaction_code/type: "string"
   field/E-SET-CATCHES-SPECIMEN-SSI.specimen_details_additional_catch_details_ssi_gear_interaction_code/code_list: "refs_biology.gear_interactions"
   field/E-SET-CATCHES-SPECIMEN-SSI.specimen_details_additional_catch_details_ssi_hook_type_code/type: "string"
-  field/E-SET-CATCHES-SPECIMEN-SSI.specimen_details_additional_catch_details_ssi_hook_type_code/code_list: "refs_fishery.hook_types"
+  field/E-SET-CATCHES-SPECIMEN-SSI.specimen_details_additional_catch_details_ssi_hook_type_code/code_list: "refs_fishery.hook_and_terminal_devices"
   field/E-SET-CATCHES-SPECIMEN-SSI.specimen_details_additional_catch_details_ssi_bait_condition_code/type: "string"
   field/E-SET-CATCHES-SPECIMEN-SSI.specimen_details_additional_catch_details_ssi_bait_condition_code/code_list: "refs_biology.bait_conditions"
   field/E-SET-CATCHES-SPECIMEN-SSI.specimen_details_additional_catch_details_ssi_bait_type_code/type: "string"

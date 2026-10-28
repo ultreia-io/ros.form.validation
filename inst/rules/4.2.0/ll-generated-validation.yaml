@@ -615,7 +615,7 @@ rules:
   field/E-SET-CATCH-SPECIMENS-SSI.gear_interaction/mandatory: true
   field/E-SET-CATCH-SPECIMENS-SSI.gear_interaction/type: "string"
   field/E-SET-CATCH-SPECIMENS-SSI.hook_type/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.hook_type/code_list: "refs_fishery.hook_types"
+  field/E-SET-CATCH-SPECIMENS-SSI.hook_type/code_list: "refs_fishery.hook_and_terminal_devices"
   field/E-SET-CATCH-SPECIMENS-SSI.bait_condition/type: "string"
   field/E-SET-CATCH-SPECIMENS-SSI.bait_condition/code_list: "refs_biology.bait_conditions"
   field/E-SET-CATCH-SPECIMENS-SSI.bait_type/type: "string"
