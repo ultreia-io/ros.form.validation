@@ -54,6 +54,7 @@ refs_biology.sampling_protocols,MRS,MR
 refs_biology.sampling_protocols,SPS,SP
 refs_biology.sex,I,N
 refs_biology.sex,UNK,U
+refs_biology.species,RMJ,RMM
 refs_biology.tag_types,ST,ES
 refs_biology.tag_types,TC,CP
 refs_biology.tag_types,TI,IA
