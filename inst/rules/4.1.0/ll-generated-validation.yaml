@@ -594,7 +594,7 @@ rules:
   field/E-SET-CATCH-SPECIMENS.depredation_details_depredation_source/type: "string"
   field/E-SET-CATCH-SPECIMENS.depredation_details_depredation_source/code_list: "refs_biology.depredation_sources"
   field/E-SET-CATCH-SPECIMENS.depredation_details_observed_predator/type: "string"
-  field/E-SET-CATCH-SPECIMENS.depredation_details_observed_predator/code_list: "refs_biology.species_predators"
+  field/E-SET-CATCH-SPECIMENS.depredation_details_observed_predator/code_list: "refs_biology.predator_species"
   sheet/E-SET-CATCH-SPECIMENS/primary_key_present: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
   sheet/E-SET-CATCH-SPECIMENS/primary_key_unique: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
   sheet/E-SET-CATCH-SPECIMENS/parent_key: {value: {"sheet": "E-SET-CATCHES", "fields": ["observed_trip_id", "set_id", "catch_id"]}}
@@ -637,7 +637,7 @@ rules:
   field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_depredation_source/type: "string"
   field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_depredation_source/code_list: "refs_biology.depredation_sources"
   field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_observed_predator/type: "string"
-  field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_observed_predator/code_list: "refs_biology.species_predators"
+  field/E-SET-CATCH-SPECIMENS-SSI.depredation_details_observed_predator/code_list: "refs_biology.predator_species"
   sheet/E-SET-CATCH-SPECIMENS-SSI/primary_key_present: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
   sheet/E-SET-CATCH-SPECIMENS-SSI/primary_key_unique: ["observed_trip_id", "set_id", "catch_id", "specimen_id"]
   sheet/E-SET-CATCH-SPECIMENS-SSI/parent_key: {value: {"sheet": "E-SET-CATCH-SPECIMENS", "fields": ["observed_trip_id", "set_id", "catch_id", "specimen_id"]}}

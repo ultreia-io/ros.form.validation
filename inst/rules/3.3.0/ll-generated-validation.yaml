@@ -557,7 +557,7 @@ rules:
   field/E-SET-CATCHES-SPECIMEN.specimen_details_all_species_depredation_details_depredation_source_code/type: "string"
   field/E-SET-CATCHES-SPECIMEN.specimen_details_all_species_depredation_details_depredation_source_code/code_list: "refs_biology.scars"
   field/E-SET-CATCHES-SPECIMEN.specimen_details_all_species_depredation_details_observed_predator_code/type: "string"
-  field/E-SET-CATCHES-SPECIMEN.specimen_details_all_species_depredation_details_observed_predator_code/code_list: "refs_biology.species_predators"
+  field/E-SET-CATCHES-SPECIMEN.specimen_details_all_species_depredation_details_observed_predator_code/code_list: "refs_biology.predator_species"
   field/E-SET-CATCHES-SPECIMEN.specimen_details_all_species_sampling_method_code/mandatory: true
   field/E-SET-CATCHES-SPECIMEN.specimen_details_all_species_sampling_method_code/type: "string"
   field/E-SET-CATCHES-SPECIMEN.specimen_details_all_species_sampling_method_code/code_list: "refs_biology.sampling_methods_for_sampling_collections"
