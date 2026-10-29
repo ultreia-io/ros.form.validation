@@ -460,7 +460,7 @@ rules:
   field/E-SET-BAITS.bait_condition/code_list: "refs_biology.bait_conditions"
   field/E-SET-BAITS.bait_species/mandatory: true
   field/E-SET-BAITS.bait_species/type: "string"
-  field/E-SET-BAITS.bait_species/code_list: "refs_biology.species_baits"
+  field/E-SET-BAITS.bait_species/code_list: "refs_biology.bait_species"
   field/E-SET-BAITS.bait_percentage/mandatory: true
   field/E-SET-BAITS.bait_percentage/type: "number"
   field/E-SET-BAITS.bait_dye_colour/type: "string"
