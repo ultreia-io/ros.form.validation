@@ -335,7 +335,7 @@ rules:
   field/E-SET-CETACEANS.sighting_before_setting/code_list: "refs_data.logical_responses"
   field/E-SET-CETACEANS.species/mandatory: true
   field/E-SET-CETACEANS.species/type: "string"
-  field/E-SET-CETACEANS.species/code_list: "refs_biology.species_cetaceans"
+  field/E-SET-CETACEANS.species/code_list: "refs_biology.cetacean_species"
   field/E-SET-CETACEANS.number_sighted/mandatory: true
   field/E-SET-CETACEANS.number_sighted/type: "integer"
   field/E-SET-CETACEANS.caught_inside_net/mandatory: true
