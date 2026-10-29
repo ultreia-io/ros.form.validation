@@ -355,7 +355,7 @@ rules:
   field/E-SET-CATCHES.species/code_list: "refs_biology.species"
   field/E-SET-CATCHES.fate_type/mandatory: true
   field/E-SET-CATCHES.fate_type/type: "string"
-  field/E-SET-CATCHES.fate_type/code_list: "refs_biology.types_of_fate"
+  field/E-SET-CATCHES.fate_type/code_list: "refs_biology.fate_types"
   field/E-SET-CATCHES.fate_code/mandatory: true
   field/E-SET-CATCHES.fate_code/type: "string"
   field/E-SET-CATCHES.fate_code/code_list: "refs_biology.fates"

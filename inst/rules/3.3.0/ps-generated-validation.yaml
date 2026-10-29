@@ -365,7 +365,7 @@ rules:
   field/E-SET-CATCHES.catch_details_species_code/code_list: "refs_biology.species"
   field/E-SET-CATCHES.catch_details_fate_type_code/mandatory: true
   field/E-SET-CATCHES.catch_details_fate_type_code/type: "string"
-  field/E-SET-CATCHES.catch_details_fate_type_code/code_list: "refs_biology.types_of_fate"
+  field/E-SET-CATCHES.catch_details_fate_type_code/code_list: "refs_biology.fate_types"
   field/E-SET-CATCHES.catch_details_fate_code/mandatory: true
   field/E-SET-CATCHES.catch_details_fate_code/type: "string"
   field/E-SET-CATCHES.catch_details_fate_code/code_list: "refs_biology.fates"
