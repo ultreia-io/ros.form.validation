@@ -396,9 +396,6 @@ rules:
   field/E-SET-CATCH-SPECIMENS.length_1_measuring_tool/mandatory: true
   field/E-SET-CATCH-SPECIMENS.length_1_measuring_tool/type: "string"
   field/E-SET-CATCH-SPECIMENS.length_1_measuring_tool/code_list: "refs_biology.measurement_tools"
-  field/E-SET-CATCH-SPECIMENS.length_1_is_straight/mandatory: true
-  field/E-SET-CATCH-SPECIMENS.length_1_is_straight/type: "string"
-  field/E-SET-CATCH-SPECIMENS.length_1_is_straight/code_list: "refs_data.logical_responses"
   field/E-SET-CATCH-SPECIMENS.length_2_type/required_field: "length_2_value_cm"
   field/E-SET-CATCH-SPECIMENS.length_2_type/type: "string"
   field/E-SET-CATCH-SPECIMENS.length_2_type/code_list: "refs_biology.measurements"
@@ -407,8 +404,6 @@ rules:
   field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/required_field: "length_2_value_cm"
   field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/type: "string"
   field/E-SET-CATCH-SPECIMENS.length_2_measuring_tool/code_list: "refs_biology.measurement_tools"
-  field/E-SET-CATCH-SPECIMENS.length_2_is_straight/type: "string"
-  field/E-SET-CATCH-SPECIMENS.length_2_is_straight/code_list: "refs_data.logical_responses"
   field/E-SET-CATCH-SPECIMENS.weight_processing_type/type: "string"
   field/E-SET-CATCH-SPECIMENS.weight_processing_type/code_list: "refs_fishery.fish_processing_types"
   field/E-SET-CATCH-SPECIMENS.weight_value_kg/type: "number"

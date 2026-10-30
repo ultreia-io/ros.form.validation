@@ -25,7 +25,7 @@ sheets:
   E-SET-CATCHES:
     columns: 11
   E-SET-CATCH-SPECIMENS:
-    columns: 22
+    columns: 20
   E-SET-CATCH-SPECIMENS-SSI:
     columns: 11
   E-SET-TAG-DETAILS:
