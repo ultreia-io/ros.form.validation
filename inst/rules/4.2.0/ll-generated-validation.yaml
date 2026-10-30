@@ -307,6 +307,8 @@ rules:
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_tori_line_attached_height_m/type: "number"
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_towed_objects_type/type: "string"
   field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_towed_objects_number/type: "integer"
+  field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_tori_line_sketch_in_trip_report/type: "string"
+  field/G-CONFIG-MITIGATION-DEVICES.tori_line_details_tori_line_sketch_in_trip_report/code_list: "refs_data.logical_responses"
   field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_1/type: "string"
   field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_1/code_list: "refs_fishery.mitigation_devices"
   field/G-CONFIG-MITIGATION-DEVICES.other_mitigation_devices_device_2/type: "string"

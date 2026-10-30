@@ -21,7 +21,7 @@ sheets:
   G-CONFIG-BRANCHLINES:
     columns: 10
   G-CONFIG-MITIGATION-DEVICES:
-    columns: 16
+    columns: 17
   E-SET:
     columns: 30
   E-SET-LIGHTS:
