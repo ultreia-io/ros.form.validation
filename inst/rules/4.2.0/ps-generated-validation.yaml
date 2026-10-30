@@ -33,8 +33,8 @@ rules:
   field/META.form_identifier/type: "string"
   field/META.form_identifier/enum: ["ROS-PS"]
   field/META.form_revision/mandatory: true
-  field/META.form_revision/type: "integer"
-  field/META.form_revision/enum: [4]
+  field/META.form_revision/type: "string"
+  field/META.form_revision/enum: ["4.2.0"]
   field/META.liaison_officer_full_name/mandatory: true
   field/META.liaison_officer_full_name/type: "string"
   field/META.liaison_officer_full_name/registry: {value: {"id": "ros_meta.focal_point", "column": "full_name", "matching": "name"}}
