@@ -367,16 +367,8 @@ rules:
   field/E-SET.branchline_length_minimum_value/mandatory: true
   field/E-SET.branchline_length_minimum_value/type: "number"
   field/E-SET.branchline_length_minimum_value/maximum_field: "branchline_length_maximum_value"
-  field/E-SET.branchline_length_minimum_unit/mandatory: true
-  field/E-SET.branchline_length_minimum_unit/required_field: "branchline_length_minimum_value"
-  field/E-SET.branchline_length_minimum_unit/type: "string"
-  field/E-SET.branchline_length_minimum_unit/enum: ["m"]
   field/E-SET.branchline_length_maximum_value/mandatory: true
   field/E-SET.branchline_length_maximum_value/type: "number"
-  field/E-SET.branchline_length_maximum_unit/mandatory: true
-  field/E-SET.branchline_length_maximum_unit/required_field: "branchline_length_maximum_value"
-  field/E-SET.branchline_length_maximum_unit/type: "string"
-  field/E-SET.branchline_length_maximum_unit/enum: ["m"]
   field/E-SET.target_species_species_1/mandatory: true
   field/E-SET.target_species_species_1/type: "string"
   field/E-SET.target_species_species_1/code_list: "refs_biology.species"
