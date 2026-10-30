@@ -360,6 +360,7 @@ rules:
   field/E-SET.floatline_length_3_m/type: "number"
   field/E-SET.number_hooks_between_floats/mandatory: true
   field/E-SET.number_hooks_between_floats/type: "integer"
+  field/E-SET.distance_between_branchlines_m/type: "number"
   field/E-SET.shark_lines_set/mandatory: true
   field/E-SET.shark_lines_set/type: "string"
   field/E-SET.shark_lines_set/code_list: "refs_data.logical_responses"
