@@ -23,7 +23,7 @@ sheets:
   G-CONFIG-MITIGATION-DEVICES:
     columns: 17
   E-SET:
-    columns: 29
+    columns: 32
   E-SET-LIGHTS:
     columns: 5
   E-SET-MITIGATION-MEASURES:
