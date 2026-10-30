@@ -353,6 +353,7 @@ rules:
   field/E-SET.number_total_hooks_set/mandatory: true
   field/E-SET.number_total_hooks_set/type: "integer"
   field/E-SET.number_total_floats_set/type: "integer"
+  field/E-SET.number_radio_dhan_buoys_set/type: "integer"
   field/E-SET.number_hooks_between_floats/mandatory: true
   field/E-SET.number_hooks_between_floats/type: "integer"
   field/E-SET.shark_lines_set/mandatory: true
