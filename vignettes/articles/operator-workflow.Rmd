@@ -66,10 +66,10 @@ It requires `jsonlite`, `digest`, rsync and SSH access using the configured `ult
 
 Its remote destination is `/var/www/html/ros/validation`. `--host` changes only the SSH alias, not this path.
 
-The prepared folder must retain the default `aggregated_<batch>` name.
+The prepared folder is `publication/` inside the batch directory.
 
 ```sh
-publication="$(dirname "$batch")/aggregated_$(basename "$batch")"
+publication="$batch/publication"
 Rscript tools/validation.R publish --directory "$publication"
 ```
 

@@ -159,6 +159,7 @@ rules:
   field/V-INFO.vessel_information_owner_and_personnel_crew_number/type: "integer"
   sheet/V-INFO/primary_key_present: ["observed_trip_number"]
   sheet/V-INFO/primary_key_unique: ["observed_trip_number"]
+  sheet/V-INFO/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_number"]}}
   field/V-TRIP.observed_trip_number/mandatory: true
   field/V-TRIP.observed_trip_number/type: "string"
   field/V-TRIP.trip_details_vessel_departure_port_country_code/type: "string"
@@ -183,6 +184,7 @@ rules:
   field/V-TRIP.trip_details_vessel_return_date_time/type: "datetime"
   sheet/V-TRIP/primary_key_present: ["observed_trip_number"]
   sheet/V-TRIP/primary_key_unique: ["observed_trip_number"]
+  sheet/V-TRIP/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_number"]}}
   field/V-ATTRIBUTES.observed_trip_number/mandatory: true
   field/V-ATTRIBUTES.observed_trip_number/type: "string"
   field/V-ATTRIBUTES.vessel_attributes_tonnage_value/type: "number"
@@ -262,6 +264,7 @@ rules:
   field/V-ATTRIBUTES.vessel_attributes_waste_management_waste_management_detail_4_other_4/type: "string"
   sheet/V-ATTRIBUTES/primary_key_present: ["observed_trip_number"]
   sheet/V-ATTRIBUTES/primary_key_unique: ["observed_trip_number"]
+  sheet/V-ATTRIBUTES/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_number"]}}
   field/G-GENERAL.observed_trip_number/mandatory: true
   field/G-GENERAL.observed_trip_number/type: "string"
   field/G-GENERAL.special_equipment_or_machinery_power_block/type: "boolean"
@@ -289,6 +292,7 @@ rules:
   field/G-GENERAL.general_gear_attributes_skiff_power_kw_hp_bhp/enum: ["KW", "HP", "BHP"]
   sheet/G-GENERAL/primary_key_present: ["observed_trip_number"]
   sheet/G-GENERAL/primary_key_unique: ["observed_trip_number"]
+  sheet/G-GENERAL/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_number"]}}
   field/E-SET.observed_trip_number/mandatory: true
   field/E-SET.observed_trip_number/type: "string"
   field/E-SET.set_number/mandatory: true
@@ -333,6 +337,7 @@ rules:
   field/E-SET.setting_operations_details_on_current_depth_m/type: "number"
   sheet/E-SET/primary_key_present: ["observed_trip_number", "set_number"]
   sheet/E-SET/primary_key_unique: ["observed_trip_number", "set_number"]
+  sheet/E-SET/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_number"]}}
   field/E-SET-CETACEANS.observed_trip_number/mandatory: true
   field/E-SET-CETACEANS.observed_trip_number/type: "string"
   field/E-SET-CETACEANS.set_number/mandatory: true
@@ -348,6 +353,7 @@ rules:
   field/E-SET-CETACEANS.setting_operations_sighting_details_caught_inside_net/type: "boolean"
   sheet/E-SET-CETACEANS/primary_key_present: ["observed_trip_number", "set_number"]
   sheet/E-SET-CETACEANS/primary_key_unique: ["observed_trip_number", "set_number"]
+  sheet/E-SET-CETACEANS/parent_key: {value: {"sheet": "E-SET", "fields": ["observed_trip_number", "set_number"]}}
   field/E-SET-CATCHES.observed_trip_number/mandatory: true
   field/E-SET-CATCHES.observed_trip_number/type: "string"
   field/E-SET-CATCHES.set_number/mandatory: true
@@ -359,7 +365,7 @@ rules:
   field/E-SET-CATCHES.catch_details_species_code/code_list: "refs_biology.species"
   field/E-SET-CATCHES.catch_details_fate_type_code/mandatory: true
   field/E-SET-CATCHES.catch_details_fate_type_code/type: "string"
-  field/E-SET-CATCHES.catch_details_fate_type_code/code_list: "refs_biology.types_of_fate"
+  field/E-SET-CATCHES.catch_details_fate_type_code/code_list: "refs_biology.fate_types"
   field/E-SET-CATCHES.catch_details_fate_code/mandatory: true
   field/E-SET-CATCHES.catch_details_fate_code/type: "string"
   field/E-SET-CATCHES.catch_details_fate_code/code_list: "refs_biology.fates"
@@ -388,6 +394,7 @@ rules:
   field/E-SET-CATCHES.catch_details_non_target_species_additional_details_condition_at_release_code/code_list: "refs_biology.individual_conditions"
   sheet/E-SET-CATCHES/primary_key_present: ["observed_trip_number", "set_number", "catch_number"]
   sheet/E-SET-CATCHES/primary_key_unique: ["observed_trip_number", "set_number", "catch_number"]
+  sheet/E-SET-CATCHES/parent_key: {value: {"sheet": "E-SET", "fields": ["observed_trip_number", "set_number"]}}
   field/E-SET-CATCHES-SPECIMEN.observed_trip_number/mandatory: true
   field/E-SET-CATCHES-SPECIMEN.observed_trip_number/type: "string"
   field/E-SET-CATCHES-SPECIMEN.set_number/mandatory: true
@@ -440,6 +447,7 @@ rules:
   field/E-SET-CATCHES-SPECIMEN.specimen_details_tag_details_well/type: "string"
   sheet/E-SET-CATCHES-SPECIMEN/primary_key_present: ["observed_trip_number", "set_number", "catch_number", "specimen_number"]
   sheet/E-SET-CATCHES-SPECIMEN/primary_key_unique: ["observed_trip_number", "set_number", "catch_number", "specimen_number"]
+  sheet/E-SET-CATCHES-SPECIMEN/parent_key: {value: {"sheet": "E-SET-CATCHES", "fields": ["observed_trip_number", "set_number", "catch_number"]}}
   field/E-SET-CATCHES-SPECIMEN-SSI.observed_trip_number/mandatory: true
   field/E-SET-CATCHES-SPECIMEN-SSI.observed_trip_number/type: "string"
   field/E-SET-CATCHES-SPECIMEN-SSI.set_number/mandatory: true
@@ -458,6 +466,7 @@ rules:
   field/E-SET-CATCHES-SPECIMEN-SSI.specimen_details_additional_catch_details_ssi_photo_id/type: "string"
   sheet/E-SET-CATCHES-SPECIMEN-SSI/primary_key_present: ["observed_trip_number", "set_number", "catch_number", "specimen_number"]
   sheet/E-SET-CATCHES-SPECIMEN-SSI/primary_key_unique: ["observed_trip_number", "set_number", "catch_number", "specimen_number"]
+  sheet/E-SET-CATCHES-SPECIMEN-SSI/parent_key: {value: {"sheet": "E-SET-CATCHES-SPECIMEN", "fields": ["observed_trip_number", "set_number", "catch_number", "specimen_number"]}}
   field/A-SURFACE.observed_trip_number/mandatory: true
   field/A-SURFACE.observed_trip_number/type: "string"
   field/A-SURFACE.surface_fisheries_daily_activities_date_time/type: "datetime"
@@ -468,3 +477,4 @@ rules:
   field/A-SURFACE.surface_fisheries_daily_activities_comments/type: "string"
   sheet/A-SURFACE/primary_key_present: ["observed_trip_number", "surface_fisheries_daily_activities_date_time"]
   sheet/A-SURFACE/primary_key_unique: ["observed_trip_number", "surface_fisheries_daily_activities_date_time"]
+  sheet/A-SURFACE/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_number"]}}

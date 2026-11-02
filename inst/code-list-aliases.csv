@@ -29,6 +29,9 @@ refs_biology.fates,RFL,FL
 refs_biology.fates,RFR,FR
 refs_biology.fates,UNK,UN
 refs_biology.handling_methods,ON,AN
+refs_biology.individual_conditions,D,DE
+refs_biology.individual_conditions,S,ST
+refs_biology.individual_conditions,U,UN
 refs_biology.measurements,TW,DW
 refs_biology.sampling_methods_for_catch_estimation,CMB,MC
 refs_biology.sampling_methods_for_catch_estimation,EWP,EP
@@ -51,6 +54,7 @@ refs_biology.sampling_protocols,MRS,MR
 refs_biology.sampling_protocols,SPS,SP
 refs_biology.sex,I,N
 refs_biology.sex,UNK,U
+refs_biology.species,RMJ,RMM
 refs_biology.tag_types,ST,ES
 refs_biology.tag_types,TC,CP
 refs_biology.tag_types,TI,IA

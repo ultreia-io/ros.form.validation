@@ -14,7 +14,7 @@ reference:
   - title: Public API
     contents: [ros_validation, validate_ros, write_ros_validation_report]
   - title: Versioned input pipeline
-    contents: [ros_validation_inputs, read_ros_references, validate_ros_file, validate_ros_inputs]
+    contents: [ros_validation_inputs, read_ros_references, prepare_ros_reference_snapshots, validate_ros_file, validate_ros_inputs]
   - title: Planned batch workflow
     contents: [plan_ros_validation, read_ros_validation_plan, validate_ros_plan, write_ros_reports, build_ros_publication, prepare_ros_publication]
 articles:

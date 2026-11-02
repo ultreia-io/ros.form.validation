@@ -109,11 +109,11 @@ publication <- build_ros_publication(plan, comment = "Text-cell boundaries trimm
 publication
 ```
 
-The new folder is `output/aggregated_ros-validation-<timestamp>`, alongside the raw batch.
+The new folder is `output/ros-validation-<timestamp>/publication`, inside the batch.
 
 It contains form reports, ancestor aggregates, code-list evidence and registry evidence. Nothing is uploaded yet.
 
-The optional comment is saved in `publication.json` and shown beside the batch after publication.
+The optional comment is saved in the batch’s `publication.json`, outside `publication/`, and shown after upload.
 
 Use `build_ros_publication(plan, workers = 4L)` to build separate top-level report directories in parallel.
 

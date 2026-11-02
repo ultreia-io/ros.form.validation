@@ -24,6 +24,7 @@ write_ros_reports <- function(plan, report_filename = "index.html", overwrite = 
   batch_plan <- read_ros_validation_plan(plan)
   form.validation::write_validation_batch_reports(batch_plan,
     report_filename = report_filename, overwrite = overwrite, workers = workers,
+    reference_context_columns = setdiff(unique(c(batch_plan$group_columns, batch_plan$identity_columns)), "version"),
     stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
     logo = system.file("report", "IOTC_with_text.png", package = "ros.form.validation", mustWork = TRUE))
 }
@@ -34,8 +35,8 @@ write_ros_reports <- function(plan, report_filename = "index.html", overwrite = 
 #' @param workers Maximum top-level aggregate directories to build concurrently; defaults to one.
 #' @return The prepared publication directory, invisibly.
 #' @details Delegates artifact copying, aggregates, navigation, evidence and
-#'   verification to the neutral engine. Retains a portable `plan.json` for future
-#'   navigation. Raw results and local paths are excluded. No upload is performed.
+#'   verification to the neutral engine. Keeps the publication manifest and portable
+#'   plan beside the served directory. Raw results and local paths are excluded. No upload is performed.
 #'   The Warning findings card explains the META option saved in the batch plan.
 #' @export
 build_ros_publication <- function(plan, output = NULL, report_filename = "index.html", comment = NULL, workers = 1L) {

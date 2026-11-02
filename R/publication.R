@@ -2,21 +2,21 @@
 #'
 #' @param batch Batch directory containing a saved plan and completed reports,
 #'   or completed version run directories.
-#' @param output New publication directory. Defaults to `aggregated_<batch>`
-#'   beside the raw batch directory.
+#' @param output New publication directory. Defaults to `publication`
+#'   inside the batch directory.
 #' @param report_filename Filename for aggregate HTML pages.
 #' @param comment Optional plain-text publication note shown in the batch catalog.
 #' @return Normalized publication directory, invisibly.
 #' @details Copies only individual HTML/CSV reports, report assets and run logs.
 #'   Raw outputs remain untouched. Metadata supplies leaf HTML filenames, with
 #'   report.html as fallback. Aggregates use year/country/gear/version groups.
-#'   publication.json records counts, empty versions, an optional publication
+#'   The adjacent publication manifest records counts, empty versions, an optional publication
 #'   comment and SHA-256 file checksums.
 #'   Each copied report links to all ancestor aggregates using report_filename.
 #'   Code-list and registry evidence reports group rejected values by snapshot,
 #'   retaining severity, reason and exact source cells where applicable.
 #'   Reference CSVs are checked against recorded batch hashes.
-#'   Planned batches use explicit report manifests and retain a public `plan.json`.
+#'   Planned batches keep their portable publication plan outside the served directory.
 #'   Preparation rejects unfinished runs, missing reports and broken local links.
 #'   A sibling temporary directory is renamed only after successful verification.
 #' @export
@@ -30,11 +30,10 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
   if (!grepl("^ros-validation-[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{6}Z$", basename(batch))) stop("Invalid batch directory name")
   if (file.exists(file.path(batch, "plan.rds")))
     return(build_ros_publication(batch, output, report_filename, comment = comment))
-  if (is.null(output)) output <- file.path(dirname(batch), paste0("aggregated_", basename(batch)))
+  if (is.null(output)) output <- file.path(batch, "publication")
   if (file.exists(output)) stop("Publication output already exists: ", output)
   dir.create(dirname(output), recursive = TRUE, showWarnings = FALSE)
   output <- file.path(normalizePath(dirname(output), mustWork = TRUE), basename(output))
-  if (startsWith(paste0(output, "/"), paste0(batch, "/"))) stop("Publication output must be outside raw batch")
   stage <- tempfile(paste0(".", basename(output), "-"), tmpdir = dirname(output))
   dir.create(stage); on.exit(unlink(stage, recursive = TRUE), add = TRUE)
   copy <- function(source, relative) {
@@ -45,7 +44,7 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
         stop("Conflicting publication file: ", relative)
     } else if (!file.copy(source, target, copy.date = TRUE)) stop("Cannot copy ", source)
   }
-  runs <- list.files(batch, full.names = TRUE, all.files = TRUE, no.. = TRUE)
+  runs <- setdiff(list.files(batch, full.names = TRUE, all.files = TRUE, no.. = TRUE), stage)
   if (!length(runs) || any(!dir.exists(runs)) || any(!grepl("^v[0-9]+\\.[0-9]+\\.[0-9]+_country-", basename(runs)))) stop("Unexpected batch entries")
   versions <- character(); empty <- character(); descriptors <- list(); expected <- 0L
   reference_provenance <- list()
@@ -123,15 +122,8 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
   }
   for (page in pages) {
     folder <- dirname(file.path(stage, page))
-    metadata <- jsonlite::read_json(file.path(folder, "aggregate.json"))
     files_table <- utils::read.csv(file.path(folder, "files.csv"), colClasses = "character",
       na.strings = NULL, fileEncoding = "UTF-8-BOM")
-    links <- c(vapply(metadata$breadcrumbs, `[[`, character(1), "href"),
-      vapply(metadata$children, `[[`, character(1), "href"))
-    for (link in links) {
-      target <- normalizePath(file.path(folder, utils::URLdecode(link)), mustWork = TRUE)
-      if (!startsWith(target, paste0(normalizePath(stage), "/")) || dir.exists(target)) stop("Invalid aggregate link: ", link)
-    }
     for (link in files_table$report) {
       target <- normalizePath(file.path(folder, link), mustWork = TRUE)
       if (!startsWith(target, paste0(normalizePath(stage), "/")) || dir.exists(target)) stop("Invalid individual link: ", link)
@@ -139,11 +131,11 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
   }
   files <- sort(list.files(stage, recursive = TRUE, full.names = FALSE, all.files = TRUE, no.. = TRUE))
   manifest <- list(batch = basename(batch), report_filename = report_filename,
-    individual_reports = nrow(descriptors), aggregate_reports = length(pages),
+    individual_reports = nrow(descriptors), aggregate_reports = length(pages), aggregate_pages = as.list(pages),
     reference_reports = reference_reports, registry_reports = registry_reports, conversion_reports = conversion_reports, primary_key_reports = primary_key_reports, no_inputs = as.list(empty),
     files = lapply(files, function(path) list(path = path, sha256 = digest::digest(file = file.path(stage, path), algo = "sha256"))))
   if (!is.null(comment) && nzchar(comment)) manifest$comment <- comment
-  jsonlite::write_json(manifest, file.path(stage, "publication.json"), auto_unbox = TRUE, pretty = TRUE)
+  jsonlite::write_json(manifest, paste0(output, ".json"), auto_unbox = TRUE, pretty = TRUE)
   if (!file.rename(stage, output)) stop("Cannot finalize publication directory: ", output)
   finish_ros_publication_navigation(output)
   invisible(normalizePath(output, mustWork = TRUE))
@@ -179,7 +171,7 @@ add_publication_breadcrumbs <- function(path, parts, report_filename) {
 
 # Apply ROS navigation after internal link checks; publication time is set by the uploader.
 finish_ros_publication_navigation <- function(directory, published_at = NULL) {
-  manifest_path <- file.path(directory, "publication.json")
+  manifest_path <- paste0(directory, ".json")
   manifest <- jsonlite::read_json(manifest_path, simplifyVector = FALSE)
   stamp <- NULL
   if (!is.null(published_at)) {
@@ -190,23 +182,20 @@ finish_ros_publication_navigation <- function(directory, published_at = NULL) {
   }
   paths <- vapply(manifest$files, function(item) item$path, character(1))
   changed <- character()
-  for (relative in paths[basename(paths) == "aggregate.json"]) {
-    metadata_path <- file.path(directory, relative)
-    metadata <- jsonlite::read_json(metadata_path, simplifyVector = FALSE)
+  for (relative in unlist(manifest$aggregate_pages, use.names = FALSE)) {
     group <- dirname(relative)
     scope <- if (group == ".") "All forms" else paste(strsplit(group, "/", fixed = TRUE)[[1]], collapse = " / ")
     title <- paste(c("ROS validation summary", scope, stamp), collapse = " \u2014 ")
-    metadata$title <- title
-    if (group == ".") {
-      parent <- list(label = "Validation publications", href = "../")
-      metadata$breadcrumbs <- c(list(parent), Filter(function(item)
-        !identical(item$href, "../"), metadata$breadcrumbs))
-    }
-    html_relative <- file.path(group, manifest$report_filename)
-    html_path <- file.path(directory, html_relative)
+    html_path <- file.path(directory, relative)
     set_ros_publication_title(html_path, title)
-    jsonlite::write_json(metadata, metadata_path, auto_unbox = TRUE, pretty = TRUE)
-    changed <- c(changed, relative, sub("^./", "", html_relative))
+    if (group == ".") {
+      html <- paste(readLines(html_path, warn = FALSE), collapse = "\n")
+      navigation <- paste0('<nav id="breadcrumbs" aria-label="Breadcrumb">',
+        '<a href="../">Validation publications</a> / <span aria-current="page">All reports</span></nav>')
+      html <- sub('(?s)<nav id="breadcrumbs"[^>]*>.*?</nav>', navigation, html, perl = TRUE)
+      writeLines(html, html_path, useBytes = TRUE)
+    }
+    changed <- c(changed, relative)
   }
   evidence <- c("code-list-evidence", "registry-evidence", "conversion-evidence", "primary-key-evidence")
   for (relative in paths[basename(dirname(paths)) %in% evidence & basename(paths) == manifest$report_filename]) {

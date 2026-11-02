@@ -2,7 +2,7 @@
 # Upload an already prepared publication tree; never rebuild batch results here.
 main <- function(args) {
   if (!length(args) || "--help" %in% args) {
-    cat("Usage: Rscript tools/publish-reports.R output/aggregated_ros-validation-<timestamp> [--host ultreia]\n")
+    cat("Usage: Rscript tools/publish-reports.R output/ros-validation-<timestamp>/publication [--host ultreia]\n")
     return(invisible(NULL))
   }
   host <- "ultreia"
@@ -16,7 +16,7 @@ main <- function(args) {
   landing_page <- file.path(dirname(normalizePath(script, mustWork = TRUE)), "publication", "index.html")
   if (!file.exists(landing_page)) stop("Missing publication landing page: ", landing_page, call. = FALSE)
   directory <- normalizePath(args[[1L]], mustWork = TRUE)
-  manifest_path <- file.path(directory, "publication.json")
+  manifest_path <- paste0(directory, ".json")
   manifest <- jsonlite::read_json(manifest_path, simplifyVector = FALSE)
   comment <- manifest$comment
   if (!is.null(comment) && (!is.character(comment) || length(comment) != 1L || is.na(comment)))
@@ -24,7 +24,7 @@ main <- function(args) {
   batch <- manifest$batch
   if (!is.character(batch) || length(batch) != 1L ||
       !grepl("^ros-validation-[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{6}Z$", batch) ||
-      basename(directory) != paste0("aggregated_", batch)) {
+      basename(directory) != "publication" || basename(dirname(directory)) != batch) {
     stop("Prepared directory and publication manifest batch must agree", call. = FALSE)
   }
   paths <- vapply(manifest$files, function(x) x$path, character(1))
@@ -34,7 +34,7 @@ main <- function(args) {
     stop("Invalid publication manifest paths", call. = FALSE)
   }
   actual <- list.files(directory, recursive = TRUE, all.files = TRUE, no.. = TRUE)
-  if (!setequal(actual, c(paths, "publication.json"))) {
+  if (!setequal(actual, paths)) {
     stop("Prepared files differ from publication manifest; prepare again", call. = FALSE)
   }
   for (i in seq_along(paths)) {

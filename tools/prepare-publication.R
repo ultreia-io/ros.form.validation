@@ -7,7 +7,7 @@ if (requireNamespace("pkgload", quietly = TRUE)) pkgload::load_all(root, quiet =
 args <- commandArgs(TRUE)
 if (!length(args) || "--help" %in% args) {
   cat("Usage: Rscript tools/prepare-publication.R --batch output/ros-validation-<timestamp>\n",
-      "  [--output output/aggregated_ros-validation-<timestamp>] [--report-filename index.html] [--comment TEXT]\n")
+      "  [--output output/ros-validation-<timestamp>/publication] [--report-filename index.html] [--comment TEXT]\n")
   quit(status = 0)
 }
 options <- list(); i <- 1L

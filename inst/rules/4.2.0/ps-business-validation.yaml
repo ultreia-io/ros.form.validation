@@ -1,0 +1,5 @@
+schema_version: 1.0.0
+rules_version: 1.0.0
+model: {id: ps, version: 4.2.0}
+stage: business
+rules: {}

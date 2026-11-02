@@ -4,6 +4,4 @@ model:
   id: ps
   version: 3.3.0
 stage: business
-rules:
-  source-issue-1/source_issue: {sheet: E-SET-CATCHES-SPECIMEN, field: specimen_details_all_species_sampling_period_code, message: 'Legacy check_column_exists_in_code_list references a field absent from the input mapping.'}
-  source-issue-2/source_issue: {sheet: E-SET, field: school_type, message: 'Upstream comment states the field is missing; no declaration or coordinate is supplied.'}
+rules: {}
