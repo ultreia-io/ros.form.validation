@@ -1,3 +1,10 @@
+# ros.form.validation 0.4.0
+
+- Align LL and PS 4.2.0 validation with the revised forms.
+- Correct form version checks for LL and PS 4.1.0 and 4.2.0.
+- Update `form.validation` from 0.4.0 to 0.6.0.
+- Update `ros.form.model` from 0.2.0 to 0.3.0.
+
 # ros.form.validation 0.3.0
 
 - Check model-declared code lists, registries and primary keys in ROS forms 3.3.0, 4.0.0 and 4.1.0.
