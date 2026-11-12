@@ -505,8 +505,8 @@ rules:
   field/E-SET-HAULING-BITEOFFS.set_number/type: "string"
   field/E-SET-HAULING-BITEOFFS.hauling_operations_biteoffs_details_branchline_configuration_number/type: "string"
   field/E-SET-HAULING-BITEOFFS.hauling_operations_biteoffs_details_branchline_num_biteoffs/type: "integer"
-  sheet/E-SET-HAULING-BITEOFFS/primary_key_present: ["observed_trip_number", "set_number", "hauling_operations_biteoffs_details_branchline_configuration_number"]
-  sheet/E-SET-HAULING-BITEOFFS/primary_key_unique: ["observed_trip_number", "set_number", "hauling_operations_biteoffs_details_branchline_configuration_number"]
+  sheet/E-SET-HAULING-BITEOFFS/unique_key: ["observed_trip_number", "set_number", "hauling_operations_biteoffs_details_branchline_configuration_number"]
+  sheet/E-SET-HAULING-BITEOFFS/at_least_one: {value: ["hauling_operations_biteoffs_details_branchline_configuration_number", "hauling_operations_biteoffs_details_branchline_num_biteoffs"], severity: warning}
   sheet/E-SET-HAULING-BITEOFFS/parent_key: {value: {"sheet": "E-SET-HAULING", "fields": ["observed_trip_number", "set_number"]}}
   field/E-SET-CATCHES.observed_trip_number/mandatory: true
   field/E-SET-CATCHES.observed_trip_number/type: "string"

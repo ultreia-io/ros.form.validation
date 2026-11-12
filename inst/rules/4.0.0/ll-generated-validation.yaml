@@ -285,8 +285,8 @@ rules:
   field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_3/reference: {value: {"id": "code_lists/refs_fishery.branchline_storages/code", "matching": "exact"}}
   field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_4/type: "string"
   field/G-CONFIG-BRANCHLINES.additional_branchline_details_storage_4/reference: {value: {"id": "code_lists/refs_fishery.branchline_storages/code", "matching": "exact"}}
-  sheet/G-CONFIG-BRANCHLINES/primary_key_present: ["observed_trip_id", "branchline_configurations_configuration_id"]
-  sheet/G-CONFIG-BRANCHLINES/primary_key_unique: ["observed_trip_id", "branchline_configurations_configuration_id"]
+  sheet/G-CONFIG-BRANCHLINES/unique_key: ["observed_trip_id", "branchline_configurations_configuration_id"]
+  sheet/G-CONFIG-BRANCHLINES/at_least_one: {value: ["branchline_configurations_configuration_id", "branchline_configurations_section_id", "branchline_configurations_material_type", "branchline_configurations_length_m", "branchline_configurations_diameter_cm", "additional_branchline_details_storage_1", "additional_branchline_details_storage_2", "additional_branchline_details_storage_3", "additional_branchline_details_storage_4"], severity: warning}
   sheet/G-CONFIG-BRANCHLINES/parent_key: {value: {"sheet": "O-INFO", "fields": ["observed_trip_id"]}}
   field/G-CONFIG-MITIGATION-DEVICES.observed_trip_id/mandatory: true
   field/G-CONFIG-MITIGATION-DEVICES.observed_trip_id/type: "string"
@@ -512,8 +512,8 @@ rules:
   field/E-SET-HAULING-BITEOFFS.set_id/type: "string"
   field/E-SET-HAULING-BITEOFFS.branchline_configuration_id/type: "string"
   field/E-SET-HAULING-BITEOFFS.branchline_number_of_biteoffs/type: "integer"
-  sheet/E-SET-HAULING-BITEOFFS/primary_key_present: ["observed_trip_id", "set_id", "branchline_configuration_id"]
-  sheet/E-SET-HAULING-BITEOFFS/primary_key_unique: ["observed_trip_id", "set_id", "branchline_configuration_id"]
+  sheet/E-SET-HAULING-BITEOFFS/unique_key: ["observed_trip_id", "set_id", "branchline_configuration_id"]
+  sheet/E-SET-HAULING-BITEOFFS/at_least_one: {value: ["branchline_configuration_id", "branchline_number_of_biteoffs"], severity: warning}
   sheet/E-SET-HAULING-BITEOFFS/parent_key: {value: {"sheet": "E-SET-HAULING", "fields": ["observed_trip_id", "set_id"]}}
   field/E-SET-CATCHES.observed_trip_id/mandatory: true
   field/E-SET-CATCHES.observed_trip_id/type: "string"
