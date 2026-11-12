@@ -49,107 +49,19 @@ ros_batch_gears <- function(gear) {
   unique(gear)
 }
 
-#' Load explicit local CSV reference snapshots
-#' @param directory Folder containing `code_lists/` and `registries/`.
-#' @param plans Named validation plans for the selected gears.
-#' @param prepare Whether to prepare lookup indexes. Use FALSE when freezing
-#'   references for jobs without inputs; values and provenance are still retained.
-#' @return References for the engine, with a `provenance` attribute recording
-#'   CSV paths, SHA-256 digests, and missing declarations.
-#' @details Code lists read `code` and optional `code_orig` aliases. Original
-#'   codes are trimmed like the legacy reader; blank and unusable originals are excluded.
-#'   Bundled ROS aliases are checked against the supplied canonical codes and
-#'   apply to every model version using the corresponding code list.
-#'   Registry declarations identify a table; each field binding selects a column.
-#'   Bundled registry aliases apply to the relevant table and column, with
-#'   targets checked against the supplied registry values.
-#'   Codes stay character; duplicate
-#'   registry values are retained. Empty keys are excluded. No database is used.
-#'   Missing files or columns remain missing snapshots, never empty valid ones.
-#'   Registry indexes are prepared once using each model field's matching
-#'   strategy and the shared aliases. Code-list keys and aliases are also prepared
-#'   once for the batch. Reload after changing snapshots or rules.
+#' Prepare shared ROS references for validation
+#' @param directory Folder containing code_lists and registries.
+#' @param plans Selected validation plans.
+#' @param prepare Prepare lookup caches for active jobs?
+#' @return Shared snapshots with validation lookup caches when requested.
 #' @export
 read_ros_references <- function(directory, plans, prepare = TRUE) {
   if (!is.logical(prepare) || length(prepare) != 1L || is.na(prepare))
     stop("prepare must be TRUE or FALSE", call. = FALSE)
-  directory <- normalizePath(directory, mustWork = TRUE)
-  code_ids <- unique(unlist(lapply(plans, function(plan)
-    vapply(Filter(function(r) r$kind %in% c("reference", "code_list"), plan$rules),
-      `[[`, character(1), "value")), use.names = FALSE))
-  registry_ids <- unique(unlist(lapply(plans, function(plan)
-    lapply(plan$rules, function(r) if (r$kind == "registry")
-      registry_reference_id(r$value) else
-      r$parameters$reference)), use.names = FALSE))
-  ids <- unique(c(code_ids, registry_ids))
-  bundled_aliases <- ros_code_list_aliases()
-  registry_aliases <- ros_registry_aliases()
-  tables <- new.env(parent = emptyenv())
-  refs <- list(); provenance <- list()
-  for (id in ids) {
-    parts <- strsplit(id, ".", fixed = TRUE)[[1]]
-    registry <- id %in% registry_ids
-    table <- paste(parts[1:2], collapse = ".")
-    column <- if (registry) parts[[3]] else "code"
-    path <- file.path(directory, if (registry) "registries" else "code_lists", paste0(table, ".csv"))
-    if (!exists(path, tables, inherits = FALSE)) {
-      tables[[path]] <- if (!file.exists(path)) list(data = NULL, sha256 = NULL) else list(
-        data = utils::read.csv(path, colClasses = "character", check.names = FALSE,
-          na.strings = "", strip.white = FALSE, fileEncoding = "UTF-8"),
-        sha256 = digest::digest(file = path, algo = "sha256"))
-    }
-    snapshot <- tables[[path]]
-    available <- !is.null(snapshot$data) && column %in% names(snapshot$data)
-    provenance[[id]] <- list(path = path, column = column, sha256 = snapshot$sha256,
-      status = if (available) "available" else "missing")
-    if (available) {
-      values <- snapshot$data[[column]]
-      refs[[id]] <- list(values = values[!is.na(values) & nzchar(values)], version = snapshot$sha256)
-      if (!registry && "code_orig" %in% names(snapshot$data)) {
-        original <- trimws(snapshot$data$code_orig)
-        keep <- !is.na(original) & nzchar(original) & original != "???" &
-          !is.na(values) & original != values
-        refs[[id]]$aliases <- stats::setNames(values[keep], original[keep])
-      }
-      if (!registry) refs[[id]]$aliases <- merge_ros_code_list_aliases(
-        refs[[id]]$aliases, bundled_aliases[bundled_aliases$id == id, , drop = FALSE],
-        refs[[id]]$values, id)
-      if (registry) refs[[id]]$aliases <- registry_snapshot_aliases(
-        registry_aliases, table, column, refs[[id]]$values)
-    }
-  }
-  attr(refs, "provenance") <- provenance
+  refs <- ros.form.references::read_ros_references(directory, lapply(plans, `[[`, "model"))
   if (!prepare) return(refs)
-  for (plan in plans) {
-    fields <- form.model::form_fields(plan$model)
-    for (rule in plan$rules) {
-      if (rule$kind == "registry") {
-        p <- rule$value
-        reference <- registry_reference_id(p)
-        field <- rule$field
-      } else {
-        p <- rule$parameters
-        reference <- p$reference
-        field <- p$field
-        if (!endsWith(rule$id, "/registry_match")) next
-      }
-      if (is.null(refs[[reference]])) next
-      snapshot <- refs[[reference]]
-      index <- registry_lookup(snapshot, p, fields[[field]]$type)
-      same_policy <- vapply(snapshot$indexes, function(x) identical(
-        x[c("type", "matching", "aliases")], index[c("type", "matching", "aliases")]), logical(1))
-      if (!any(same_policy)) refs[[reference]]$indexes <- c(snapshot$indexes, list(index))
-    }
-  }
-  form.validation::prepare_validation_references(refs, code_ids)
-}
+  form.validation::prepare_validation_references(refs)
 
-#' Resolve a registry rule to its snapshot key
-#' @param binding Registry rule value containing a table ID and optional column.
-#' @return The registry snapshot key.
-#' @keywords internal
-registry_reference_id <- function(binding) {
-  if (is.null(binding$column)) binding$id else paste(binding$id, binding$column, sep = ".")
 }
 
 #' Validate and report one workbook
@@ -240,8 +152,7 @@ ros_missing_value_policy <- function() {
 prepare_ros_validation_data <- function(data, model, reference_fields = character()) {
   policy <- ros_missing_value_policy()
   tokens <- function(field) {
-    referenced <- !is.null(field$reference) || !is.null(field$code_list) ||
-      !is.null(field$registry) || field$id %in% reference_fields
+    referenced <- !is.null(field$reference) || field$id %in% reference_fields
     if (!referenced && field$type %in% policy$types)
       c(policy$common, policy$unknown) else policy$common
   }

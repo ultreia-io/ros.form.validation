@@ -24,7 +24,7 @@
 ros_validation <- function(name, version,
                            business = NULL, checks = list(), meta_as_warnings = TRUE) {
   check_meta_as_warnings(meta_as_warnings)
-  model <- ros.form.model::ros_form(name, version)
+  model <- ros.form.references::resolve_ros_lookups(ros.form.model::ros_form(name, version))
   directory <- system.file("rules", version, package = "ros.form.validation", mustWork = TRUE)
   path <- file.path(directory, paste0(name, "-validation.yaml"))
   builtin <- list(registry_match = registry_match, source_issue = source_issue)
@@ -38,6 +38,7 @@ ros_validation <- function(name, version,
   }
   plan <- form.validation::read_validation_process(path, model, c(builtin, checks),
     business = if (is.null(business)) character() else business)
+  attr(plan$model, "reference_lookups") <- attr(model, "reference_lookups", exact = TRUE)
   if (meta_as_warnings) {
     plan$rules <- lapply(plan$rules, function(rule) {
       sheets <- c(rule$sheet, rule$parameters$sheet)

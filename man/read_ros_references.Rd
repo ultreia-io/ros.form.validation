@@ -2,37 +2,20 @@
 % Please edit documentation in R/inputs.R
 \name{read_ros_references}
 \alias{read_ros_references}
-\title{Load explicit local CSV reference snapshots}
+\title{Prepare shared ROS references for validation}
 \usage{
 read_ros_references(directory, plans, prepare = TRUE)
 }
 \arguments{
-\item{directory}{Folder containing \verb{code_lists/} and \verb{registries/}.}
+\item{directory}{Folder containing code_lists and registries.}
 
-\item{plans}{Named validation plans for the selected gears.}
+\item{plans}{Selected validation plans.}
 
-\item{prepare}{Whether to prepare lookup indexes. Use FALSE when freezing
-references for jobs without inputs; values and provenance are still retained.}
+\item{prepare}{Prepare lookup caches for active jobs?}
 }
 \value{
-References for the engine, with a \code{provenance} attribute recording
-CSV paths, SHA-256 digests, and missing declarations.
+Shared snapshots with validation lookup caches when requested.
 }
 \description{
-Load explicit local CSV reference snapshots
-}
-\details{
-Code lists read \code{code} and optional \code{code_orig} aliases. Original
-codes are trimmed like the legacy reader; blank and unusable originals are excluded.
-Bundled ROS aliases are checked against the supplied canonical codes and
-apply to every model version using the corresponding code list.
-Registry declarations identify a table; each field binding selects a column.
-Bundled registry aliases apply to the relevant table and column, with
-targets checked against the supplied registry values.
-Codes stay character; duplicate
-registry values are retained. Empty keys are excluded. No database is used.
-Missing files or columns remain missing snapshots, never empty valid ones.
-Registry indexes are prepared once using each model field's matching
-strategy and the shared aliases. Code-list keys and aliases are also prepared
-once for the batch. Reload after changing snapshots or rules.
+Prepare shared ROS references for validation
 }

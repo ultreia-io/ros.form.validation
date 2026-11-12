@@ -10,12 +10,12 @@ registry_lookup(snapshot, rule, type)
 \item{snapshot}{Registry snapshot with \code{values}, optional \code{aliases}, and
 optional prepared \code{indexes}.}
 
-\item{rule}{Rule parameters with optional \code{matching}.}
+\item{rule}{Rule parameters with optional \code{matching} and \code{ignore_case}.}
 
 \item{type}{Declared field type.}
 }
 \value{
-A matching \code{validation_registry} index, or a newly prepared index.
+A matching \code{reference_index} index, or a newly prepared index.
 The supplied snapshot is not modified.
 }
 \description{

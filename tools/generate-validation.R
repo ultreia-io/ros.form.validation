@@ -6,7 +6,7 @@ if (length(args) != 2L || args[[1L]] != "--version")
 version <- args[[2L]]
 output <- file.path("inst", "rules", version)
 for (name in ros.form.model::ROS_FORMS) {
-  model <- ros.form.model::ros_form(name, version)
+  model <- ros.form.references::resolve_ros_lookups(ros.form.model::ros_form(name, version))
   paths <- file.path(output, paste0(name, c("-structure-validation.yaml", "-generated-validation.yaml")))
   form.validation::write_validation_rules(model, paths[[1L]], paths[[2L]],
     version = "1.0.0", overwrite = any(file.exists(paths)))
