@@ -84,10 +84,8 @@ main <- function(args) {
   run("ssh", c(host, paste("mv", shQuote(remote_landing), shQuote(paste0(destination, "/index.html")))))
   cat(sprintf("Published %s individual and %s aggregate reports: https://ros.ultreia.io/validation/%s/\n",
               manifest$individual_reports, manifest$aggregate_reports, batch))
-  if (!is.null(manifest$reference_reports) && manifest$reference_reports > 0L)
-    cat(sprintf("Included %s code-list evidence report.\n", manifest$reference_reports))
-  if (!is.null(manifest$registry_reports) && manifest$registry_reports > 0L)
-    cat(sprintf("Included %s registry evidence report.\n", manifest$registry_reports))
+  for (catalogue in manifest$catalogue_reports) if (catalogue$reports > 0L)
+    cat(sprintf("Included %s %s evidence reports.\n", catalogue$reports, catalogue$label))
   if (!is.null(manifest$primary_key_reports) && manifest$primary_key_reports > 0L)
     cat(sprintf("Included %s primary-key evidence reports.\n", manifest$primary_key_reports))
   if (!is.null(manifest$conversion_reports) && manifest$conversion_reports > 0L)

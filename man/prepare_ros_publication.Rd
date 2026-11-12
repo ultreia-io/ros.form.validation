@@ -35,7 +35,7 @@ report.html as fallback. Aggregates use year/country/gear/version groups.
 The adjacent publication manifest records counts, empty versions, an optional publication
 comment and SHA-256 file checksums.
 Each copied report links to all ancestor aggregates using report_filename.
-Code-list and registry evidence reports group rejected values by snapshot,
+Catalogue evidence reports group rejected values by snapshot,
 retaining severity, reason and exact source cells where applicable.
 Reference CSVs are checked against recorded batch hashes.
 Planned batches keep their portable publication plan outside the served directory.

@@ -13,7 +13,7 @@
 #'   The adjacent publication manifest records counts, empty versions, an optional publication
 #'   comment and SHA-256 file checksums.
 #'   Each copied report links to all ancestor aggregates using report_filename.
-#'   Code-list and registry evidence reports group rejected values by snapshot,
+#'   Catalogue evidence reports group rejected values by snapshot,
 #'   retaining severity, reason and exact source cells where applicable.
 #'   Reference CSVs are checked against recorded batch hashes.
 #'   Planned batches keep their portable publication plan outside the served directory.
@@ -47,21 +47,11 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
   runs <- setdiff(list.files(batch, full.names = TRUE, all.files = TRUE, no.. = TRUE), stage)
   if (!length(runs) || any(!dir.exists(runs)) || any(!grepl("^v[0-9]+\\.[0-9]+\\.[0-9]+_country-", basename(runs)))) stop("Unexpected batch entries")
   versions <- character(); empty <- character(); descriptors <- list(); expected <- 0L
-  reference_provenance <- list()
   for (run in runs) {
     version <- sub("_country-.*$", "", basename(run))
     if (version %in% versions) stop("Duplicate model run: ", version)
     versions <- c(versions, version)
     metadata <- yaml::read_yaml(file.path(run, "run.yaml"))
-    references <- list()
-    for (id in names(metadata$references)) {
-      snapshot <- metadata$references[[id]]
-      if (!identical(snapshot$status, "available")) next
-      if (is.null(snapshot$sha256) || !grepl("^[a-f0-9]{64}$", snapshot$sha256) ||
-          !identical(digest::digest(file = snapshot$path, algo = "sha256"), snapshot$sha256))
-        stop("Reference snapshot differs from batch provenance: ", id)
-      references[[id]] <- snapshot
-    }
     leaf <- metadata$report_filename
     if (is.null(leaf)) leaf <- "report.html"
     check_report_filename(leaf)
@@ -74,21 +64,22 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
     if (count == 0) empty <- c(empty, version)
     expected <- expected + count
     paths <- list.files(run, recursive = TRUE, full.names = FALSE, all.files = TRUE, no.. = TRUE)
-    leaves <- paths[basename(paths) == leaf & !startsWith(paths, "report-assets/")]
+    leaves <- paths[basename(paths) == leaf & lengths(strsplit(paths, "/", fixed = TRUE)) == 6L]
     if (length(leaves) != count || sum(basename(paths) == "summary.csv") != count || sum(basename(paths) == "findings.csv") != count)
       stop("Report count differs from run metadata: ", run)
     for (path in leaves) {
       relative <- dirname(path); parts <- strsplit(relative, "/", fixed = TRUE)[[1]]
       if (length(parts) != 5L || parts[4] != version || any(parts %in% c("", ".", ".."))) stop("Invalid report hierarchy: ", relative)
-      for (name in c(leaf, "summary.csv", "findings.csv")) {
+      for (name in c(leaf, "summary.csv", "findings.csv", "evidence.json")) {
         source <- file.path(run, relative, name)
         if (!file.exists(source)) stop("Missing report artifact: ", source)
         copy(source, file.path(relative, name))
       }
+      children <- paths[startsWith(paths, paste0(relative, "/"))]
+      for (child in children) copy(file.path(run, child), child)
       add_publication_breadcrumbs(file.path(stage, relative, leaf), parts, report_filename)
       descriptors[[length(descriptors) + 1L]] <- data.frame(directory = relative, report = leaf,
         year = parts[1], country = parts[2], gear = parts[3], version = parts[4], stringsAsFactors = FALSE)
-      reference_provenance[[relative]] <- references
     }
     for (path in paths[startsWith(paths, "report-assets/")]) copy(file.path(run, path), path)
     copy(file.path(run, "run.log"), file.path("logs", paste0(version, ".log")))
@@ -102,13 +93,17 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
     stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
     logo = system.file("report", "IOTC_with_text.png", package = "ros.form.validation", mustWork = TRUE),
     model_versions = sub("^v", "", versions),
-    reference_provenance = reference_provenance, reference_context_columns = "gear")
-  reference_reports <- length(attr(pages, "reference_report"))
-  registry_reports <- length(attr(pages, "registry_report"))
-  conversion_reports <- length(attr(pages, "conversion_report"))
-  primary_key_reports <- length(attr(pages, "primary_key_report"))
+    reference_context_columns = "gear")
+  individual_evidence <- basename(dirname(list.files(stage, pattern = "\\.html$", recursive = TRUE)))
+  catalogue_reports <- lapply(attr(pages, "catalogues"), function(spec) {
+    spec$reports <- sum(individual_evidence == spec$folder)
+    spec
+  })
+  reference_reports <- sum(vapply(catalogue_reports, `[[`, numeric(1), "reports"))
+  conversion_reports <- sum(individual_evidence == "conversion-evidence")
+  primary_key_reports <- sum(individual_evidence == "primary-key-evidence")
   html <- list.files(stage, pattern = "\\.html$", recursive = TRUE, full.names = TRUE)
-  if (length(html) != expected + length(pages) + reference_reports + registry_reports + conversion_reports + primary_key_reports) stop("Unexpected HTML report count")
+  if (length(html) != expected + length(pages) + reference_reports + conversion_reports + primary_key_reports) stop("Unexpected HTML report count")
   for (path in html) {
     text <- paste(readLines(path, warn = FALSE), collapse = "\n")
     links <- regmatches(text, gregexpr('(?:href|src)="[^"]+"', text, perl = TRUE))[[1]]
@@ -129,10 +124,11 @@ prepare_ros_publication <- function(batch, output = NULL, report_filename = "ind
       if (!startsWith(target, paste0(normalizePath(stage), "/")) || dir.exists(target)) stop("Invalid individual link: ", link)
     }
   }
+  unlink(file.path(stage, descriptors$directory, "evidence.json"))
   files <- sort(list.files(stage, recursive = TRUE, full.names = FALSE, all.files = TRUE, no.. = TRUE))
   manifest <- list(batch = basename(batch), report_filename = report_filename,
     individual_reports = nrow(descriptors), aggregate_reports = length(pages), aggregate_pages = as.list(pages),
-    reference_reports = reference_reports, registry_reports = registry_reports, conversion_reports = conversion_reports, primary_key_reports = primary_key_reports, no_inputs = as.list(empty),
+    reference_reports = reference_reports, catalogue_reports = catalogue_reports, conversion_reports = conversion_reports, primary_key_reports = primary_key_reports, no_inputs = as.list(empty),
     files = lapply(files, function(path) list(path = path, sha256 = digest::digest(file = file.path(stage, path), algo = "sha256"))))
   if (!is.null(comment) && nzchar(comment)) manifest$comment <- comment
   jsonlite::write_json(manifest, paste0(output, ".json"), auto_unbox = TRUE, pretty = TRUE)
@@ -197,7 +193,8 @@ finish_ros_publication_navigation <- function(directory, published_at = NULL) {
     }
     changed <- c(changed, relative)
   }
-  evidence <- c("code-list-evidence", "registry-evidence", "conversion-evidence", "primary-key-evidence")
+  evidence <- c(vapply(manifest$catalogue_reports, `[[`, character(1), "folder"),
+    "conversion-evidence", "primary-key-evidence")
   for (relative in paths[basename(dirname(paths)) %in% evidence & basename(paths) == manifest$report_filename]) {
     path <- file.path(directory, relative)
     html <- paste(readLines(path, warn = FALSE), collapse = "\n")
