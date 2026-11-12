@@ -23,8 +23,7 @@ ros-input-data/
 The year and country come from directory names. Keep original filenames. Excel lock files are excluded.
 
 Configure the public code-list source and the private registry source before planning.
-Set `ROS_REGISTRY_AUTHORIZATION` to the Basic Auth header for the separate
-`ros-registries` account; keep the credential out of source files.
+Set `ROS_REGISTRY_PASSWORD` for the private registry account; keep it out of source files.
 
 ## 1. Plan the work
 
@@ -34,18 +33,14 @@ Edit the paths below. The output must be outside the input directory.
 library(ros.form.validation)
 
 input <- "ros-input-data"
-cache <- "output/reference-cache"
-code_lists <- form.references::reference_source(
-  "https://ros.ultreia.io/references/code_lists/", cache
-)
-registries <- form.references::reference_source(
-  "https://ros.ultreia.io/references/registries/", cache,
-  catalogue = "registries",
-  headers = function() c(Authorization = Sys.getenv("ROS_REGISTRY_AUTHORIZATION"))
-)
+sources <- form.references::read_reference_sources(
+  system.file("reference-sources.yaml", package = "ros.form.references"))
 stamp <- format(Sys.time(), "%Y-%m-%dT%H%M%SZ", tz = "UTC")
-references <- prepare_ros_reference_snapshots(
-  file.path("output", paste0("ros-references-", stamp)), code_lists, registries
+models <- unlist(lapply(ros.form.model::ROS_FORM_VERSIONS, function(version)
+  lapply(ros.form.model::ROS_FORMS, ros.form.model::ros_form, version = version)),
+  recursive = FALSE)
+references <- ros.form.references::prepare_ros_reference_snapshots(
+  file.path("output", paste0("ros-references-", stamp)), sources$code_lists, sources$registries, models
 )
 batch <- file.path("output", paste0("ros-validation-", stamp))
 plan <- plan_ros_validation(

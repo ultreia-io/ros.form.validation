@@ -67,8 +67,6 @@ HTML templates, JavaScript and CSS are separate resources. Shared assets use con
 
 ## Release
 
-Release `ros.form.model` before `ros.form.validation`, then pin its release tag in `Remotes`.
-
 1. **Prepare the release on `develop`:**
 
    1. **Prepare the release files:** update the version in `DESCRIPTION`, finalize `NEWS.md` and documentation.

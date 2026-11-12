@@ -97,3 +97,18 @@ Individual reports provide Summary CSV and Findings CSV downloads.
 Aggregate reports provide Forms, Issues and Execution CSV downloads for their scope.
 
 Keep the HTML report with its CSV files and assets when sharing it; a standalone HTML file cannot load the tables.
+
+## Optional keys and empty information
+
+LL hauling biteoffs use optional unique keys in versions 3.3.0 through 4.2.0.
+LL branchline configurations use them in versions 4.0.0 through 4.2.0.
+Only complete keys are checked for duplicates; missing optional components are allowed.
+Duplicate complete keys remain errors, and parent relationships are still checked.
+
+The `at_least_one` warning identifies populated rows that supply no selected detail.
+For biteoffs, a row with trip and set identifiers but no configuration or biteoff count receives this warning.
+A supplied configuration or count, including zero, prevents this warning.
+For branchline configurations, any supplied non-parent field prevents the warning.
+Entirely empty rows do not trigger it; other mandatory-field checks still apply.
+
+These findings appear in the report and findings CSV under `unique_key` and `at_least_one` rule IDs.
