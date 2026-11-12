@@ -20,7 +20,7 @@ write_ros_validation_report <- function(result, path, overwrite = FALSE, parent_
   if (!inherits(result, "validation_result")) stop("result must come from validate_ros()", call. = FALSE)
   name <- result$model$form$id
   model <- ros.form.model::ros_form(name, result$model$form$version)
-  report <- form.validation::validation_report_data(result, model,
+  report <- form.validation::prepare_validation_report(result, model,
     context = list(gear = name))
   form.validation::write_validation_report(report, path,
     title = paste("ROS validation report \u2014", name),

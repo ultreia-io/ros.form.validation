@@ -1,21 +1,20 @@
 #' Reuse a registry index matching the explicit rule policy
-#' @param snapshot Registry snapshot with `values`, optional `aliases`, and
-#'   optional prepared `indexes`.
+#' @param snapshot Prepared registry reference index with catalogue-owned aliases.
 #' @param rule Rule parameters with optional `matching` and `ignore_case`.
-#' @param type Declared field type.
 #' @return A matching `reference_index` index, or a newly prepared index.
 #'   The supplied snapshot is not modified.
 #' @keywords internal
-registry_lookup <- function(snapshot, rule, type) {
+registry_lookup <- function(snapshot, rule) {
   matching <- if (is.null(rule$matching)) "exact" else rule$matching
   ignore_case <- !identical(rule$ignore_case, FALSE)
-  aliases <- if (is.null(snapshot$aliases)) character() else snapshot$aliases
-  for (index in snapshot$indexes) {
-    if (identical(index$type, type) && identical(index$matching, matching) &&
-        identical(index$aliases, aliases) && identical(index$ignore_case, ignore_case)) return(index)
+  if (inherits(snapshot, "reference_index")) {
+    if (identical(snapshot$matching, matching) &&
+        identical(snapshot$ignore_case, ignore_case)) return(snapshot)
+    return(form.references::reference_index(snapshot$data, snapshot$column,
+      matching = matching, ignore_case = ignore_case))
   }
-  form.references::reference_index(snapshot$values, type = type, matching = matching,
-    aliases = aliases, ignore_case = ignore_case)
+  form.references::reference_index(snapshot$values, matching = matching,
+    ignore_case = ignore_case)
 }
 
 #' Require exactly one registry match for each eligible field value
@@ -34,15 +33,15 @@ registry_match <- function(model, data, references, config) {
   usable <- field$eligible
   if (!length(usable)) return(NULL)
   snapshot <- references[[p$reference]]
-  if (is.null(snapshot)) form.validation::validation_incomplete(paste("Missing registry snapshot:", p$reference))
+  if (is.null(snapshot)) form.validation::signal_validation_incomplete(paste("Missing registry snapshot:", p$reference))
   if (!is.list(snapshot) || is.null(snapshot$values) ||
       !(is.atomic(snapshot$values) || is.list(snapshot$values))) stop("Registry snapshot needs values: ", p$reference)
-  index <- registry_lookup(snapshot, p, field$type)
+  index <- registry_lookup(snapshot, p)
   counts <- lengths(form.references::reference_match_rows(index, field$original[usable]))
   bad <- which(counts != 1L)
   if (!length(bad)) return(NULL)
   positions <- usable[bad]
-  form.validation::validation_findings(
+  form.validation::create_validation_findings(
     ifelse(counts[bad] == 0L,
       paste("Value not found in registry", p$reference),
       paste("Value has", counts[bad], "matches in registry", paste0(p$reference, "; expected exactly one"))),
@@ -62,5 +61,5 @@ registry_match <- function(model, data, references, config) {
 source_issue <- function(model, data, references, config) {
   p <- config$rule
   if (!is.null(p$sheet) && !p$sheet %in% names(data)) return(NULL)
-  form.validation::validation_incomplete(p$message, sheet = p$sheet, field = p$field)
+  form.validation::signal_validation_incomplete(p$message, sheet = p$sheet, field = p$field)
 }

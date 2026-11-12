@@ -65,7 +65,7 @@ plan_ros_validation <- function(input, references, versions, output = NULL,
   jobs$plan <- jobs$gear
   files$job <- paste(files$model_version, tolower(files$gear), sep = "-", recycle0 = TRUE)
   files$title <- paste("ROS validation report -", tolower(files$gear), "-", files$relative, recycle0 = TRUE)
-  form.validation::validation_batch_plan(files, jobs, resources, output,
+  form.validation::write_validation_batch_plan(files, jobs, resources, output,
     group_columns = c("year", "country", "gear", "version"), identity_columns = c("gear", "version"),
     model_versions = versions, packages = c("ros.form.validation", "ros.form.model"),
     metadata = list(consumer = "ros.form.validation", input = input,

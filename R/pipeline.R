@@ -41,7 +41,7 @@ write_ros_reports <- function(plan, report_filename = "index.html", overwrite = 
 #' @export
 build_ros_publication <- function(plan, output = NULL, report_filename = "index.html", comment = NULL, workers = 1L) {
   batch_plan <- read_ros_validation_plan(plan)
-  publication <- form.validation::build_validation_publication(batch_plan,
+  publication <- form.validation::write_validation_batch_publication(batch_plan,
     output = output, report_filename = report_filename, title = "ROS validation reports",
     stylesheet = system.file("report", "iotc.css", package = "ros.form.validation", mustWork = TRUE),
     logo = system.file("report", "IOTC_with_text.png", package = "ros.form.validation", mustWork = TRUE),

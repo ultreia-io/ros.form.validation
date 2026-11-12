@@ -9,7 +9,7 @@
 #' @param business Optional character vector of additional business YAML paths.
 #'   Files must bind to the same model and rules version as the installed rules.
 #' @param checks Named list of additional callbacks following
-#'   `form.validation::validation_rule()`. Built-in callbacks cannot be replaced.
+#'   `form.validation::create_validation_rule()`. Built-in callbacks cannot be replaced.
 #' @param meta_as_warnings Report META content errors as warnings? Defaults to
 #'   `TRUE`. Structure checks and execution statuses are unchanged. Set `FALSE`
 #'   to retain original rule severities. The choice is saved with the result.
@@ -36,7 +36,7 @@ ros_validation <- function(name, version,
   if (!is.null(business) && (!is.character(business) || anyNA(business) || any(!nzchar(business)))) {
     stop("business must contain explicit YAML filenames", call. = FALSE)
   }
-  plan <- form.validation::read_validation_process(path, model, c(builtin, checks),
+  plan <- form.validation::read_validation_plan(path, model, c(builtin, checks),
     business = if (is.null(business)) character() else business)
   attr(plan$model, "reference_lookups") <- attr(model, "reference_lookups", exact = TRUE)
   if (meta_as_warnings) {
@@ -80,13 +80,10 @@ check_meta_as_warnings <- function(meta_as_warnings) {
 #' @param data Named list of data frames or matrices in model sheet order.
 #'   Retain physical preamble rows; columns follow the model field order.
 #'   Nothing is coerced or loaded.
-#' @param references Named list of snapshots. Code lists use `list(values=...)`
-#'   with optional `aliases` mapping original codes to canonical values.
-#'   Workbook registries use the exact YAML reference name and `list(values=...)`;
-#'   repeated keys are retained because a registry match must be unique.
-#'   Name rules request normalized matching in YAML; local registry snapshots
-#'   can supply shared aliases independently of the models.
-#'   Snapshots from [`read_ros_references()`][ros.form.validation::read_ros_references] include reusable registry indexes.
+#' @param references Named list of prepared reference indexes from
+#'   [`read_ros_references()`][ros.form.validation::read_ros_references].
+#'   Catalogue-owned aliases are applied automatically. Matching and case
+#'   policies come from the rules; each value must match exactly one row.
 #'   All snapshots are supplied explicitly; no external service is queried.
 #' @param source Input label retained in findings and result exports.
 #' @param config Options for `form.validation::validate_data()`. The default
@@ -94,7 +91,7 @@ check_meta_as_warnings <- function(meta_as_warnings) {
 #'   and `"-"` remain literal values; any import normalization is caller-owned.
 #' @return The unchanged `validation_result` from form.validation, including
 #'   findings and execution status. Export with
-#'   `form.validation::write_validation_results()` for `summary.csv` and
+#'   `form.validation::write_validation_results_csv()` for `summary.csv` and
 #'   `findings.csv` in one directory per input. Use [`write_ros_validation_report()`][ros.form.validation::write_ros_validation_report]
 #'   to render the same result as a standalone HTML report.
 #' @details All structure checks run first. Structural errors or unfinished

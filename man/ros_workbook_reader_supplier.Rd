@@ -12,7 +12,7 @@ trailing whitespace in text cells, regardless of the declared field type.}
 }
 \value{
 A function accepting \code{path} and \code{timed}, returning the worksheet grids
-produced by \code{\link[form.validation:read_validation_workbook]{form.validation::read_validation_workbook()}}.
+produced by \code{\link[form.validation:read_workbook_data]{form.validation::read_workbook_data()}}.
 }
 \description{
 Creates a callback without opening a form. Single-form validation invokes it

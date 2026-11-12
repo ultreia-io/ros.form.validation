@@ -60,7 +60,7 @@ read_ros_references <- function(directory, plans, prepare = TRUE) {
     stop("prepare must be TRUE or FALSE", call. = FALSE)
   refs <- ros.form.references::read_ros_references(directory, lapply(plans, `[[`, "model"))
   if (!prepare) return(refs)
-  form.validation::prepare_validation_references(refs)
+  form.validation::prepare_validation_reference_indexes(refs)
 
 }
 
@@ -106,10 +106,10 @@ validate_ros_file <- function(path, directory, plan, references = list(), source
     on.exit(log(sprintf("TIMING %s %s=%.3fs", source, stage, proc.time()[["elapsed"]] - started)))
     force(expression)
   }
-  report <- timed("report.prepare", form.validation::validation_report_data(result, rules_plan$model,
+  report <- timed("report.prepare", form.validation::prepare_validation_report(result, rules_plan$model,
     reference_provenance = attr(references, "provenance"),
     context = list(gear = result$model$form$id)))
-  timed("csv", form.validation::write_validation_results(report, directory))
+  timed("csv", form.validation::write_validation_results_csv(report, directory))
   timed("html", {
     form.validation::write_validation_report(report, file.path(directory, report_filename),
       title = paste("ROS validation report -", result$model$form$id, "-", source),
@@ -127,7 +127,7 @@ validate_ros_file <- function(path, directory, plan, references = list(), source
 #' @param trim_ws Single logical value forwarded to readxl: trim leading and
 #'   trailing whitespace in text cells, regardless of the declared field type.
 #' @return A function accepting `path` and `timed`, returning the worksheet grids
-#'   produced by [form.validation::read_validation_workbook()].
+#'   produced by [form.validation::read_workbook_data()].
 #' @details Embeds the logical option as a literal in the callback body. Its
 #'   base environment captures no caller state, keeping serialization stable
 #'   for saved batch-plan integrity checks. Native cell types and internal
@@ -137,7 +137,7 @@ ros_workbook_reader_supplier <- function(trim_ws) {
   if (!is.logical(trim_ws) || length(trim_ws) != 1L || is.na(trim_ws))
     stop("trim_ws must be TRUE or FALSE", call. = FALSE)
   eval(substitute(
-    function(path, timed) form.validation::read_validation_workbook(path, timed, trim_ws = OPTION),
+    function(path, timed) form.validation::read_workbook_data(path, timed, trim_ws = OPTION),
     list(OPTION = trim_ws)), envir = baseenv())
 }
 

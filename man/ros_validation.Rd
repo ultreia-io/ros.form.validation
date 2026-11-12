@@ -22,7 +22,7 @@ ros_validation(
 Files must bind to the same model and rules version as the installed rules.}
 
 \item{checks}{Named list of additional callbacks following
-\code{form.validation::validation_rule()}. Built-in callbacks cannot be replaced.}
+\code{form.validation::create_validation_rule()}. Built-in callbacks cannot be replaced.}
 
 \item{meta_as_warnings}{Report META content errors as warnings? Defaults to
 \code{TRUE}. Structure checks and execution statuses are unchanged. Set \code{FALSE}

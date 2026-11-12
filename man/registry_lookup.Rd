@@ -4,15 +4,12 @@
 \alias{registry_lookup}
 \title{Reuse a registry index matching the explicit rule policy}
 \usage{
-registry_lookup(snapshot, rule, type)
+registry_lookup(snapshot, rule)
 }
 \arguments{
-\item{snapshot}{Registry snapshot with \code{values}, optional \code{aliases}, and
-optional prepared \code{indexes}.}
+\item{snapshot}{Prepared registry reference index with catalogue-owned aliases.}
 
 \item{rule}{Rule parameters with optional \code{matching} and \code{ignore_case}.}
-
-\item{type}{Declared field type.}
 }
 \value{
 A matching \code{reference_index} index, or a newly prepared index.

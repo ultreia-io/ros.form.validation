@@ -24,13 +24,10 @@ validate_ros(
 Retain physical preamble rows; columns follow the model field order.
 Nothing is coerced or loaded.}
 
-\item{references}{Named list of snapshots. Code lists use \code{list(values=...)}
-with optional \code{aliases} mapping original codes to canonical values.
-Workbook registries use the exact YAML reference name and \code{list(values=...)};
-repeated keys are retained because a registry match must be unique.
-Name rules request normalized matching in YAML; local registry snapshots
-can supply shared aliases independently of the models.
-Snapshots from \code{\link[=read_ros_references]{read_ros_references()}} include reusable registry indexes.
+\item{references}{Named list of prepared reference indexes from
+\code{\link[=read_ros_references]{read_ros_references()}}.
+Catalogue-owned aliases are applied automatically. Matching and case
+policies come from the rules; each value must match exactly one row.
 All snapshots are supplied explicitly; no external service is queried.}
 
 \item{source}{Input label retained in findings and result exports.}
@@ -45,7 +42,7 @@ and \code{"-"} remain literal values; any import normalization is caller-owned.}
 Files must bind to the same model and rules version as the installed rules.}
 
 \item{checks}{Named list of additional callbacks following
-\code{form.validation::validation_rule()}. Built-in callbacks cannot be replaced.}
+\code{form.validation::create_validation_rule()}. Built-in callbacks cannot be replaced.}
 
 \item{meta_as_warnings}{Report META content errors as warnings? Defaults to
 \code{TRUE}. Structure checks and execution statuses are unchanged. Set \code{FALSE}
@@ -54,7 +51,7 @@ to retain original rule severities. The choice is saved with the result.}
 \value{
 The unchanged \code{validation_result} from form.validation, including
 findings and execution status. Export with
-\code{form.validation::write_validation_results()} for \code{summary.csv} and
+\code{form.validation::write_validation_results_csv()} for \code{summary.csv} and
 \code{findings.csv} in one directory per input. Use \code{\link[=write_ros_validation_report]{write_ros_validation_report()}}
 to render the same result as a standalone HTML report.
 }
