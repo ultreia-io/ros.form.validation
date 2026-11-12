@@ -18,7 +18,7 @@ install <- function(path) {
 }
 # Use sibling sources only when their version matches the declared dependency.
 imports <- trimws(strsplit(metadata[[1L, "Imports"]], ",", fixed = TRUE)[[1L]])
-for (dependency in c("form.model", "form.references", "form.validation", "ros.form.model")) {
+for (dependency in c("form.model", "form.references", "form.validation", "ros.form.model", "ros.form.references")) {
   declaration <- imports[startsWith(imports, paste0(dependency, " (== "))]
   expected <- sub(".*\\(== ([^)]+)\\).*", "\\1", declaration)
   source <- file.path(dirname(root), dependency)
