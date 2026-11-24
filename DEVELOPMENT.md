@@ -43,6 +43,10 @@ Single reports accept `parent_report = NULL` to omit navigation, or a URL to lin
 
 Publication preparation adds breadcrumbs to copied reports for every ancestor aggregate, using the configured report filename.
 
+**Build** runs one Linux R-release check for routine changes.
+
+Run **Actions → Check All Platforms** for Linux with R release and R-devel, macOS, and Windows.
+
 ## Pipeline responsibilities
 
 `form.validation` owns saved plans, execution, resume, result storage, rendering and publication preparation.
@@ -65,7 +69,7 @@ Publication preparation checks stage completion, checksums, report counts and li
 
 HTML templates, JavaScript and CSS are separate resources. Shared assets use content-based filenames.
 
-## Release
+## GitHub Release
 
 1. **Prepare the release on `develop`:**
 
@@ -78,11 +82,23 @@ HTML templates, JavaScript and CSS are separate resources. Shared assets use con
 
    1. Open **Actions → Start Release**.
    2. Click **Run workflow**, select `develop`, then click **Run workflow** to confirm.
-   3. Open the release PR created by the workflow.
+   3. The workflow checks the selected commit on all four environments and saves the checked Linux archive.
+   4. After all four checks pass, it opens the release PR at the checked commit.
 
 3. **Merge the release PR:**
 
-   1. **Wait for the checks:** all checks on the release PR must be green.
-   2. **Merge:** click **Merge pull request**, then **Confirm merge**.
+   1. Review the release PR and merge it. Its checks already passed in **Start Release**.
+   2. Merging starts **Publish Release**, which verifies that the merged files match the checked candidate.
 
-**Publish Release** publishes the package, checksum and documentation automatically.
+**Publish Release** publishes the checked archive and checksum, then deploys the documentation.
+
+If the merge changes the checked files, update `develop` and rerun **Start Release** before merging a new PR.
+
+### Enable CRAN submission
+
+Leave CRAN submission disabled until the package and its required dependencies are ready for CRAN.
+
+1. Open the repository's **Settings → Secrets and variables → Actions → Variables**.
+2. Click **New repository variable** and set `SUBMIT_TO_CRAN` to `true`.
+
+To disable submission, remove the variable or set it to `false`.
