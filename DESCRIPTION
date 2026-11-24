@@ -15,7 +15,7 @@ URL: https://ultreia-io.github.io/ros.form.validation/,
 BugReports: https://github.com/ultreia-io/ros.form.validation/issues
 Encoding: UTF-8
 Depends: R (>= 4.1.0)
-Imports: form.model (== 0.6.2), form.references (== 0.3.0), form.validation (== 0.7.0),
+Imports: form.model (== 0.6.2), form.references (>= 0.4.0), form.validation (== 0.7.0),
     ros.form.model (== 0.4.0), ros.form.references (== 0.1.0)
 Suggests: yaml, cellranger, digest, jsonlite, readxl
 Roxygen: list(markdown = TRUE)
